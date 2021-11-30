@@ -1,5 +1,6 @@
 package com.example.demo.mod;
 
+import com.example.demo.config.YmlConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -114,6 +115,7 @@ public class ToolMod {
     }
     public static void main(String[] args) {
       ToolMod toolMod = new ToolMod();
-        System.out.println(1);
+        YmlConfig ymlConfig = new YmlConfig();
+        System.out.println(ymlConfig.getWallpaperDisk());
     }
 }

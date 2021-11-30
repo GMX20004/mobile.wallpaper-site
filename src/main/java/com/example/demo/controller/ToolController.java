@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.WallpaperSortingDao;
 import com.example.demo.dto.MessagesDTO;
 import com.example.demo.dto.NumDTO;
+import com.example.demo.dto.WallpaperDetailsDTO;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,6 +41,8 @@ public class ToolController {
     private WallpaperSortingDao wallpaperSortingDao;
     @Autowired
     private ToolDao toolDao;
+    @Autowired
+    private YmlConfig ymlConfig;
     ToolMod toolMod = new ToolMod();
     /**
      * 验证码图片
@@ -119,11 +123,18 @@ public class ToolController {
             @RequestParam(value = "theTitle",required = false) String theTitle,          //标题
             @RequestParam(value = "theLabel") String theLabel                            //标签
             ){
-        String path = "C:\\JAVA\\img\\cs";//存放路径
+        Map<String,Object> params = new HashMap<>();
+        String uuid = toolMod.uuid();
+        String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
         String fileName = file.getOriginalFilename();//获取文件名称
         String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
-        int num = wallpaperSortingDao.auditCountCode();
-        fileName= String.valueOf(num+1)+suffixName;//重新生成文件名
+        params.put("userId",userId);
+        params.put("theTitle",theTitle);
+        params.put("theLabel",theLabel);
+        params.put("type",suffixName.substring(1));
+        params.put("coding",uuid);
+        wallpaperSortingDao.uploadWallpaperCode(params);
+        fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
         File targetFile = new File(path);
         if (!targetFile.exists()) {
             // 判断文件夹是否未空，空则创建
@@ -133,13 +144,7 @@ public class ToolController {
         try {
             //指定本地存入路径
             file.transferTo(saveFile);
-            Map<String,Object> params = new HashMap<>();
-            params.put("id",num+1);
-            params.put("userId",userId);
-            params.put("theTitle",theTitle);
-            params.put("theLabel",theLabel);
-            params.put("type",suffixName.substring(1));
-            wallpaperSortingDao.uploadWallpaperCode(params);
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -199,6 +204,11 @@ public class ToolController {
             }
         }
         return arr;
+    }
+    @PostMapping("toolCs")
+    public String toolCs(){
+        System.out.println(ymlConfig.getWallpaperDisk());
+        return ymlConfig.getWallpaperDisk();
     }
 }
 

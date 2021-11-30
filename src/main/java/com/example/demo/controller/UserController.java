@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dto.UserDTO;
@@ -28,7 +29,8 @@ public class UserController {
     private ToolDao toolDao;
     @Autowired
     private UserDao userDao;
-
+    @Autowired
+    private YmlConfig ymlConfig;
     ToolMod toolMod = new ToolMod();
     /**
      * 登入
@@ -141,7 +143,7 @@ public class UserController {
                  param.put("id",userId);
                  System.out.println(file);
                 if (file!=null){
-                    String path = "C:\\JAVA\\img\\headPortrait";//存放路径
+                    String path = ymlConfig.getWallpaperDisk()+"headPortrait";//存放路径
                     String fileName = file.getOriginalFilename();//获取文件名称
                     String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
                     int num = userId;

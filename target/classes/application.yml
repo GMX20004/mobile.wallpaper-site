@@ -23,10 +23,14 @@ spring:
 #      suffix: .html
   #本地资源真实存放地址
   resources:
-    static-locations: file:C://JAVA/img/
+    static-locations: file:E://JAVA/img/
   servlet:
     multipart:
       max-file-size: 5MB
 server:
   port: 8080
+#全局变量
+information:
+  #壁纸存放地址
+  wallpaperDisk: E:\JAVA\img\
 

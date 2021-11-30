@@ -43,4 +43,7 @@ public interface UserDao extends BaseMapper<UserDTO> {
     void userAddDeleteCGCode(Map<String,Object> param);
     //用户信息修改
     void userModify(Map<String,Object> param);
+    //用户投稿增加
+    @Update("UPDATE `user` SET contribute=contribute+1 WHERE id = #{userId}")
+    int userContribute(int userId);
 }

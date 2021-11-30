@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dao.WallpaperSortingDao;
@@ -30,7 +31,8 @@ public class AdminController {
     private UserDao userDao;
     @Autowired
     private WallpaperUpdateDao wallpaperUpdateDao;
-
+    @Autowired
+    private YmlConfig ymlConfig;
     ToolMod toolMod = new ToolMod();
     /**
      * 每日首页壁纸显示改动
@@ -135,13 +137,14 @@ public class AdminController {
             params.put("userId",arr.get(0).getUserId());
             params.put("theLabel",arr.get(0).getTheLabel());
             params.put("type",arr.get(0).getType());
-            String target = "C:\\JAVA\\img\\cs\\"+id+"."+arr.get(0).getType();
-            String destination = "C:\\JAVA\\img\\"+params.get("storageLocation")+"\\"+params.get("id")+"."+arr.get(0).getType();
+            String target = ymlConfig.getWallpaperDisk()+"cs\\"+id+"."+arr.get(0).getType();
+            String destination = ymlConfig.getWallpaperDisk()+params.get("storageLocation")+"\\"+params.get("id")+"."+arr.get(0).getType();
             toolMod.imgTransfer(target,destination);
             wallpaperSortingDao.reviewThroughCode(params);
             params.put("id",id);
             wallpaperSortingDao.deleteAuditCode(params);
             toolMod.deleteFile(target);
+            userDao.userContribute(arr.get(0).getUserId());
             return true;
         }catch (Exception e){
             e.printStackTrace();

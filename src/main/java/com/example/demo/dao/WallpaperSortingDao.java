@@ -74,11 +74,14 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //壁纸审核详情查看--管理员权限
     @Select("SELECT t1.id,t1.the_title,t1.user_id,t1.the_label,t1.type,t2.`name`,t2.head_portrait FROM wallpaper_lins t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
     List<WallpaperDetailsDTO> detailsWallpaperLinCode(Map<String,Object> param);
+    //
+    @Select("SELECT id FROM wallpaper_lins WHERE coding=#{uuid}")
+    int detailsWallpaperLinUuidCode(String uuid);
     //删除审核壁纸--管理员权限
     @Delete("DELETE FROM `wallpaper_lins` WHERE id=#{id}")
     int deleteAuditCode(Map<String,Object> param);
     //壁纸上传
-    @Insert("INSERT INTO wallpaper_lins(id,the_title,user_id,the_label,type)VALUES(#{id},#{theTitle},#{userId},#{theLabel},#{type})")
+    @Insert("INSERT INTO wallpaper_lins(the_title,user_id,the_label,type,coding)VALUES(#{theTitle},#{userId},#{theLabel},#{type},#{coding})")
     int uploadWallpaperCode(Map<String,Object> param);
     //修改审核壁纸
     @Update("UPDATE `wallpaper_lins` SET the_title=#{theTitle},the_label=#{theLabel} WHERE id = #{id}")
