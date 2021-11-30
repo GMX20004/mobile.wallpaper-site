@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/xm2?serverTimezone=GMT%2B8
+    username: root
+    password: 123.com
+  mail:
+    default-encoding: utf-8
+    # 主机地址
+    host: smtp.qq.com
+    # 邮箱名
+    username: 1478588530@qq.com
+    # 授权码（不是密码）
+    password: nelddoxpaylsbagc
+    #端口号
+    port: 587
+  #没拦截器url访问本地资源地址
+  #url访问本地资源地址
+  mvc:
+    static-path-pattern: /image/**
+#    view:
+#      prefix: /
+#      suffix: .html
+  #本地资源真实存放地址
+  resources:
+    static-locations: file:C://JAVA/img/
+  servlet:
+    multipart:
+      max-file-size: 5MB
+server:
+  port: 80
+

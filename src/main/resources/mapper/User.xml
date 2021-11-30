@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserDao">
+
+<!--    用户获赞数更新-->
+    <select id="userAddDeleteCGCode" resultType="com.example.demo.dto.UserDTO">
+        UPDATE `user` SET
+        <if test="type==1">
+            <if test="is==0">praise=praise-1</if>
+            <if test="is==1">praise=praise+1</if>
+        </if>
+        WHERE id=#{id}
+    </select>
+<!--    用户信息修改-->
+    <select id="userModify" resultType="com.example.demo.dto.UserDTO">
+        UPDATE `user` SET
+        <if test="name != null or name.trim() !=''">
+            `name` = #{name},
+        </if>
+        <if test="instructions != null or instructions.trim() !=''">
+            `instructions` = #{instructions},
+        </if>
+        <if test="sex != null or sex.trim() != ''">
+            `sex` = #{sex},
+        </if>
+        <if test="img != null">
+            head_portrait = #{img},
+        </if>
+        `state` = 0
+        WHERE id=#{id}
+    </select>
+</mapper>

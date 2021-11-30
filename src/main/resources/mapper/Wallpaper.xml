@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.WallpaperSortingDao">
+
+
+    <select id="obtainCancelCGCode" resultType="com.example.demo.dto.WallpaperDTO">
+    <if test="is==0">
+        DELETE FROM wallpaper_type WHERE id=#{id} and user_id=#{userId} and type=#{type}
+    </if>
+    <if test="is==1">
+        INSERT INTO wallpaper_type(id,user_id,type)VALUES(#{id},#{userId},#{type})
+    </if>
+    </select>
+    <select id="zoAddDeleteCGCode" resultType="com.example.demo.dto.WallpaperDTO">
+        UPDATE wallpaper SET
+        <if test="type==0">
+            <if test="is==0">collection=collection-1</if>
+            <if test="is==1">collection=collection+1</if>
+        </if>
+        <if test="type==1">
+            <if test="is==0">praise=praise-1</if>
+            <if test="is==1">praise=praise+1</if>
+        </if>
+        WHERE id=#{id}
+    </select>
+
+</mapper>

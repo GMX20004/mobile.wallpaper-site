@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GMX</title>
+    <link rel="icon" href="../common/img/icon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="common/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<h1 id="h1"></h1>
+<script>
+    if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+        window.location.href="login/homePage.html";
+    }
+    else{
+        alert("此网站为移动端网站不建议PC端进行访问")
+        $("#h1").text("PC端暂未制作，请使用移动端进行访问")
+    }
+</script>
+</body>
+</html>

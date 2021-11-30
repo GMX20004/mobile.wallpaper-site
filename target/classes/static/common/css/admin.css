@@ -1,0 +1,33 @@
+#a1{width: 100%;height: 5%;}
+.a1Span{float: left;width: 25%;height: 100%;font-size: 20px;text-align: center;background-color: black;color: #ffffff}
+#a0{width: 100%;height: 95%;background-color: #8c8c8c}
+.a0P{font-size: 30px;text-align: center}
+#a0Input{width: 60%;height: 50px;font-size: 30px;background-color: #e38d13;color: #ffffff}
+#a2{width: 100%;height: 95%}
+#a2Div2{width: 100%;height: 92%;overflow-y:auto;overflow-x:auto;}
+#a2Div2D1{width: 500%;height: 30px;}
+#a2Div2D1 span{float: left;font-size: 20px;text-align: center;background-color: black;color: #ffffff;border: 1px solid #ffffff}
+.UserInput{font-size: 10px;width: 70%;height: 100%}
+.UserDiv{width: 500%;height: 40px;}
+.UserDiv span{float: left;font-size: 25px;background-color: #8c8c8c;text-align: center;height: 100%;overflow-y:auto;border: 1px solid #ffffff;white-space: nowrap;}
+.UserSpan0{width: 4%;}
+.UserSpan1{width: 10%;}
+.UserSpan2{width: 10%;}
+.UserSpan3{width: 24%;}
+#a3{width: 100%;height: 92%;overflow-y:auto;}
+.a3Span{width: 50%;float: left;}
+.a3Div{width: 90%;margin-left: 3%}
+.a3Img{width: auto;height: auto;max-width: 100%;max-height: 100%;border-radius : 4%;margin-top: 10%}
+#a4{width: 100%;height: 92%;overflow-y:auto;overflow-x:auto;}
+#a4DIv{width: 300%;height: 40px;background-color: black}
+#a4DIv span{font-size: 20px;text-align: center;color: #ffffff;float: left;border: 1px solid #ffffff}
+.a4DivD{width: 300%;height: 30px;background-color: #8c8c8c}
+.a4DivD span{font-size: 20px;text-align: center;float: left;border: 1px solid #ffffff;height: 100%;overflow-y:auto;overflow-y:auto;white-space: nowrap;}
+.a4Input{font-size: 10px;width: 70%;height: 100%}
+.a4Span0{width: 5%;}
+.a4Span1{width: 10%;}
+.a4Span2{width: 20%;}
+.a4Span3{width: 50%;}
+#a5{width: 100%;height: 95%;background-color: #8c8c8c}
+#a5Text{width: 100%;height: 40%;resize:none;border: 3px solid #e38d13;margin-top: 20%;font-size: 20px}
+#a5Input{width: 80%;font-size: 30px;text-align: center;background-color: #e38d13;height: 50px;margin-left: 10%;color: #ffffff}

@@ -1,0 +1,25 @@
+#body{background-size: 100%;}
+.quan{width: 100%}
+
+#a1{background-color: #8c8c8c;opacity:0.8;height: 5%}
+#a2{height: 20%;text-align: center;opacity:0.8;}
+.a2B{font-size: 80px;margin-top: 10%;color: #f0ad4e}
+
+#a3{height: 70%;padding-top: 8%;background-color: #8c8c8c;opacity:0.8;}
+.a3Div1Div{width: 100%;display: none}
+
+.a3Div1Div1{width: 100%;}
+.a3Div1P{font-size: 20px;margin-left: 5%}
+.a3Div1P1{font-size: 30px;margin-left: 15%}
+.a3Div1input{width: 70%;height: 35px;border: 1px solid #f0ad4e;font-size: 100%;margin-left: 5%}
+.a3Div1input1{width: 70%;height: 40px;border: 1px solid #f0ad4e;font-size: 100%;margin-left: 15%}
+#a3Div1Button1{width: 21%;height: 30px;font-size: 70%;}
+#a3Div1P{font-size: 20px;margin-left: 23%;margin-top: 5%}
+#a3Div1Button2{width: 60%;height: 50px;font-size: 20px;background-color: #f0ad4e;margin-left: 20%;margin-top: 5%}
+
+#button1{width: 60%;height: 50px;font-size: 20px;background-color: #f0ad4e;margin-left: 20%;margin-top: 5%}
+
+#a99{height: 15%;background-color:black;float: left;width: 100%;}
+.a99div{width: 100%;height: 30px;margin-top: 20px;text-align: center;float: left}
+.a99a{font-size: 20px;color: #ffffff}
+#a99divp{font-size: 20px;color: #ffffff;}

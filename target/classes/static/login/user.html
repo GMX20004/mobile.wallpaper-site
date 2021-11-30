@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户</title>
+    <link rel="icon" href="../common/img/icon.ico" type="image/x-icon">
+    <script src="../common/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="../common/jquery-3.5.1/jquery.cookie.js"></script>
+    <link href="../common/bootstrap-3.4.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../common/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <link href="../common/css/user.css" rel="stylesheet">
+    <script src="../common/js/main.js"></script>
+</head>
+<body id="body">
+    <div id="main">
+        <div id="a1"class="quan">
+            <span class="a1Span">
+                <a href="homePage.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                        <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                 </a>
+            </span>
+            <span class="a1Span"style="text-align: right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16"id="a1Svg2">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg>
+                <b style="color: #ffffff;font-size: 20px;display: none"id="a1B1">返回</b>
+            </span>
+        </div>
+        <div id="a2"class="quan">
+            <div id="a2Div">
+                <div id="a2Div1">
+                    <img src="" id="a2DivImg">
+                </div>
+                <div id="a2Div2">
+                    <p id="a2P1"></p>
+                    <input id="a2Input"autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div id="window"style="display: none;border: 3px solid black">
+            <div style="position:absolute;position:fixed;width: 60%;background-color: #ffffff;z-index:999;margin-left: 20%;text-align: center">
+                <div style="width: 100%;height: 30px;background-color: #e38d13"></div>
+                <p style="font-size: 25px;">QQ:1478588530</p>
+                <input type="button"value="确定"style="width: 100%;height: 30px;background-color: #e38d13"id="windowInput">
+            </div>
+        </div>
+        <div id="a3"class="quan">
+            <div id="a3Div1">
+                <span class="a3Div1Span1">
+                    <b id="praise"class="a3Div1Span1B">获赞:<text id="a31Text1"></text></b>
+                </span>
+                <span class="a3Div1Span1">
+                    <b id="fans"class="a3Div1Span1B">粉丝:<text id="a31Text2"></text></b>
+                </span>
+                <span class="a3Div1Span1">
+                    <b id="focuSon"class="a3Div1Span1B">关注:<text id="a31Text3"></text></b>
+                </span>
+                <span class="a3Div1Span1">
+                    <b id="contribute"class="a3Div1Span1B">投稿:<text id="a31Text4"></text></b>
+                </span>
+                <input type="button"id="button"value="修改头像">
+                <input type="file"style="display: none"id="file"name="file"accept="image/jpeg,image/png,image/jpg">
+            </div>
+            <div id="a3Div2"class="quan">
+                <span id="a3DivSpan1"class="a3DivSpan"style="border: solid">
+                    <p id="a3DivSpan2P1">个人信息</p>
+                </span>
+                <span id="a3DivSpan2"class="a3DivSpan">
+                    <p id="a3DivSpan2P2">收藏</p>
+                </span>
+            </div>
+            <div id="a3Div3"class="quan">
+                <p id="a3Div3H1">个人资料</p>
+                <p id="a3Div3H2"class="a3Div3H">性别:<text id="a3Text1"></text></p>
+                <p id="a3Div3H3"class="a3Div3H">个人说明:<text id="a3Text2"></text></p>
+                <p id="a3Div3H4"class="a3Div3H">加入时间:<text id="a3Text3"></text></p>
+                <p id="a3Div3H5"class="a3Div3H">上次登录时间:<text id="a3Text4"></text></p>
+                <p class="a3Div3H1">个人说明:<input id="a3Input"autocomplete="off"></p>
+                <p class="a3Div3H1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别:&nbsp;&nbsp;男<input type="radio"name="radio"value="男"id="a3Radio1">&nbsp;&nbsp;女<input type="radio"name="radio"value="女"id="a3Radio2">&nbsp;&nbsp;未知<input type="radio"name="radio"value="未知"id="a3Radio3"></p>
+                <input type="button"value="修改"id="a3Button">
+            </div>
+            <div id="a3Div4"class="quan">
+                <span class="a3Div4Span">
+                    <div class="a3Div4SpanDiv"id="a3Div4SpanDiv1">
+                    </div>
+                </span>
+                <span class="a3Div4Span">
+                    <div class="a3Div4SpanDiv"id="a3Div4SpanDiv2">
+                    </div>
+                </span>
+            </div>
+        </div>
+        <div class="quan"id="a99">
+            <div class="a99div"><a class="a99a">关于GMX</a>&nbsp;<t class="a99a">|</t>&nbsp;<a class="a99a"href="feedback.html">意见反馈</a>&nbsp;<t class="a99a">|</t>&nbsp;<a id="a99a1" class="a99a">联系站长</a></div>
+            <div class="a99div"><p id="a99divp">浙ICP备2021006651号-1</p></div>
+        </div>
+    </div>
+    <script src="../common/js/user.js"></script>
+    <script src="../common/js/Contact.js"></script>
+</body>
+</html>
