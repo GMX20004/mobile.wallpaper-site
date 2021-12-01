@@ -165,7 +165,7 @@ public class AdminController {
             params.put("level",1);
             toolDao.sendAMessageCode(params);
             wallpaperSortingDao.deleteAuditCode(params);
-            String target = "C:\\JAVA\\img\\cs\\"+params.get("id")+"."+arr.get(0).getType();
+            String target = ymlConfig.getWallpaperDisk()+"cs\\"+params.get("id")+"."+arr.get(0).getType();
             toolMod.deleteFile(target);
             return true;
         }catch (Exception e){

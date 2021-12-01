@@ -10,7 +10,7 @@ $(function (){
     },function (data) {
         userId = data[0].userId;
         $("#a1Img").attr("src","http://"+theUrl+"/image/headPortrait/"+data[0].headPortrait);
-        $("#a1Span2Div1S").text(data[0].theTitle);
+        $("#a1Span2Div1S").text(data[0].name);
         if (data[0].isPraise==0){
             $("#a1Span1Svg2").hide();
             $("#a1Span1Svg1").show();
@@ -105,6 +105,7 @@ $("#a1Img").click(function (){
 })//点击头像
 $(".img").click(function (){
     if (wd==1){
+        $("#a0").hide();
         $("#a1").hide();
         $("#a2").css("height","100%")
         $(".img").css("margin-top",($("#a2").height()-$(".img").height())/2)
@@ -112,6 +113,7 @@ $(".img").click(function (){
     }else {
         $("#a2").css("height","80%")
         $(".img").css("margin-top",($("#a2").height()-$(".img").height())/2)
+        $("#a0").show();
         $("#a1").show();
         wd=1
     }

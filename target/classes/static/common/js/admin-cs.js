@@ -23,7 +23,7 @@ $("#input1").click(function (){
        },function (data){
            if (data){
                alert("成功")
-               window.location.href="admin-login.html"
+               window.location.href="admin-login.html?type=3"
            }else {
                alert("失败")
            }
@@ -36,7 +36,7 @@ $("#input2").click(function (){
     },function (data){
         if (data){
             alert("成功")
-            window.location.href="admin-login.html"
+            window.location.href="admin-login.html?type=3"
         }else {
             alert("失败")
         }
@@ -51,6 +51,7 @@ $("#input3").click(function (){
     $("#a1input1").val($("#a1Span2B1").text())
     $("#a1input2").val($("#a1Span2B2").text())
     $("#input4").show()
+    $("#input5").show()
 })//内容修改
 $("#input4").click(function (){
     $.post("/admin/ccef83e1d2ff455fae16680c906f2239",{
@@ -67,10 +68,19 @@ $("#input4").click(function (){
     })
     $(".a1Input").hide()
     $("#input4").hide()
+    $("#input5").hide()
     $("#a1Span2B1").show()
     $("#a1Span2B2").show()
     $(".a3Span").show()
 })//提交修改
+$("#input5").click(function (){
+    $(".a1Input").hide()
+    $("#input4").hide()
+    $("#input5").hide()
+    $("#a1Span2B1").show()
+    $("#a1Span2B2").show()
+    $(".a3Span").show()
+})//取消修改
 $("#img1").click(function (){
     $.cookie("othersId",userId);
     window.location.href="user.html?type=1"
