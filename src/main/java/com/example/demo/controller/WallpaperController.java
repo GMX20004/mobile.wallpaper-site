@@ -42,7 +42,6 @@ public class WallpaperController {
         int start = 0;
         for (int i=1;i<num;i++) start+=10;
         params.put("value","%"+params.get("value")+"%");
-        System.out.println(params.get("value"));
         params.put("start",start);
         List arr = wallpaperSortingDao.searchCode(params);
         arr.add(wallpaperSortingDao.searchCountCode(params));

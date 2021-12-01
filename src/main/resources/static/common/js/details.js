@@ -10,7 +10,7 @@ $(function (){
     },function (data) {
         userId = data[0].userId;
         $("#a1Img").attr("src","http://"+theUrl+"/image/headPortrait/"+data[0].headPortrait);
-        $("#a1Span2Div1S").text(data[0].theTitle);
+        $("#a1Span2Div1S").text(data[0].name);
         if (data[0].isPraise==0){
             $("#a1Span1Svg2").hide();
             $("#a1Span1Svg1").show();
