@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "information",
+      "type": "com.example.demo.config.YmlConfig",
+      "sourceType": "com.example.demo.config.YmlConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "information.wallpaper-disk",
+      "type": "java.lang.String",
+      "sourceType": "com.example.demo.config.YmlConfig"
+    }
+  ],
+  "hints": []
+}

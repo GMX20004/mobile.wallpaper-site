@@ -38,13 +38,13 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY collection DESC LIMIT #{start},10")
     List<WallpaperDTO>collectionCode(Map<String,Object> param);
     //搜索查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE concat(#{value},'%') OR the_label LIKE CONCAT(#{value},'%') LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value} LIMIT #{start},10")
     List<WallpaperDTO>searchCode(Map<String,Object> param);
     //搜索查询结果数
     @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_title LIKE concat(#{value},'%') OR the_label LIKE CONCAT(#{value},'%')")
     int searchCountCode(Map<String,Object> param);
     //标签查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE CONCAT(#{value},'%') LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} LIMIT #{start},10")
     List<WallpaperDTO>labelCode(Map<String,Object> param);
     //标签查询结果数
     @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_label LIKE CONCAT(#{value},'%')")

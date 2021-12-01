@@ -1,4 +1,5 @@
 com\example\demo\dao\WallpaperSortingDao.class
+META-INF\spring-configuration-metadata.json
 com\example\demo\controller\ToolController.class
 com\example\demo\controller\AdminController.class
 com\example\demo\dto\WallpaperDTO.class
@@ -7,6 +8,7 @@ com\example\demo\controller\LoginController.class
 com\example\demo\dto\UserDTO.class
 com\example\demo\dto\WallpaperDetailsDTO.class
 com\example\demo\entity\User.class
+com\example\demo\config\YmlConfig.class
 com\example\demo\controller\UserController.class
 com\example\test\TestApplication.class
 com\example\demo\controller\WallpaperController.class
