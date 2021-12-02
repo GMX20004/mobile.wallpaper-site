@@ -1,7 +1,7 @@
 var diviceWidth = document.documentElement.clientWidth;
 var diviceHeight = document.documentElement.clientHeight;
-// var theUrl = "www.gxm2000.cn"
-var theUrl ="localhost:8080"
+var theUrl = "www.gxm2000.cn"
+// var theUrl ="localhost:8080"
 $(function (){
     $("#main").width(diviceWidth)
     $("#main").height(diviceHeight)

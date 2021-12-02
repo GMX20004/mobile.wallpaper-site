@@ -58,7 +58,9 @@ public class UserController {
     @PostMapping("registered")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", value = "邮箱", paramType = "query",required = true, dataType="String"),
-            @ApiImplicitParam(name = "password", value = "密码", paramType = "query",required = true, dataType="String")
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "width", value = "分辨率宽度", paramType = "query", dataType="int"),
+            @ApiImplicitParam(name = "height", value = "分辨率高度", paramType = "query", dataType="int")
     })
     public List registered(@ApiIgnore @RequestParam Map<String, Object> params)  {
         int num = userDao.getEmailCode(params);

@@ -159,7 +159,8 @@ public class AdminController {
     public boolean reviewNotThrough(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
             List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperLinCode(params);
-            params.put("message","管理员:亲爱的用户您好!您上传名为<"+arr.get(0).getTheTitle()+">的壁纸未通过审核。对您带来的不便我们深感抱歉,欢迎您再次投递分享,谢谢!");
+            System.out.println(arr);
+            params.put("message","管理员:亲爱的用户您好!您于"+arr.get(0).getCreationTime()+"上传名为<"+arr.get(0).getTheTitle()+">的壁纸未通过审核。对您带来的不便我们深感抱歉,欢迎您再次投递分享,谢谢!");
             params.put("accept",arr.get(0).getUserId());
             params.put("send",0);
             params.put("level",1);
@@ -190,6 +191,10 @@ public class AdminController {
            if (i==1)return true;
            else return false;
     }
+
+    /**
+     * 修改审核壁纸
+     */
     @PostMapping("ccef83e1d2ff455fae16680c906f2239")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", paramType = "query",required = true, dataType="int"),

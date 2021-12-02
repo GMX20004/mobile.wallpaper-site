@@ -22,7 +22,7 @@ public interface UserDao extends BaseMapper<UserDTO> {
     @Select("SELECT * FROM `user` WHERE id=#{id}")
     List<UserDTO> getUserCode(Map<String,Object> param);
     //新建用户
-    @Insert("INSERT INTO `user`(email,`password`,user_id,creation_time)VALUES(#{email},password(#{password}),#{uuid},#{time})")
+    @Insert("INSERT INTO `user`(email,`password`,user_id,creation_time,width,height)VALUES(#{email},password(#{password}),#{uuid},#{time},#{width},#{height})")
     int getRegisteredCode(Map<String,Object> param);
     //用户修改密码
     @Update("UPDATE `user` SET `password` = password(#{password}) WHERE email = #{email}")

@@ -122,7 +122,9 @@ $("#a3Div1Button2").click(function (){
         if (Type==0){
             $.post("/User/registered",{
                 email:input1,
-                password:input4
+                password:input4,
+                width:diviceWidth,
+                height:diviceHeight
             },function (data) {
                 if (data[0]==true){
                     User(input1,input4)

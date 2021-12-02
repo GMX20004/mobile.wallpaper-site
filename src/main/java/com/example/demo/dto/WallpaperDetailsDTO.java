@@ -32,4 +32,6 @@ public class WallpaperDetailsDTO implements Serializable {
     private int isPraise;
     //是否收藏
     private int isCollection;
+    //创建时间
+    private String creationTime;
 }

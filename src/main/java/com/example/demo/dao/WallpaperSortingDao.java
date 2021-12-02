@@ -69,10 +69,10 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Insert("INSERT INTO wallpaper(id,the_title,user_id,the_label,type,storage_location)VALUES(#{id},#{theTitle},#{userId},#{theLabel},#{type},#{storageLocation})")
     int reviewThroughCode(Map<String,Object> param);
     //壁纸详情查看
-    @Select("SELECT t1.id,t1.praise,t1.collection,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.storage_location,t2.`name`,t2.head_portrait FROM wallpaper t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
+    @Select("SELECT t1.id,t1.praise,t1.collection,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.storage_location,t1.creation_time,t2.`name`,t2.head_portrait FROM wallpaper t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
     List<WallpaperDetailsDTO> detailsWallpaperCode(Map<String,Object> param);
     //壁纸审核详情查看--管理员权限
-    @Select("SELECT t1.id,t1.the_title,t1.user_id,t1.the_label,t1.type,t2.`name`,t2.head_portrait FROM wallpaper_lins t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
+    @Select("SELECT t1.id,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.creation_time,t2.`name`,t2.head_portrait FROM wallpaper_lins t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
     List<WallpaperDetailsDTO> detailsWallpaperLinCode(Map<String,Object> param);
     //
     @Select("SELECT id FROM wallpaper_lins WHERE coding=#{uuid}")
