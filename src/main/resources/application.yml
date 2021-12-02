@@ -32,5 +32,5 @@ server:
 #全局变量
 information:
   #壁纸存放地址
-  wallpaperDisk: C:\JAVA\img\
+  wallpaperDisk: :\JAVA\img\
 
