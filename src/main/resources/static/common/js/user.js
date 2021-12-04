@@ -18,8 +18,9 @@ $(function (){
             userId=$.cookie("othersId")
             $("#a1Svg2").hide();
         }
+    } else{
+        userId=$.cookie("userId");
     }
-    else userId=$.cookie("userId")
     $.post("/User/user",{
            id:userId
         },

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,11 @@ public class AdminController {
             params.put("type",arr.get(0).getType());
             String target = ymlConfig.getWallpaperDisk()+"cs\\"+id+"."+arr.get(0).getType();
             String destination = ymlConfig.getWallpaperDisk()+params.get("storageLocation")+"\\"+params.get("id")+"."+arr.get(0).getType();
+            File targetFile = new File(ymlConfig.getWallpaperDisk()+params.get("storageLocation"));
+            if (!targetFile.exists()) {
+                // 判断文件夹是否未空，空则创建
+                targetFile.mkdirs();
+            }
             toolMod.imgTransfer(target,destination);
             wallpaperSortingDao.reviewThroughCode(params);
             params.put("id",id);
