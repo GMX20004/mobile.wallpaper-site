@@ -94,6 +94,9 @@ $("#a1divsvg").click(function (){
             })
     }
 })//搜索结果
+$("#a1input").keyup(function (event) {
+    if (event.keyCode==13) $("#a1divsvg").click()
+})//搜索框回车
 function pictureType(name){
     $("#a4SpanDiv1").html('');
     $("#a4SpanDiv2").html('');

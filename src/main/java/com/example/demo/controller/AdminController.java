@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 管理员接口
@@ -150,7 +148,7 @@ public class AdminController {
             params.put("id",id);
             wallpaperSortingDao.deleteAuditCode(params);
             toolMod.deleteFile(target);
-            userDao.userContribute(arr.get(0).getUserId());
+            userDao.userContributeCode(arr.get(0).getUserId());
             return true;
         }catch (Exception e){
             e.printStackTrace();
@@ -222,5 +220,48 @@ public class AdminController {
             toolDao.deleteMessagesCode(arr.get(i).getId());
         }
         return arr;
+    }
+
+    /**
+     *  管理员登录
+     */
+    @PostMapping("e4c984df9f364376992066fd393d89fe")
+    public List login(@RequestParam String password){
+        Map<String,Object> params = new HashMap<>();
+        List pan = new ArrayList();
+        try {
+            params.put("email",0);
+            params.put("password",password);
+            List<UserDTO> arr = userDao.getLogInToCode(params);
+            if (arr!=null&&arr.size()!=0){
+                pan.add(true);
+                params.put("id",0);
+                params.put("uuid",toolMod.uuid());
+                userDao.userUpdateUuidCode(params);
+                arr = userDao.getLogInToCode(params);
+                pan.add(arr.get(0).getUserId());
+            }else {
+                pan.add(false);
+            }
+            userDao.userUuidCode(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            pan.add(false);
+        }
+        return pan;
+    }
+    /**
+     * 判断用户唯一编码
+     */
+    @PostMapping("443139dfab264464a40e7f7425588469")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "email", value = "邮箱", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "uuid", value = "唯一编码", paramType = "query",required = true, dataType="String")
+    })
+    public boolean uuid(@ApiIgnore @RequestParam Map<String, Object> params){
+        if (userDao.userUuidCode(params)==1)
+            return true;
+        else
+            return false;
     }
 }

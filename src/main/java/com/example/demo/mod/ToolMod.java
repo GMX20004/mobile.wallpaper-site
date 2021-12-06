@@ -115,7 +115,6 @@ public class ToolMod {
     }
     public static void main(String[] args) {
       ToolMod toolMod = new ToolMod();
-        YmlConfig ymlConfig = new YmlConfig();
-        System.out.println(ymlConfig.getWallpaperDisk());
+        System.out.println(toolMod.uuid());
     }
 }

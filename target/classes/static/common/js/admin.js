@@ -1,32 +1,37 @@
 var userId;
 $(function (){
-    var type=getUrlParam("type");
-    if (type==3){
-        borderHide();
-        $("#a1Span3").css("border","1px solid #e38d13");
-        $(".a3Img").remove()
-        $("#a3").show();
-        $.get("/admin/0529588ecb8d4246bc0dc5302643b62d",function (data){
-            var c = true;
-            for (var i=0;i<data.length;i++){
-                if (c){
-                    $("#a3Div1").append("<a href='admin-cs.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/cs/"+data[i].id+"."+data[i].type+"' class='a3Img'></a>")
-                    c=false;
-                }else {
-                    $("#a3Div2").append("<a href='admin-cs.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/cs/"+data[i].id+"."+data[i].type+"' class='a3Img'></a>")
-                    c=true;
-                }
+    $("#body").css("background-image","url('http://"+theUrl+"/image/Websitebackground/admin.jpg')")
+    $.post("/admin/443139dfab264464a40e7f7425588469",{
+        email:0,
+        uuid:$.cookie("adminUuid")
+    },function (data) {
+        if (data){
+            $("#login").hide();
+            $("#main").show();
+            $("#a1Span1").click();
+        }else {
+            $("#main").hide();
+            $("#login").show();
+        }
+    })
+})
+$("#loginPassword").keyup(function (event){
+    if (event.keyCode==13){
+        var password = $.trim($("#loginPassword").val())
+        $.post("/admin/e4c984df9f364376992066fd393d89fe",{
+            password:password
+        },function (data) {
+            if (data[0]!=false){
+                $.cookie("adminUuid",data[1]);
+                $("#login").hide();
+                $("#main").show();
+                $("#a1Span1").click();
+            }else {
+                alert("密码错误");
             }
         })
-    }else {
-        $.get("/L/number",function (data) {
-            $("#a0B1").text(data[0].userNumber);
-            $("#a0B2").text(data[0].wallpaperNumber);
-            $("#a0B3").text(data[0].testWallpaperNumber);
-            $("#a0B4").text(data[0].feedbackNumber);
-        })
     }
-})
+})//admin登入
 $("#a1Span1").click(function (){
     borderHide();
     $("#a1Span1").css("border","1px solid #e38d13");

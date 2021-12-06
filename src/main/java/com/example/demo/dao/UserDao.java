@@ -38,12 +38,17 @@ public interface UserDao extends BaseMapper<UserDTO> {
     int stateUserCode(Map<String,Object> param);
     //更新最近登入时间
     @Update("UPDATE `user` SET recent_login=#{time} WHERE email=#{email}")
-    int userTime(Map<String,Object> param);
+    int userTimeCode(Map<String,Object> param);
     //用户收藏点赞总数修改
     void userAddDeleteCGCode(Map<String,Object> param);
     //用户信息修改
-    void userModify(Map<String,Object> param);
+    void userModifyCode(Map<String,Object> param);
     //用户投稿增加
     @Update("UPDATE `user` SET contribute=contribute+1 WHERE id = #{userId}")
-    int userContribute(int userId);
+    int userContributeCode(int userId);
+    //修改用户唯一编码
+    @Update("UPDATE `user` SET user_id=#{uuid} WHERE id=#{id}")
+    int userUpdateUuidCode(Map<String,Object> param);
+    @Select("SELECT COUNT(*) FROM `user` WHERE email=#{email} AND user_id=#{uuid}")
+    int userUuidCode(Map<String,Object> param);
 }

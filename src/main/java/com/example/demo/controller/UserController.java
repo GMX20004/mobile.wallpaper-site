@@ -45,7 +45,7 @@ public class UserController {
         if (arr!=null&&arr.size()!=0){
             params.put("time",toolMod.time());
             System.out.println(params.get("time"));
-            userDao.userTime(params);
+            userDao.userTimeCode(params);
         }else {
             arr.add(false);
         }
@@ -163,7 +163,7 @@ public class UserController {
                 param.put("name",name);
                 param.put("instructions",instructions);
                 param.put("sex",sex);
-                userDao.userModify(param);
+                userDao.userModifyCode(param);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

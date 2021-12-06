@@ -163,7 +163,12 @@ $("#a3Div1input3").mouseleave(function (){
 $("#a3Div1input4").mouseleave(function (){
     $("#a3Div1input4").css("border","1px solid #f0ad4e")
 })//重复密码码框边框颜色变换
-
+$("#input2").keyup(function (event){
+    if (event.keyCode==13) $("#button1").click()
+})//登入回车
+$("#a3Div1input4").keyup(function (event) {
+    if (event.keyCode==13) $("#a3Div1Button2").click()
+})//忘记密码和注册回车
 function register() {
     $("#a3Div1input1").val("");
     $("#a3Div1input2").val("");
