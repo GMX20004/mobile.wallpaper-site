@@ -15,20 +15,9 @@ $(function (){
     })
 })
 $("#input1").click(function (){
-   var a=prompt("请输入存储文件夹","ac");
-   if (a != null){
-       $.post("/admin/1e715da537b946cba23fb03828537529",{
-           id:id,
-           storageLocation:a
-       },function (data){
-           if (data){
-               alert("成功")
-               window.location.href="admin-login.html?type=3"
-           }else {
-               alert("失败")
-           }
-       })
-   }
+    $(".a3Span").hide()
+    $("#a3Div1").show()
+    Select();
 })//审核通过
 $("#input2").click(function (){
     $.post("/admin/ec453f2adc63493db651d8a7e7e98191",{
@@ -85,8 +74,51 @@ $("#img1").click(function (){
     $.cookie("othersId",userId);
     window.location.href="user.html?type=1"
 })//点击头像
+$("#a3Div1Input1").click(function (){
+    $.post("/admin/1e715da537b946cba23fb03828537529",{
+        id:id,
+        storageLocation:$("#a3Div1Select").val()
+    },function (data){
+        if (data){
+            alert("成功")
+            $("#a3Div1").hide()
+            $(".a3Span").show()
+            window.location.href="admin-login.html?type=3"
+        }else {
+            alert("失败")
+        }
+    })
+})//审核通过提交
+$("#a3Div1Input2").click(function (){
+    $("#a3Div1").hide()
+    $("#a3Div2").show()
+    $("#a3Div2-1").val('');
+})//审核通过新增文件夹
+$("#a3Div2Input3").click(function (){
+    $("#a3Div1").hide()
+    $("#a3Div2").show()
+    var a = $.trim($("#a3Div2Input1").val());
+    var b = $.trim($("#a3Div2Input2").val());
+    if (a!=null && a!='' && b!=null && b!= ''){
+        $.post("/admin/a88b00a562624a51badbbb509d0e3b92",{
+            folder: b,
+            note: a
+        },function (data) {
+            if (data==1)alert("添加成功");
+            else alert("添加失败");
+            $("#a3Div2").hide()
+            $("#a3Div1").show()
+            Select();
+        })
+    }else {
+        alert("字段不能为空!");
+    }
 
-
+})//审核通过新增文件夹提交
+$("#a3Div2Input4").click(function (){
+    $("#a3Div2").hide()
+    $("#a3Div1").show()
+})//审核通过新增文件夹取消
 function Img(){
     if (wd==1){
         $("#a1").hide();
@@ -100,3 +132,11 @@ function Img(){
         wd=1
     }
 }//壁纸全屏方法
+function Select(){
+    $("#a3Div1Select").html('');
+    $.get("/admin/586c0e7bda874d5fa1749c56963077dc",function (data) {
+        for (var i=0;i<data.length;i++){
+            $("#a3Div1Select").append("<option value='"+data[i].folder+"'>"+data[i].note+"</option>")
+        }
+    })
+}//获取壁纸文件夹方法

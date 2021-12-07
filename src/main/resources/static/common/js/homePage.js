@@ -46,6 +46,7 @@ $("#a1SpanSvg4").click(function (){
     $("#a1input").val('');
     $(".a1span").hide();
     $("#a1div").show();
+    $("#a1input").focus();
 })//打开搜索页面
 $("#a1divspan2a").click(function (){
     $("#a1div").hide();

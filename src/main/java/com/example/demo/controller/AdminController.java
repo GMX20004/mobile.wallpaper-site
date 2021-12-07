@@ -264,4 +264,22 @@ public class AdminController {
         else
             return false;
     }
+    /**
+     * 查看壁纸文件夹
+     */
+    @GetMapping("586c0e7bda874d5fa1749c56963077dc")
+    public List<wallpaperFolderDTO> wallpaperFolder(){
+        return toolDao.wallpaperFolderCode();
+    }
+    /**
+     * 新增壁纸文件夹
+     */
+    @PostMapping("a88b00a562624a51badbbb509d0e3b92")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "folder", value = "文件夹名", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "note", value = "备注", paramType = "query",required = true, dataType="String")
+    })
+    public int wallpaperFolderInsert(@ApiIgnore @RequestParam Map<String, Object> params){
+        return toolDao.wallpaperFolderInsertCode(params);
+    }
 }
