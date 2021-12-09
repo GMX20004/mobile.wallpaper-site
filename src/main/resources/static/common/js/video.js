@@ -12,7 +12,7 @@ $("#a2Input").click(function (){
 function Video(){
     $.get(url+page,function (data) {
         for (var i=0;i<data.length-1;i++){
-            $("#a2Div1").append("<video src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'controls='controls'></video>");
+            $("#a2Div1").append("<p>"+data[i].label+"</p><video src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'controls='controls'></video>");
         }
         if (data[data.length-1]){
             $("#a2Input").attr("disabled","true");
@@ -21,3 +21,7 @@ function Video(){
         console.log(data,data.length)
     })
 }//获取视频方法
+$("#a1SpanSvg5").click(function (){
+    if ($.cookie("userId")==null)window.location.href="login.html"
+    else window.location.href="user.html?type=0"
+})//跳转个人用户界面
