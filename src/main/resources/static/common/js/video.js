@@ -12,7 +12,7 @@ $("#a2Input").click(function (){
 function Video(){
     $.get(url+page,function (data) {
         for (var i=0;i<data.length-1;i++){
-            $("#a2Div1").append("<embed src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'>");
+            $("#a2Div1").append("<video src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'controls='controls'></video>");
         }
         if (data[data.length-1]){
             $("#a2Input").attr("disabled","true");
