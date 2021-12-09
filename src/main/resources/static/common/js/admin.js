@@ -8,7 +8,11 @@ $(function (){
         if (data){
             $("#login").hide();
             $("#main").show();
-            $("#a1Span1").click();
+            if (getUrlParam("type")==3){
+                $("#a1Span3").click();
+            }else{
+                $("#a1Span1").click();
+            }
         }else {
             $("#main").hide();
             $("#login").show();
