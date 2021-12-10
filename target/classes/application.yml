@@ -23,7 +23,12 @@ spring:
 #      suffix: .html
   #本地资源真实存放地址
   resources:
-    static-locations: file:C://JAVA/img/
+      #阿里云
+#    static-locations: file:C://JAVA/img/
+      #本地
+#    static-locations: file:E://JAVA/img/
+      #腾讯云
+    static-locations: file:/JAVA/img/
   servlet:
     multipart:
       max-file-size: 5MB
@@ -32,5 +37,10 @@ server:
 #全局变量
 information:
   #壁纸存放地址
-  wallpaperDisk: C:\JAVA\img\
+#阿里云
+#  wallpaperDisk: C:\JAVA\img\
+#本地
+#  wallpaperDisk: C:\JAVA\img\
+#腾讯云
+  wallpaperDisk: JAVA\img\
 

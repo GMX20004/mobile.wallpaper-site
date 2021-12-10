@@ -13,7 +13,8 @@ import java.util.Map;
 @Mapper
 public interface UserDao extends BaseMapper<UserDTO> {
     //登录判断
-    @Select(" SELECT *  FROM `user` WHERE email = #{email} and `password`=PASSWORD(#{password})")
+    //mysql8.0及以上不支持PASSWORD函数,需要用SHA1函数代替
+    @Select(" SELECT *  FROM `user` WHERE email = #{email} and `password`=SHA1(#{password})")
     List<UserDTO> getLogInToCode(Map<String,Object> param);
     //判断是否已存在用户
     @Select(" SELECT COUNT(*) AS num FROM `user` WHERE email = #{email}")
@@ -22,10 +23,10 @@ public interface UserDao extends BaseMapper<UserDTO> {
     @Select("SELECT * FROM `user` WHERE id=#{id}")
     List<UserDTO> getUserCode(Map<String,Object> param);
     //新建用户
-    @Insert("INSERT INTO `user`(email,`password`,user_id,creation_time,width,height)VALUES(#{email},password(#{password}),#{uuid},#{time},#{width},#{height})")
+    @Insert("INSERT INTO `user`(email,`password`,user_id,creation_time,width,height)VALUES(#{email},SHA1(#{password}),#{uuid},#{time},#{width},#{height})")
     int getRegisteredCode(Map<String,Object> param);
     //用户修改密码
-    @Update("UPDATE `user` SET `password` = password(#{password}) WHERE email = #{email}")
+    @Update("UPDATE `user` SET `password` = SHA1(#{password}) WHERE email = #{email}")
     int getModifyCode(Map<String,Object> param);
     //查询所有用户信息--管理员权限
     @Select("SELECT * FROM `user`")
