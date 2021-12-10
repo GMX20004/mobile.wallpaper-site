@@ -1,6 +1,7 @@
 var page =1;
 var url = "/video/viewList?page="
 $(function (){
+    $("#body").css("background-image","url('http://"+theUrl+"/image/background/1.jpg')")
     $("#a2Div1").html('');
     $("#a2Input").removeAttr("disabled");
     $("#a2Input").val("下一页");
