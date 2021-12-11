@@ -8,12 +8,16 @@ E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\test\TestApplication.jav
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\controller\LoginController.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dao\WallpaperSortingDao.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\NumDTO.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dao\VideoDao.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\WallpaperDTO.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\wallpaperFolderDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dao\ToolDao.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\controller\ToolController.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\controller\VideoController.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\MessagesDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\WallpaperDetailsDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\FeedbackDTO.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\VideoDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\UserDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\config\YmlConfig.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\mod\ToolMod.java
