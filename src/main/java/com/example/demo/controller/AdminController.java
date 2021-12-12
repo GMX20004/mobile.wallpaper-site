@@ -18,11 +18,13 @@ import java.util.*;
 
 /**
  * 管理员接口
- * Linux文件路径使用\,windows文件路径为//
+ * Linux文件路径使用/,windows文件路径为\\
  */
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     private WallpaperSortingDao wallpaperSortingDao;
     @Autowired
@@ -33,7 +35,12 @@ public class AdminController {
     private WallpaperUpdateDao wallpaperUpdateDao;
     @Autowired
     private YmlConfig ymlConfig;
+
     ToolMod toolMod = new ToolMod();
+    //windows
+    //String slash = "\\";
+    //Linux
+    String slash = "/";
     /**
      * 每日首页壁纸显示改动
      */
@@ -137,8 +144,9 @@ public class AdminController {
             params.put("userId",arr.get(0).getUserId());
             params.put("theLabel",arr.get(0).getTheLabel());
             params.put("type",arr.get(0).getType());
-            String target = ymlConfig.getWallpaperDisk()+"cs/"+id+"."+arr.get(0).getType();
-            String destination = ymlConfig.getWallpaperDisk()+params.get("storageLocation")+"/"+params.get("id")+"."+arr.get(0).getType();
+            params.put("size",arr.get(0).getSize());
+            String target = ymlConfig.getWallpaperDisk()+"cs"+slash+id+"."+arr.get(0).getType();
+            String destination = ymlConfig.getWallpaperDisk()+params.get("storageLocation")+slash+params.get("id")+"."+arr.get(0).getType();
             File targetFile = new File(ymlConfig.getWallpaperDisk()+params.get("storageLocation"));
             if (!targetFile.exists()) {
                 // 判断文件夹是否未空，空则创建
@@ -171,7 +179,7 @@ public class AdminController {
             params.put("level",1);
             toolDao.sendAMessageCode(params);
             wallpaperSortingDao.deleteAuditCode(params);
-            String target = ymlConfig.getWallpaperDisk()+"cs/"+params.get("id")+"."+arr.get(0).getType();
+            String target = ymlConfig.getWallpaperDisk()+"cs"+slash+params.get("id")+"."+arr.get(0).getType();
             System.out.println(target);
             toolMod.deleteFile(target);
             return true;

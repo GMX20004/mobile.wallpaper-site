@@ -121,7 +121,8 @@ public class ToolController {
         @RequestParam("file") MultipartFile file,                                        //上传壁纸
             @RequestParam(value = "userId") int userId,                                  //用户id
             @RequestParam(value = "theTitle",required = false) String theTitle,          //标题
-            @RequestParam(value = "theLabel") String theLabel                            //标签
+            @RequestParam(value = "theLabel") String theLabel,                           //标签
+            @RequestParam long size
             ){
         Map<String,Object> params = new HashMap<>();
         String uuid = toolMod.uuid();
@@ -133,6 +134,7 @@ public class ToolController {
         params.put("theLabel",theLabel);
         params.put("type",suffixName.substring(1));
         params.put("coding",uuid);
+        params.put("size",size);
         wallpaperSortingDao.uploadWallpaperCode(params);
         fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
         File targetFile = new File(path);
@@ -144,7 +146,6 @@ public class ToolController {
         try {
             //指定本地存入路径
             file.transferTo(saveFile);
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
