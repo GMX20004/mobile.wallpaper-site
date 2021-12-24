@@ -30,7 +30,7 @@ $("#button1").click(function (){
                        alert("您已被列入黑名单,详情请联系管理员")
                    }else{
                        $.cookie("userId",data[0].id,{ expires: 7, path: '/' })
-                       window.location.href="user.html?type=0"
+                       window.location.href="user.html?type=0&source=login"
                    }
                }
            });
@@ -215,7 +215,7 @@ function User(email,password){
         }else {
             $.cookie("userId",data[0].id,{ expires: 7, path: '/' })
             alert("已为您自动登录")
-            window.location.href="user.html?type=0"
+            window.location.href="user.html?type=0&source=login"
         }
     })
 }//自动登录

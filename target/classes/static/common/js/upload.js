@@ -49,6 +49,7 @@ function upImg() {
         formData.append("userId",$.cookie("userId"));
         formData.append("theTitle",$("#a3Input1").val());
         formData.append("theLabel",$("#a3Input2").val());
+        formData.append('size',fileObj.size);
         $.ajax({
             url: "/L/img",
             type: 'POST',

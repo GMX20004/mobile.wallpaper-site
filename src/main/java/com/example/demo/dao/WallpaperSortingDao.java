@@ -22,6 +22,9 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //条件计数总数
     @Select("SELECT COUNT(*) FROM wallpaper WHERE user_id = #{userId}")
     int countUserCode(Map<String,Object> param);
+    //壁纸首页显示每日变动
+    @Update("UPDATE wallpaper SET ${type} =(${sql} ELSE 999999 END);")
+    int theDefaultCode(Map<String,Object> param);
     //每日默认显示
     @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY the_default_daily LIMIT #{start},10")
     List<WallpaperDTO>dailyCode(Map<String,Object> param);

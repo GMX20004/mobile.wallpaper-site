@@ -4,8 +4,8 @@ import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dao.WallpaperSortingDao;
-import com.example.demo.dao.WallpaperUpdateDao;
 import com.example.demo.dto.*;
+import com.example.demo.mod.DailyChange;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,8 +32,6 @@ public class AdminController {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private WallpaperUpdateDao wallpaperUpdateDao;
-    @Autowired
     private YmlConfig ymlConfig;
 
     ToolMod toolMod = new ToolMod();
@@ -47,25 +45,12 @@ public class AdminController {
     @GetMapping("576f7da7bc264e63a923bfa16d0f133d")
     public Boolean dailyChange(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
-            int num = wallpaperSortingDao.countCode();
-            LinkedList a = new LinkedList();
-            for (int i = 1; i <= num; i++) a.add(i);
-            for (int i = 1; i <= num; i++) {
-                int rand = toolMod.randomDigital(a.size());
-                params.put("id", i);
-                params.put("random", a.get(rand - 1));
-                wallpaperUpdateDao.theDefaultCode(params);
-                a.remove(rand - 1);
-            }
-            a.clear();
-            for (int i = 1; i <= num; i++) a.add(i);
-            for (int i = 1; i <= num; i++) {
-                int rand = toolMod.randomDigital(a.size());
-                params.put("id", i);
-                params.put("random", a.get(rand - 1));
-                wallpaperUpdateDao.dailyHotCode(params);
-                a.remove(rand - 1);
-            }
+            DailyChange dailyChange1 = new DailyChange();
+            dailyChange1.setType("the_default_daily");
+            dailyChange1.start();
+            DailyChange dailyChange2 = new DailyChange();
+            dailyChange2.setType("hot");
+            dailyChange2.start();
         }catch (Exception e){
             e.printStackTrace();
             return false;
@@ -201,9 +186,9 @@ public class AdminController {
     @PostMapping("90029510feae426aaa31c8560d4ee6a2")
     @ApiImplicitParam(name = "id", value = "id", paramType = "query",required = true, dataType="int")
     public boolean deleteFeedback(@ApiIgnore @RequestParam Map<String, Object> params){
-           int i = toolDao.deleteFeedbackCode(params);
-           if (i==1)return true;
-           else return false;
+        int i = toolDao.deleteFeedbackCode(params);
+        if (i==1)return true;
+        else return false;
     }
 
     /**
