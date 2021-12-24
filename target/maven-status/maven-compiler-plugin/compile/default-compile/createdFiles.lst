@@ -12,10 +12,10 @@ com\example\demo\dto\UserDTO.class
 com\example\demo\dto\WallpaperDetailsDTO.class
 com\example\demo\entity\User.class
 com\example\demo\config\YmlConfig.class
+com\example\demo\mod\DailyChange.class
 com\example\demo\controller\UserController.class
 com\example\test\TestApplication.class
 com\example\demo\controller\WallpaperController.class
-com\example\demo\dao\WallpaperUpdateDao.class
 com\example\demo\dto\wallpaperFolderDTO.class
 com\example\demo\dao\UserDao.class
 com\example\demo\dto\FeedbackDTO.class

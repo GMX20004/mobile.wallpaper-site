@@ -3,9 +3,9 @@ var diviceHeight = document.documentElement.clientHeight;
 // 阿里云
 // var theUrl = "www.gxm2000.cn"
 // 本地
-var theUrl ="localhost:8080"
+// var theUrl ="localhost:8080"
 // 腾讯云
-// var theUrl ="101.43.88.137:80"
+var theUrl ="101.43.88.137:80"
 $(function (){
     $("#main").width(diviceWidth)
     $("#main").height(diviceHeight)

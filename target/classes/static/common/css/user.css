@@ -2,6 +2,7 @@
 .quan{width: 100%}
 #a1{height: 5%;}
 .a1Span{width: 50%;height: 100%;float: left;}
+#backImg{width: auto;height: auto;max-width: 100%;max-height: 100%;}
 #a2{height: 30%;display:flex;justify-context:centet;align-items:center;}
 #a2Div{height: 180px;width: 150px;margin:0 auto;color: #e38d13}
 #a2Div1{height: 80%;width: 100%;margin:0 auto;}

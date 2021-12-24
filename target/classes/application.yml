@@ -26,21 +26,21 @@ spring:
       #阿里云
 #    static-locations: file:C://JAVA/img/
       #本地
-    static-locations: file:E://JAVA/img/
+#    static-locations: file:E://JAVA/img/
       #腾讯云
-#    static-locations: file:/JAVA/img/
+    static-locations: file:/JAVA/img/
   servlet:
     multipart:
       max-file-size: 5MB
 server:
-  port: 8080
+  port: 80
 #全局变量
 information:
   #壁纸存放地址
 #阿里云
 #  wallpaperDisk: C:\JAVA\img\
 #本地
-  wallpaperDisk: E:\JAVA\img\
+#  wallpaperDisk: E:\JAVA\img\
 #腾讯云
-#  wallpaperDisk: /JAVA/img/
+  wallpaperDisk: /JAVA/img/
 
