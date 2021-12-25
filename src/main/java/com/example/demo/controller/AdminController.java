@@ -277,4 +277,28 @@ public class AdminController {
     public int wallpaperFolderInsert(@ApiIgnore @RequestParam Map<String, Object> params){
         return toolDao.wallpaperFolderInsertCode(params);
     }
+
+    /**
+     *指定壁纸显示最上面
+     */
+    @PostMapping("32f9f4ffd0a04d0f9bf5c7a4a9420b5e")
+    public boolean wallpaperTop(@RequestParam String value){
+        try {
+            List<WallpaperDTO> arr = wallpaperSortingDao.wallpaperTop("%"+value+"%");
+            Map<String,Object> params = new HashMap<>();
+            String sql = "CASE";
+            for (int i=0;i<arr.size();i++){
+                sql += " WHEN id = "+arr.get(i).getId()+" THEN "+i*-1+"";
+            }
+            params.put("sql",sql);
+            params.put("type","the_default_daily");
+            wallpaperSortingDao.theDefaultCode(params);
+            params.put("type","hot");
+            wallpaperSortingDao.theDefaultCode(params);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

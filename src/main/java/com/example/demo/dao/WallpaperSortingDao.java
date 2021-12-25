@@ -49,6 +49,9 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //标签查询
     @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} LIMIT #{start},10")
     List<WallpaperDTO>labelCode(Map<String,Object> param);
+    //指定壁纸显示
+    @Select("SELECT id FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value}")
+    List<WallpaperDTO>wallpaperTop(String value);
     //标签查询结果数
     @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_label LIKE CONCAT(#{value},'%')")
     int labelCountCode(Map<String,Object> param);

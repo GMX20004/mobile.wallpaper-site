@@ -115,6 +115,5 @@ public class ToolMod {
     }
     public static void main(String[] args) {
       ToolMod toolMod = new ToolMod();
-        System.out.println(toolMod.uuid());
     }
 }

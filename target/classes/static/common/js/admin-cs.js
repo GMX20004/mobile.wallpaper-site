@@ -25,7 +25,7 @@ $("#input2").click(function (){
     },function (data){
         if (data){
             alert("成功")
-            window.location.href="admin-login.html?type=3"
+            window.location.href="admin-mobile.html?type=3"
         }else {
             alert("失败")
         }
@@ -83,7 +83,7 @@ $("#a3Div1Input1").click(function (){
             alert("成功")
             $("#a3Div1").hide()
             $(".a3Span").show()
-            window.location.href="admin-login.html?type=3"
+            window.location.href="admin-mobile.html?type=3"
         }else {
             alert("失败")
         }
