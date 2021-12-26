@@ -18,7 +18,7 @@ $("#button1").click(function (){
        is = false;
    }
    if (is==true){
-       $.post("/User/logInTo",{
+       $.post(openUrl+"/User/logInTo",{
                email:email,
                password:password
            },
@@ -66,7 +66,7 @@ $("#a3Div1Button1").click(function (){
     }else {
         $("#a3Div1input1").css("border","1px solid red")
     }
-    $.get("/L/RandomNumber",function (data){
+    $.get(openUrl+"/L/RandomNumber",function (data){
         yzm=data
         countdown();
         $.post("/L/mail",{
@@ -120,7 +120,7 @@ $("#a3Div1Button2").click(function (){
     }
     if (is){
         if (Type==0){
-            $.post("/User/registered",{
+            $.post(openUrl+"/User/registered",{
                 email:input1,
                 password:input4,
                 width:diviceWidth,
@@ -136,7 +136,7 @@ $("#a3Div1Button2").click(function (){
                 }
             })
         }else{
-            $.post("/User/forgetPassword",{
+            $.post(openUrl+"/User/forgetPassword",{
                 email:input1,
                 password:input4
             },function (data) {
@@ -205,7 +205,7 @@ function countdown(){
     }, 1000);
 }//验证码倒计时方法
 function User(email,password){
-    $.post("/User/logInTo",{
+    $.post(openUrl+"/User/logInTo",{
         email:email,
         password:password
     },function (data) {
@@ -220,7 +220,7 @@ function User(email,password){
     })
 }//自动登录
 function SuccessfulEmail(email){
-    $.post("/L/mail",{
+    $.post(openUrl+"/L/mail",{
         Email:email,
         Type:1,
         yzm:1

@@ -21,11 +21,11 @@ $(function (){
     } else{
         userId=$.cookie("userId");
     }
-    $.post("/User/user",{
+    $.post(openUrl+"/User/user",{
            id:userId
         },
         function(data){
-            img = "/image/headPortrait/"+data[0].headPortrait;
+            img = openUrl+"/image/headPortrait/"+data[0].headPortrait;
             name = data[0].name;
             praise = data[0].praise;
             fans = data[0].fans;
@@ -47,7 +47,7 @@ $(function (){
             $("#a3Text4").text(recentLogin);
         });
     if (getUrlParam("type")==0 || $.cookie("othersId")==$.cookie("userId")){
-        $.post("/admin/ab7da92a50e94363a19fb6740b2de54e",{
+        $.post(openUrl+"/admin/ab7da92a50e94363a19fb6740b2de54e",{
             id:userId
         },function (data) {
             if (data[0] != null && data[0] != ''){
@@ -65,7 +65,7 @@ $("#a3DivSpan2P2").click(function (){
     $("#a3Div4").show()
     $("#a3Div4SpanDiv1").html('')
     $("#a3Div4SpanDiv2").html('')
-    $.post("/Wallpaper/collectionContribute",{
+    $.post(openUrl+"/Wallpaper/collectionContribute",{
         userId: userId,
         type: 0
     },
@@ -136,7 +136,7 @@ $("#a3Button").click(function (){
     formData.append("instructions", instructions1);
     formData.append("sex", sex1);
     $.ajax({
-        url: "/User/userModify",
+        url: openUrl+"/User/userModify",
         type: 'POST',
         cache: false,
         data: formData,

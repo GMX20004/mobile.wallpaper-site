@@ -5,7 +5,7 @@ $(function (){
     id = getUrlParam("img");
     $("#a1Span2B1").text('');
     $("#a1Span2B2").text('');
-    $.post("/admin/efa0fc9f51224275943c116038fdcd6b",{
+    $.post(openUrl+"/admin/efa0fc9f51224275943c116038fdcd6b",{
         id:getUrlParam("img")
     },function (data) {
         $("#img1").attr("src","http://"+theUrl+"/image/headPortrait/"+data[0].headPortrait);
@@ -20,7 +20,7 @@ $("#input1").click(function (){
     Select();
 })//审核通过
 $("#input2").click(function (){
-    $.post("/admin/ec453f2adc63493db651d8a7e7e98191",{
+    $.post(openUrl+"/admin/ec453f2adc63493db651d8a7e7e98191",{
         id:id
     },function (data){
         if (data){
@@ -43,7 +43,7 @@ $("#input3").click(function (){
     $("#input5").show()
 })//内容修改
 $("#input4").click(function (){
-    $.post("/admin/ccef83e1d2ff455fae16680c906f2239",{
+    $.post(openUrl+"/admin/ccef83e1d2ff455fae16680c906f2239",{
         id:id,
         theTitle:$("#a1input1").val(),
         theLabel:$("#a1input2").val()
@@ -75,7 +75,7 @@ $("#img1").click(function (){
     window.location.href="user.html?type=1"
 })//点击头像
 $("#a3Div1Input1").click(function (){
-    $.post("/admin/1e715da537b946cba23fb03828537529",{
+    $.post(openUrl+"/admin/1e715da537b946cba23fb03828537529",{
         id:id,
         storageLocation:$("#a3Div1Select").val()
     },function (data){
@@ -100,7 +100,7 @@ $("#a3Div2Input3").click(function (){
     var a = $.trim($("#a3Div2Input1").val());
     var b = $.trim($("#a3Div2Input2").val());
     if (a!=null && a!='' && b!=null && b!= ''){
-        $.post("/admin/a88b00a562624a51badbbb509d0e3b92",{
+        $.post(openUrl+"/admin/a88b00a562624a51badbbb509d0e3b92",{
             folder: b,
             note: a
         },function (data) {
@@ -134,7 +134,7 @@ function Img(){
 }//壁纸全屏方法
 function Select(){
     $("#a3Div1Select").html('');
-    $.get("/admin/586c0e7bda874d5fa1749c56963077dc",function (data) {
+    $.get(openUrl+"/admin/586c0e7bda874d5fa1749c56963077dc",function (data) {
         for (var i=0;i<data.length;i++){
             $("#a3Div1Select").append("<option value='"+data[i].folder+"'>"+data[i].note+"</option>")
         }

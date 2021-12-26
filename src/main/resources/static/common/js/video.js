@@ -1,5 +1,5 @@
 var page =1;
-var url = "/video/viewList?page="
+var url = openUrl+"/video/viewList?page="
 $(function (){
     $("#body").css("background-image","url('http://"+theUrl+"/image/background/1.jpg')")
     $("#a2Div1").html('');

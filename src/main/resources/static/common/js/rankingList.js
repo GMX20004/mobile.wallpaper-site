@@ -3,7 +3,7 @@ var zopage;//总页数
 var url;
 $(function (){
     $("#body").css("background-image","url('http://"+theUrl+"/image/background/1.jpg')")
-    url = "/Wallpaper/hot?page=";
+    url = openUrl+"/Wallpaper/hot?page=";
     $.get(url+page,
         function (data) {
             zopage=Math.ceil(data[data.length-1]/10);
@@ -27,7 +27,7 @@ $("#a2Span1").click(function (){
     $("#a3SpanDiv1").html('');
     $("#a3SpanDiv2").html('');
     $("#a4Input").val("下一页");
-    url = "/Wallpaper/hot?page=";
+    url = openUrl+"/Wallpaper/hot?page=";
     page=1;
     $.get(url+page,
         function (data) {
@@ -52,7 +52,7 @@ $("#a2Span2").click(function (){
     $("#a3SpanDiv1").html('');
     $("#a3SpanDiv2").html('');
     $("#a4Input").val("下一页");
-    url = "/Wallpaper/latest?page=";
+    url = openUrl+"/Wallpaper/latest?page=";
     page=1;
     $.get(url+page,
         function (data) {
@@ -77,7 +77,7 @@ $("#a2Span3").click(function (){
     $("#a3SpanDiv1").html('');
     $("#a3SpanDiv2").html('');
     $("#a4Input").val("下一页");
-    url = "/Wallpaper/collection?page=";
+    url = openUrl+"/Wallpaper/collection?page=";
     page=1;
     $.get(url+page,
         function (data) {
@@ -102,7 +102,7 @@ $("#a2Span4").click(function (){
     $("#a3SpanDiv1").html('');
     $("#a3SpanDiv2").html('');
     $("#a4Input").val("下一页");
-    url = "/Wallpaper/praise?page=";
+    url = openUrl+"/Wallpaper/praise?page=";
     page=1;
     $.get(url+page,
         function (data) {

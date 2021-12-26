@@ -17,7 +17,7 @@ $("#a2Div5Input").click(function (){
     var contact = $("#a2Div4Input").val();
     describe = $.trim(describe);
     if (describe != null && describe != ''){
-        $.post("/L/submitFeedback",{
+        $.post(openUrl+"/L/submitFeedback",{
             type:type,
             instructions:describe,
             is:is,

@@ -33,6 +33,7 @@ import java.util.List;
  * 工具接口
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/L")
 public class ToolController {
     @Autowired

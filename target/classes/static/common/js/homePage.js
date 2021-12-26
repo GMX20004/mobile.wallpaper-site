@@ -3,7 +3,7 @@ var zopage;//总页数
 var url;//访问接口
 $(function (){
     $("#body").css("background-image","url('http://"+theUrl+"/image/background/1.jpg')")
-    url="/Wallpaper/daily?page=";
+    url=openUrl+"/Wallpaper/daily?page=";
     $.get(url+page,
         function(data){
             zopage=Math.ceil(data[data.length-1]/10);
@@ -77,7 +77,7 @@ $("#a1divsvg").click(function (){
         $("#a4SpanDiv2").html('');
         $("#a5Input").val("下一页");
         page=1;
-        url="/Wallpaper/search?value="+content+"&page=";
+        url=openUrl+"/Wallpaper/search?value="+content+"&page=";
         $.get(url+page,
             function(data){
                 zopage=Math.ceil(data[data.length-1]/10);

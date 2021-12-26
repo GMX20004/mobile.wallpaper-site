@@ -1,12 +1,12 @@
-#a1{width: 100%;height: 15%;background-color: #1f9be8;}
+body{background: url("../img/adminPC.jpg") no-repeat;background-size: 100%;width: 100%;height: 100%}
+#a1{width: 90%;height: 15%;margin-left: 5%;border: 1px solid red}
 
 
 
-
-
-
-
-
-
-
-#a2{width: 100%;height: 85%;border: 1px solid blue}
+#a2{width: 90%;height: 80%;margin-top: 20px;margin-left: 5%;}
+#a2Span1{float: left;height: 100%;width: 10%;background-color: #ffffff;font-size: 20px;}
+#a2Span1 div{width: 100%;height: 30px;background-color: #ffffff;text-align: center;margin-top: 5px;cursor: pointer}
+#a2Span2{float: left;height: 100%;width: 87%;margin-left: 3%;background-color: #ffffff}
+.s2Div{width: 100%;height: 100%;}
+#s2D1S1{height: 40%;width: 40%;border: 1px solid red;float: left}
+#s2D1S2{height: 40%;width: 60%;border: 1px solid blue;float: left}

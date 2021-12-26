@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dao.VideoDao;
 import com.example.demo.dto.VideoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
  * 视频接口
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/video")
 public class VideoController {
     @Autowired

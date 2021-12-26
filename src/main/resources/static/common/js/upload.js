@@ -51,7 +51,7 @@ function upImg() {
         formData.append("theLabel",$("#a3Input2").val());
         formData.append('size',fileObj.size);
         $.ajax({
-            url: "/L/img",
+            url: openUrl+"/L/img",
             type: 'POST',
             cache: false,
             data: formData,
