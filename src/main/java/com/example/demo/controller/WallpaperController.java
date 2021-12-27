@@ -35,7 +35,7 @@ public class WallpaperController {
      */
     @GetMapping("search")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "value", value = "搜索内容", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "value", value = "搜索内容", paramType = "query",required = true, dataType="String"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public List search(@ApiIgnore @RequestParam Map<String, Object> params){
@@ -54,7 +54,7 @@ public class WallpaperController {
      */
     @GetMapping("label")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "value", value = "标签内容", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "value", value = "标签内容", paramType = "query",required = true, dataType="String"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public List  label(@ApiIgnore @RequestParam Map<String, Object> params){

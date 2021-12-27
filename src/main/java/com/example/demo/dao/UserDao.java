@@ -50,6 +50,7 @@ public interface UserDao extends BaseMapper<UserDTO> {
     //修改用户唯一编码
     @Update("UPDATE `user` SET user_id=#{uuid} WHERE id=#{id}")
     int userUpdateUuidCode(Map<String,Object> param);
+    //查看用户唯一编码
     @Select("SELECT COUNT(*) FROM `user` WHERE email=#{email} AND user_id=#{uuid}")
     int userUuidCode(Map<String,Object> param);
 }

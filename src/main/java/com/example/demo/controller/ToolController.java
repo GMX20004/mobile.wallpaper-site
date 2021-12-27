@@ -187,7 +187,7 @@ public class ToolController {
             @ApiImplicitParam(name = "type", value = "类型", paramType = "query",required = true, dataType="String"),
             @ApiImplicitParam(name = "instructions", value = "描述", paramType = "query",required = true, dataType="String"),
             @ApiImplicitParam(name = "is", value = "0否1是", paramType = "query",required = true, dataType="int"),
-            @ApiImplicitParam(name = "contact", value = "联系方式", paramType = "query",required = true, dataType="String")
+            @ApiImplicitParam(name = "contact", value = "联系方式", paramType = "query",required = false, dataType="String")
     })
     public boolean submitFeedback(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = toolDao.submitFeedbackCode(params);
