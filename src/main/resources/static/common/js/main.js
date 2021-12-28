@@ -7,10 +7,9 @@ var diviceHeight = document.documentElement.clientHeight;
 // 腾讯云
 var theUrl ="101.43.88.137:80"
 //本地
-// var openUrl = ""
+var openUrl = ""
 //远程链接服务器端口
 // var openUrl = "http://8.136.185.236"
-var openUrl = ""
 $(function (){
     $("#main").width(diviceWidth)
     $("#main").height(diviceHeight)
