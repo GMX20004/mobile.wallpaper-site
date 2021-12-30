@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import cn.hutool.http.HttpUtil;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.WallpaperSortingDao;
@@ -33,7 +34,7 @@ import java.util.List;
  * 工具接口
  */
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping("/L")
 public class ToolController {
     @Autowired
@@ -211,6 +212,21 @@ public class ToolController {
     public String toolCs(){
         System.out.println(ymlConfig.getWallpaperDisk());
         return ymlConfig.getWallpaperDisk();
+    }
+
+    /**
+     *GET跨域请求
+     */
+    @PostMapping("getHttp")
+    public String getHttp(@RequestParam String url){
+        return HttpUtil.get(url);
+    }
+    /**
+     *POST跨域请求
+     */
+    @PostMapping("postHttp")
+    public String postHttp(@RequestParam String url,@RequestParam String value){
+        return HttpUtil.post(url,value);
     }
 }
 
