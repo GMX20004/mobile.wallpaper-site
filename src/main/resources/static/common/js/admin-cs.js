@@ -125,6 +125,7 @@ $("#a3Div2Input4").click(function (){
     $("#a3Div1").show()
 })//审核通过新增文件夹取消
 function Img(){
+    BrowserFullScreen();
     if (wd==1){
         $("#a1").hide();
         $("#a3").hide();

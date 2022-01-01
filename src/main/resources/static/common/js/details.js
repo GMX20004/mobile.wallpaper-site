@@ -104,9 +104,11 @@ $("#a1Img").click(function (){
     window.location.href="user.html?type=1"
 })//点击头像
 $(".img").click(function (){
+    BrowserFullScreen();
     if (wd==1){
         $("#a0").hide();
         $("#a1").hide();
+
         $("#a2").css("height","100%")
         $(".img").css("margin-top",($("#a2").height()-$(".img").height())/2)
         wd=2

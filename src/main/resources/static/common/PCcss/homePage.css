@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: black;
+
+}
+#clockBorder{
+
+}
+#a1{
+    width: 100%;
+    text-align: center;
+}
+#a1 h1{
+    color: #ffffff;
+}
+.clock{
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    margin-top: 100px;
+    border-radius: 50%;
+    position: relative;
+    border: 1px solid black;
+}
+#clockBorder{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    border: 3px solid black;
+}
+.clock > div{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.hour-wrapper{
+    position: fixed;
+    width: 60%;
+    height: 60%;
+}
+
+.hour{
+    width: 6px;
+    height: 50%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+.min-wrapper{
+    position: fixed;
+    height: 80%;
+    width: 80%;
+}
+
+.min{
+    height: 50%;
+    width: 4px;
+    background-color: #fff;
+    margin: 0 auto;
+}
+.sec-wrapper{
+    position: fixed;
+    width: 95%;
+    height: 95%;
+}
+
+.sec{
+    width: 2px;
+    height: 50%;
+    background-color: #ffffff;
+    margin: 0 auto;
+}
+#clockTop{
+    width: 6px;
+    height: 5%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+#clockRight{
+    top: 47%;
+    right: 94%;
+    transform:rotateZ(90deg);
+    width: 6px;
+    height: 5%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+#clockBottom{
+    top: 96%;
+    width: 6px;
+    height: 5%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+#clockLeft{
+    top: 47%;
+    left: 98%;
+    transform:rotateZ(90deg);
+    width: 6px;
+    height: 5%;
+    margin: 0 auto;
+    background-color: #fff;
+}

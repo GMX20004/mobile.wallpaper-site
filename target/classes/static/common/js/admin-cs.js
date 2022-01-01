@@ -6,7 +6,8 @@ $(function (){
     $("#a1Span2B1").text('');
     $("#a1Span2B2").text('');
     $.post(openUrl+"/admin/efa0fc9f51224275943c116038fdcd6b",{
-        id:getUrlParam("img")
+        id:getUrlParam("img"),
+        uuid:$.cookie("adminUuid")
     },function (data) {
         $("#img1").attr("src","http://"+theUrl+"/image/headPortrait/"+data[0].headPortrait);
         $("#a1Span2B1").text(data[0].theTitle)
@@ -21,7 +22,8 @@ $("#input1").click(function (){
 })//审核通过
 $("#input2").click(function (){
     $.post(openUrl+"/admin/ec453f2adc63493db651d8a7e7e98191",{
-        id:id
+        id:id,
+        uuid:$.cookie("adminUuid")
     },function (data){
         if (data){
             alert("成功")
@@ -46,7 +48,8 @@ $("#input4").click(function (){
     $.post(openUrl+"/admin/ccef83e1d2ff455fae16680c906f2239",{
         id:id,
         theTitle:$("#a1input1").val(),
-        theLabel:$("#a1input2").val()
+        theLabel:$("#a1input2").val(),
+        uuid:$.cookie("adminUuid")
     },function (data) {
         if (data){
             alert("修改成功")
@@ -77,7 +80,8 @@ $("#img1").click(function (){
 $("#a3Div1Input1").click(function (){
     $.post(openUrl+"/admin/1e715da537b946cba23fb03828537529",{
         id:id,
-        storageLocation:$("#a3Div1Select").val()
+        storageLocation:$("#a3Div1Select").val(),
+        uuid:$.cookie("adminUuid")
     },function (data){
         if (data){
             alert("成功")
@@ -102,7 +106,8 @@ $("#a3Div2Input3").click(function (){
     if (a!=null && a!='' && b!=null && b!= ''){
         $.post(openUrl+"/admin/a88b00a562624a51badbbb509d0e3b92",{
             folder: b,
-            note: a
+            note: a,
+            uuid:$.cookie("adminUuid")
         },function (data) {
             if (data==1)alert("添加成功");
             else alert("添加失败");
@@ -120,6 +125,8 @@ $("#a3Div2Input4").click(function (){
     $("#a3Div1").show()
 })//审核通过新增文件夹取消
 function Img(){
+    BrowserFullScreen();
+    MonitorBrowserResolution();
     if (wd==1){
         $("#a1").hide();
         $("#a3").hide();
@@ -134,7 +141,7 @@ function Img(){
 }//壁纸全屏方法
 function Select(){
     $("#a3Div1Select").html('');
-    $.get(openUrl+"/admin/586c0e7bda874d5fa1749c56963077dc",function (data) {
+    $.get(openUrl+"/admin/586c0e7bda874d5fa1749c56963077dc?uuid="+$.cookie("adminUuid"),function (data) {
         for (var i=0;i<data.length;i++){
             $("#a3Div1Select").append("<option value='"+data[i].folder+"'>"+data[i].note+"</option>")
         }
