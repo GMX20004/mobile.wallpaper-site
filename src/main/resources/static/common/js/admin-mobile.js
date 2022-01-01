@@ -52,7 +52,7 @@ $("#a1Span2").click(function (){
     $("#a1Span2").css("border","1px solid #e38d13");
     $(".UserDiv").remove()
     $("#a2").show();
-    $.get(openUrl+"/admin/c896d9988afd44939906b45e8703df3a",function (data) {
+    $.get(openUrl+"/admin/c896d9988afd44939906b45e8703df3a?uuid="+$.cookie("adminUuid"),function (data) {
         for (var i=0;i<data.length;i++){
             $("#a2Div2").append("<div class='UserDiv'>" +
                 "<span class=\"UserSpan0\">"+data[i].id+"</span>\n" +
@@ -78,7 +78,7 @@ $("#a1Span3").click(function (){
     $("#a1Span3").css("border","1px solid #e38d13");
     $(".a3Img").remove()
     $("#a3").show();
-    $.get(openUrl+"/admin/0529588ecb8d4246bc0dc5302643b62d",function (data){
+    $.get(openUrl+"/admin/0529588ecb8d4246bc0dc5302643b62d?uuid="+$.cookie("adminUuid"),function (data){
         var c = true;
         for (var i=0;i<data.length;i++){
             if (c){
@@ -96,7 +96,7 @@ $("#a1Span4").click(function (){
     $("#a1Span4").css("border","1px solid #e38d13");
     $(".a4DivD").remove()
     $("#a4").show();
-    $.get(openUrl+"/admin/f91bcfccb27d4f02ac249733e495d518",function (data) {
+    $.get(openUrl+"/admin/f91bcfccb27d4f02ac249733e495d518?uuid="+$.cookie("adminUuid"),function (data) {
         for (var i=0;i<data.length;i++){
             $("#a4Div1").append("<div class=\"a4DivD\">\n" +
                 "                <span class=\"a4Span0\">"+data[i].id+"</span>\n" +
@@ -110,7 +110,7 @@ $("#a1Span4").click(function (){
     })
 })//用户反馈
 $("#a0Input").click(function (){
-    $.get(openUrl+"/admin/576f7da7bc264e63a923bfa16d0f133d",function (data) {
+    $.get(openUrl+"/admin/576f7da7bc264e63a923bfa16d0f133d?uuid="+$.cookie("adminUuid"),function (data) {
         if (data){
             alert("更新成功")
         }else {
@@ -148,7 +148,8 @@ function message(id){
 }//点击发送消息方法
 function Delete(id){
     $.post(openUrl+"/admin/90029510feae426aaa31c8560d4ee6a2",{
-        id:id
+        id:id,
+        uuid:$.cookie("adminUuid")
     },function (data) {
         if (data==false)alert("失败")
     })
