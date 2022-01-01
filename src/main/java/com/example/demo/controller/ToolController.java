@@ -219,14 +219,47 @@ public class ToolController {
      */
     @PostMapping("getHttp")
     public String getHttp(@RequestParam String url){
-        return HttpUtil.get(url);
+        String results = null;
+        try{
+            Map<String,Object> param = new HashMap<>();
+            param.put("url",url);
+            param.put("type","GET");
+            param.put("time",toolMod.time());
+            results = HttpUtil.get(url);
+            if (results.length()>1000){
+                param.put("results",results.substring(0,999));
+            }else {
+                param.put("results",results);
+            }
+            toolDao.domainUrlCode(param);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
     }
     /**
      *POST跨域请求
      */
     @PostMapping("postHttp")
     public String postHttp(@RequestParam String url,@RequestParam String value){
-        return HttpUtil.post(url,value);
+        String results = null;
+        try{
+            Map<String,Object> param = new HashMap<>();
+            param.put("url",url);
+            param.put("value",value);
+            param.put("type","POST");
+            param.put("time",toolMod.time());
+            results = HttpUtil.post(url,value);
+            if (results.length()>1000){
+                param.put("results",results.substring(0,999));
+            }else {
+                param.put("results",results);
+            }
+            toolDao.domainUrlCode(param);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
     }
 }
 
