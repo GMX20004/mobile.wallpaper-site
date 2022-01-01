@@ -1,7 +1,9 @@
+var number = 1;
 $(function (){
-    $("#h1").text("PC端暂未制作，请使用移动端进行访问")
+    $("#h1").text("PC端暂未制作，请使用移动端进行访问");
+    $("#h3").text("点我全屏显示，点时钟切换样式");
     getCurrentDate(new Date());
-    getClockType(3);
+    getClockClick();
 })
 function getCurrentDate(date){
     var hours = date.getHours();
@@ -89,7 +91,6 @@ function getLuminous(value){
         "    }"
     );
 }
-
 function getClockType(value){
     switch (value){
         case 1:$("#clockBorder").css("animation","shineRed1 8s linear infinite");break;
@@ -97,4 +98,23 @@ function getClockType(value){
         case 3:$("#clockBorder").css("animation","shineRed3 12s linear infinite");break;
     }
     return value;
+}
+function getClockClick(){
+    if (number == 1){
+        getClockType(1);
+        number++;
+    }
+    else if (number == 2){
+        getClockType(2);
+        number++;
+    }
+    else {
+        getClockType(3);
+        number=1;
+    }
+}
+function getFullScreen(){
+    $("#a1").hide();
+    $("#a3").hide();
+    BrowserFullScreen();
 }
