@@ -1,4 +1,4 @@
-#body{background-size: 100%;}
+#body{background-size: 100% 100%;background-attachment: fixed;background-repeat: no-repeat;}
 .quan{width: 100%}
 #a1{height: 5%;}
 .a1Span{width: 50%;height: 100%;float: left;}

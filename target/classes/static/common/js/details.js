@@ -105,7 +105,6 @@ $("#a1Img").click(function (){
 })//点击头像
 $(".img").click(function (){
     BrowserFullScreen();
-    MonitorBrowserResolution();
     if (wd==1){
         $("#a0").hide();
         $("#a1").hide();
