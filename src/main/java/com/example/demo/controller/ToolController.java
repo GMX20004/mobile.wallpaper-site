@@ -11,6 +11,7 @@ import com.example.demo.dto.WallpaperDetailsDTO;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -212,54 +213,6 @@ public class ToolController {
     public String toolCs(){
         System.out.println(ymlConfig.getWallpaperDisk());
         return ymlConfig.getWallpaperDisk();
-    }
-
-    /**
-     *GET跨域请求
-     */
-    @PostMapping("getHttp")
-    public String getHttp(@RequestParam String url){
-        String results = null;
-        try{
-            Map<String,Object> param = new HashMap<>();
-            param.put("url",url);
-            param.put("type","GET");
-            param.put("time",toolMod.time());
-            results = HttpUtil.get(url);
-            if (results.length()>1000){
-                param.put("results",results.substring(0,999));
-            }else {
-                param.put("results",results);
-            }
-            toolDao.domainUrlCode(param);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return results;
-    }
-    /**
-     *POST跨域请求
-     */
-    @PostMapping("postHttp")
-    public String postHttp(@RequestParam String url,@RequestParam String value){
-        String results = null;
-        try{
-            Map<String,Object> param = new HashMap<>();
-            param.put("url",url);
-            param.put("value",value);
-            param.put("type","POST");
-            param.put("time",toolMod.time());
-            results = HttpUtil.post(url,value);
-            if (results.length()>1000){
-                param.put("results",results.substring(0,999));
-            }else {
-                param.put("results",results);
-            }
-            toolDao.domainUrlCode(param);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return results;
     }
 }
 

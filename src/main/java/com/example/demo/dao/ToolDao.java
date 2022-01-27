@@ -47,4 +47,10 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     //跨域链接存储
     @Insert("INSERT INTO domain (url,value,type,results,time)VALUES(#{url},#{value},#{type},#{results},#{time})")
     int domainUrlCode(Map<String,Object> param);
+    //土豆游戏爬取任务(临时)
+    @Insert("INSERT INTO tudou (uid,message)VALUES(#{uid},#{message})")
+    int tuDouCode(Map<String,Object> param);
+    //任务信息表
+    @Insert("INSERT INTO task_information (task_name,task_information,create_time)VALUES(#{name},#{information},#{time})")
+    int taskInformation(Map<String,Object> param);
 }
