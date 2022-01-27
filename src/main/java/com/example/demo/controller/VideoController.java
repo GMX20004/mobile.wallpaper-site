@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.VideoDao;
-import com.example.demo.dto.VideoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

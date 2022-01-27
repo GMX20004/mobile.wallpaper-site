@@ -34,7 +34,7 @@ spring:
     multipart:
       max-file-size: 5MB
 server:
-  port: 8080
+  port: 80
 #全局变量
 information:
   #壁纸存放地址
