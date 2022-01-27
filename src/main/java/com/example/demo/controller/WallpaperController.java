@@ -21,7 +21,6 @@ import java.util.Map;
  * 壁纸相关接口
  */
 @RestController
-//@CrossOrigin(origins = "*")
 @RequestMapping("/Wallpaper")
 public class WallpaperController {
 

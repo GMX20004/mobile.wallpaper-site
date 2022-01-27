@@ -4,9 +4,7 @@ import cn.hutool.http.HttpUtil;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.mod.ToolMod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import java.util.Map;
  * 开放接口
  */
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping("/Open")
 public class openInterfaceController {
     @Autowired
