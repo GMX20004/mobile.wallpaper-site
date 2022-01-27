@@ -47,10 +47,19 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     //跨域链接存储
     @Insert("INSERT INTO domain (url,value,type,results,time)VALUES(#{url},#{value},#{type},#{results},#{time})")
     int domainUrlCode(Map<String,Object> param);
-    //土豆游戏爬取任务(临时)
-    @Insert("INSERT INTO tudou (uid,message)VALUES(#{uid},#{message})")
-    int tuDouCode(Map<String,Object> param);
     //任务信息表
     @Insert("INSERT INTO task_information (task_name,task_information,create_time)VALUES(#{name},#{information},#{time})")
     int taskInformation(Map<String,Object> param);
+    //定时任务查询
+    @Select("SELECT * FROM `cron_task` WHERE cron_state = 1")
+    List<CronDTO> cronView();
+    //定时任务修改
+    @Update("UPDATE `cron_task` SET cron_link=#{link},link_type=#{type},link_value=#{value},regular_time=#{time},cron_state=#{state} WHERE id = #{id}")
+    int cronModify(Map<String,Object> param);
+    //定时任务创建
+    @Insert("INSERT INTO `cron_task` (cron_link,link_type,link_value,regular_time,cron_state)VALUES(#{link},#{type},#{value},#{time},#{state})")
+    int cronCreate(Map<String,Object> param);
+    //定时任务删除
+    @Delete("DELETE FROM `cron_task` WHERE id = #{id}")
+    int cronDelete(Map<String,Object> param);
 }

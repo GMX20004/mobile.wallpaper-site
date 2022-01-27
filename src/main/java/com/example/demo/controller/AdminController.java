@@ -44,24 +44,23 @@ public class AdminController {
      * 每日首页壁纸显示改动
      */
     @GetMapping("576f7da7bc264e63a923bfa16d0f133d")
-    @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
-    public Boolean dailyChange(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Boolean dailyChange(){
         try {
-            params.put("email",0);
-            if(userDao.userUuidCode(params)==1){
                 DailyChange dailyChange1 = new DailyChange();
                 dailyChange1.setType("the_default_daily");
                 dailyChange1.start();
                 DailyChange dailyChange2 = new DailyChange();
                 dailyChange2.setType("hot");
                 dailyChange2.start();
-            }else{
-                return false;
-            }
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
+        Map<String,Object> params = new HashMap<>();
+        params.put("name","每日首页壁纸显示改动");
+        params.put("information","每日首页壁纸显示改动");
+        params.put("time",toolMod.time());
+        toolDao.taskInformation(params);
         return true;
     }
     /**

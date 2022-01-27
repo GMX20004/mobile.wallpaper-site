@@ -67,36 +67,4 @@ public class openInterfaceController {
         }
         return results;
     }
-
-    /**
-     *土豆任务（临时）
-     */
-    @GetMapping("tuDou")
-    public void tuDou(@RequestParam int start,@RequestParam int end){
-        int num = 0;
-        try{
-            JSONObject jsonObj = null;
-            Map<String,Object> param = new HashMap<>();
-            for(int i=start;i<=end;i++){
-                num=i;
-                jsonObj = new JSONObject(HttpUtil.post("http://tdadmin.tdsdyxly.com/api/tudou/kamilogin","action=vipyanz&uid="+i));
-                if (!jsonObj.get("message").equals("您还无法查看黄金会员专区资源，请联系客服")){
-                    param.put("uid",i);
-                    param.put("message",jsonObj.get("message"));
-                    toolDao.tuDouCode(param);
-                }
-            }
-            param.put("name","土豆任务");
-            param.put("information","任务完成："+start+"-"+end);
-            param.put("time",toolMod.time());
-            toolDao.taskInformation(param);
-        }catch (Exception e){
-            e.printStackTrace();
-            Map<String,Object> para = new HashMap<>();
-            para.put("name","土豆任务");
-            para.put("information","任务失败：失败位置uid="+num);
-            para.put("time",toolMod.time());
-            toolDao.taskInformation(para);
-        }
-    }
 }
