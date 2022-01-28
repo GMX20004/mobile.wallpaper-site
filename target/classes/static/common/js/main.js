@@ -1,7 +1,9 @@
 var diviceWidth = document.documentElement.clientWidth;
 var diviceHeight = document.documentElement.clientHeight;
 // 腾讯云
-var theUrl ="localhost:80"
+var theUrl = "101.43.88.137"
+// 本地
+// var theUrl ="localhost"
 //本地
 var openUrl = ""
 //远程链接服务器端口
