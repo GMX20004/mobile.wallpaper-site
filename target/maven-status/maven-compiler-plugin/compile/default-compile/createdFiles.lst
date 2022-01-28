@@ -1,5 +1,4 @@
 com\example\demo\dao\WallpaperSortingDao.class
-META-INF\spring-configuration-metadata.json
 com\example\demo\task\timingTask.class
 com\example\demo\controller\VideoController.class
 com\example\demo\controller\ToolController.class

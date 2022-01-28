@@ -1,17 +1,14 @@
 package com.example.demo.controller;
 
 
-import cn.hutool.http.HttpUtil;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.WallpaperSortingDao;
 import com.example.demo.dto.MessagesDTO;
 import com.example.demo.dto.NumDTO;
-import com.example.demo.dto.WallpaperDetailsDTO;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

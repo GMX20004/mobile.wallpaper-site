@@ -3,8 +3,6 @@ package com.example.demo.mod;
 import cn.hutool.http.HttpUtil;
 import com.example.demo.config.YmlConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -118,18 +116,5 @@ public class ToolMod {
     }
     public static void main(String[] args) {
       ToolMod toolMod = new ToolMod();
-      String a=HttpUtil.post("http://tdadmin.tdsdyxly.com/api/tudou/kamilogin","action=vipyanz&uid=357000");
-        JSONObject jsonObj = null;
-        try {
-            jsonObj = new JSONObject(a);
-            if (!jsonObj.get("message").equals("您还无法查看黄金会员专区资源，请联系客服")){
-                System.out.println(1);
-            }else{
-                System.out.println(0);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 }
