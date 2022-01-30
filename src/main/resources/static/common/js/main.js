@@ -2,11 +2,11 @@ var diviceWidth = document.documentElement.clientWidth;
 var diviceHeight = document.documentElement.clientHeight;
 var isScreen =true;
 // 腾讯云
-// var theUrl = "101.43.88.137"
+var theUrl = "101.43.88.137"
 // 本地
 // var theUrl ="localhost"
 // 临时
-var theUrl ="192.168.0.110"
+// var theUrl ="192.168.0.110"
 //本地
 var openUrl = ""
 //远程链接服务器端口
