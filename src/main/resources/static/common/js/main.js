@@ -1,9 +1,12 @@
 var diviceWidth = document.documentElement.clientWidth;
 var diviceHeight = document.documentElement.clientHeight;
+var isScreen =true;
 // 腾讯云
-var theUrl = "101.43.88.137"
+// var theUrl = "101.43.88.137"
 // 本地
 // var theUrl ="localhost"
+// 临时
+var theUrl ="192.168.0.110"
 //本地
 var openUrl = ""
 //远程链接服务器端口
@@ -17,35 +20,43 @@ function getUrlParam(name) {
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return unescape(r[2]); return null; //返回参数值
 }
+// 浏览器全屏方法
 function BrowserFullScreen(){
-    var element = document.documentElement;		// 返回 html dom 中的root 节点 <html>
-    if(!$('body').hasClass('full-screen')) {
-        $('body').addClass('full-screen');
-        $('#alarm-fullscreen-toggler').addClass('active');
-        // 判断浏览器设备类型
-        if(element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen){	// 兼容火狐
-            element.mozRequestFullScreen();
-        } else if(element.webkitRequestFullscreen) {	// 兼容谷歌
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {	// 兼容IE
-            element.msRequestFullscreen();
+    if (isScreen){
+        isScreen = false;
+        var el = document.getElementById('body');
+        var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen,
+            wscript;
+
+        if(typeof rfs != "undefined" && rfs) {
+            rfs.call(el);
+            return;
         }
-    } else {			// 退出全屏
-        console.log(document);
-        $('body').removeClass('full-screen');
-        $('#alarm-fullscreen-toggler').removeClass('active');
-        //	退出全屏
-        if(document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
+
+        if(typeof window.ActiveXObject != "undefined") {
+            wscript = new ActiveXObject("WScript.Shell");
+            if(wscript) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }else{
+        isScreen = true;
+        var el= document,
+            cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullScreen,
+            wscript;
+
+        if (typeof cfs != "undefined" && cfs) {
+            cfs.call(el);
+            return;
+        }
+
+        if (typeof window.ActiveXObject != "undefined") {
+            wscript = new ActiveXObject("WScript.Shell");
+            if (wscript != null) {
+                wscript.SendKeys("{F11}");
+            }
         }
     }
+
 }
 
