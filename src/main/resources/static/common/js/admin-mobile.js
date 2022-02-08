@@ -110,7 +110,7 @@ $("#a1Span4").click(function (){
     })
 })//用户反馈
 $("#a0Input").click(function (){
-    $.get(openUrl+"/admin/576f7da7bc264e63a923bfa16d0f133d?uuid="+$.cookie("adminUuid"),function (data) {
+    $.get(openUrl+"/admin/576f7da7bc264e63a923bfa16d0f133d?type=0",function (data) {
         if (data){
             alert("更新成功")
         }else {

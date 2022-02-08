@@ -43,7 +43,7 @@ public class AdminController {
      * 每日首页壁纸显示改动
      */
     @GetMapping("576f7da7bc264e63a923bfa16d0f133d")
-    public Boolean dailyChange(){
+    public Boolean dailyChange(@RequestParam int type){
         try {
                 DailyChange dailyChange1 = new DailyChange();
                 dailyChange1.setType("the_default_daily");
@@ -55,11 +55,13 @@ public class AdminController {
             e.printStackTrace();
             return false;
         }
-        Map<String,Object> params = new HashMap<>();
-        params.put("name","每日首页壁纸显示改动");
-        params.put("information","每日首页壁纸显示改动");
-        params.put("time",toolMod.time());
-        toolDao.taskInformation(params);
+        if (type==0){
+            Map<String,Object> params = new HashMap<>();
+            params.put("name","每日首页壁纸显示改动");
+            params.put("information","手动执行更新");
+            params.put("time",toolMod.time());
+            toolDao.taskInformation(params);
+        }
         return true;
     }
     /**
