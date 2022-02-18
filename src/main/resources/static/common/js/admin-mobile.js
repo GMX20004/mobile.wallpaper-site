@@ -98,13 +98,13 @@ $("#a1Span4").click(function (){
     $("#a4").show();
     $.get(openUrl+"/admin/f91bcfccb27d4f02ac249733e495d518?uuid="+$.cookie("adminUuid"),function (data) {
         for (var i=0;i<data.length;i++){
-            $("#a4Div1").append("<div class=\"a4DivD\">\n" +
+            $("#a4Div1").append("<div class=\"a4DivD\" id='a4DivY"+i+"'>\n" +
                 "                <span class=\"a4Span0\">"+data[i].id+"</span>\n" +
                 "                <span class=\"a4Span1\">"+data[i].type+"</span>\n" +
                 "                <span class=\"a4Span3\">"+data[i].instructions+"</span>\n" +
                 "                <span class=\"a4Span0\">"+data[i].is+"</span>\n" +
                 "                <span class=\"a4Span2\">"+data[i].contact+"</span>\n" +
-                "                <span class=\"a4Span1\"><input type=\"button\"onclick=\"Delete("+data[i].id+")\"value=\"删除\"class=\"a4Input\"></span>\n" +
+                "                <span class=\"a4Span1\"><input type=\"button\"onclick=\"Delete("+data[i].id+",'a4DivY"+i+"')\"value=\"删除\"class=\"a4Input\"></span>\n" +
                 "            </div>")
         }
     })
@@ -118,6 +118,18 @@ $("#a0Input").click(function (){
         }
     })
 })//每日壁纸显示更新按钮
+$("#a0Input2").click(function (){
+    var acc=prompt("请输入壁纸标题或标签");
+    if (acc !== null){
+        $.post(openUrl+"/admin/32f9f4ffd0a04d0f9bf5c7a4a9420b5e",{
+            value:acc,
+            uuid:$.cookie("adminUuid")
+        },function (data){
+            if (data) alert("成功");
+            else alert("失败");
+        })
+    }
+})//壁纸置顶
 $("#a5Input").click(function (){
  $.post(openUrl+"/L/sendAMessage",{
      message:$("#a5Text").val(),
@@ -146,12 +158,12 @@ function message(id){
     $("#a5Text").text('管理员:')
     userId=id;
 }//点击发送消息方法
-function Delete(id){
+function Delete(id,sid){
     $.post(openUrl+"/admin/90029510feae426aaa31c8560d4ee6a2",{
         id:id,
         uuid:$.cookie("adminUuid")
     },function (data) {
         if (data==false)alert("失败")
+        else $("#"+sid).remove();
     })
-    $("#a1Span4").click()
 }//反馈消息删除方法

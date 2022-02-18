@@ -271,19 +271,8 @@ public class AdminController {
      * 获取管理员消息
      */
     @PostMapping("ab7da92a50e94363a19fb6740b2de54e")
-    public List<MessagesDTO> receiveMessages(@RequestParam int id,@RequestParam String uuid){
-        Map<String,Object>params = new HashMap<>();
-        params.put("email",0);
-        params.put("uuid",uuid);
-        if(userDao.userUuidCode(params)==1){
-            List<MessagesDTO> arr = toolDao.receiveAdminMessagesCode(id);
-            for (int i=0;i<arr.size();i++){
-                toolDao.deleteMessagesCode(arr.get(i).getId());
-            }
-            return arr;
-        }else
-            return null;
-
+    public List<MessagesDTO> receiveMessages(@RequestParam int id){
+        return toolDao.receiveAdminMessagesCode(id);
     }
 
     /**
@@ -369,11 +358,18 @@ public class AdminController {
             if(userDao.userUuidCode(params)==1){
                 List<WallpaperDTO> arr = wallpaperSortingDao.wallpaperTop("%"+value+"%");
                 String sql = "CASE";
+                String endSql = "WHERE";
                 for (int i=0;i<arr.size();i++){
                     sql += " WHEN id = "+arr.get(i).getId()+" THEN "+i*-1+"";
+                    endSql += " id = "+arr.get(i).getId();
+                    if (i+1<arr.size()){
+                        endSql+=" OR";
+                    }
                 }
+                System.out.println(endSql);
                 params.put("sql",sql);
                 params.put("type","the_default_daily");
+                params.put("endSql",endSql);
                 wallpaperSortingDao.theDefaultCode(params);
                 params.put("type","hot");
                 wallpaperSortingDao.theDefaultCode(params);
