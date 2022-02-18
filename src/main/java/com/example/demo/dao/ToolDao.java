@@ -30,13 +30,15 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     @Insert("INSERT INTO `feedback`(type,instructions,`is`,contact)VALUES(#{type},#{instructions},#{is},#{contact})")
     int submitFeedbackCode(Map<String,Object> param);
     //获取消息
-    @Select("SELECT t1.*,t2.`name` FROM message t1 LEFT JOIN `user` t2 ON t1.send=t2.id WHERE t1.accept=#{id} and send!=0")
+    @Select("SELECT t1.*,t2.`name` FROM message t1 LEFT JOIN `user` t2 ON t1.send=t2.id WHERE t1.accept=#{id} and send!=0 and `read` = 0")
     List<MessagesDTO> receiveMessagesCode(int id);
     //删除消息
     @Delete("DELETE FROM message WHERE id = #{id}")
     int deleteMessagesCode(int id);
+    @Update("UPDATE message SET `read` = 1 WHERE id= #{id} ")
+    int updateMessageCode(int id);
     //获取管理员消息
-    @Select("SELECT * FROM message WHERE accept=#{id} and send=0")
+    @Select("SELECT * FROM message WHERE accept=#{id} and send=0 and `read` = 0")
     List<MessagesDTO> receiveAdminMessagesCode(int id);
     //壁纸文件夹
     @Select("SELECT * FROM wallpaper_folder")

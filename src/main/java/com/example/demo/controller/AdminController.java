@@ -272,6 +272,7 @@ public class AdminController {
      */
     @PostMapping("ab7da92a50e94363a19fb6740b2de54e")
     public List<MessagesDTO> receiveMessages(@RequestParam int id){
+        toolDao.updateMessageCode(id);
         return toolDao.receiveAdminMessagesCode(id);
     }
 
