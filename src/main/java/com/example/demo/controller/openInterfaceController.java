@@ -12,7 +12,7 @@ import java.util.Map;
  * 开放接口
  */
 @RestController
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/Open")
 public class openInterfaceController {
     @Autowired
