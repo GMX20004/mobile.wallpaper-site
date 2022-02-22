@@ -116,5 +116,5 @@ function getClockClick(){
 function getFullScreen(){
     $("#a1").hide();
     $("#a3").hide();
-    BrowserFullScreen();
+    fullScreen();
 }
