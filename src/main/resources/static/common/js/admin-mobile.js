@@ -141,6 +141,9 @@ $("#a5Input").click(function (){
      else alert("发送失败")
  })
 })//提交发送消息按钮
+$("#a0Input3").click(function (){
+    window.location.href="admin-upload.html";
+})
 function borderHide(){
     $("#a1Span1").css("border","none")
     $("#a1Span2").css("border","none")

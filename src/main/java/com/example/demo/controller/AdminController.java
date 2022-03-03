@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
@@ -382,5 +383,51 @@ public class AdminController {
             e.printStackTrace();
         }
         return false;
+    }
+    /**
+     * 批量上传壁纸
+     */
+    @PostMapping("img")
+    public Boolean img(
+            @RequestParam(value = "file") MultipartFile[] file,                                  //上传壁纸
+            @RequestParam(value = "userId") int userId,                                          //用户id
+            @RequestParam(value = "theTitle",required = false) String[] theTitle,     //标题
+            @RequestParam(value = "theLabel") String[] theLabel,                      //标签
+            @RequestParam Integer[] size
+    ){
+        Map<String,Object> params = new HashMap<>();
+        for (int i=0;i<file.length;i++){
+             params.clear();
+             if (file[i]!=null){
+                 String uuid = toolMod.uuid();
+                 String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
+                 String fileName = file[i].getOriginalFilename();//获取文件名称
+                 String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+                 params.put("userId",userId);
+                 if ("undefined".equals(theTitle[i]))
+                    params.put("theTitle",theTitle[i]);
+                 if ("undefined".equals(theLabel[i]))
+                    params.put("theLabel",theLabel[i]);
+                 params.put("type",suffixName.substring(1));
+                 params.put("coding",uuid);
+                 params.put("size",size[i]);
+                 wallpaperSortingDao.uploadWallpaperCode(params);
+                 fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
+                 File targetFile = new File(path);
+                 if (!targetFile.exists()) {
+                     // 判断文件夹是否未空，空则创建
+                     targetFile.mkdirs();
+                 }
+                 File saveFile = new File(targetFile, fileName);
+                 try {
+                     //指定本地存入路径
+                     file[i].transferTo(saveFile);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                     return false;
+                 }
+             }
+        }
+        return true;
     }
 }

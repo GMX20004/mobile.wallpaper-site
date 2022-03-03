@@ -2,9 +2,9 @@ var diviceWidth = document.documentElement.clientWidth;
 var diviceHeight = document.documentElement.clientHeight;
 var isScreen =true;
 // 腾讯云
-var theUrl = "101.43.88.137"
+// var theUrl = "101.43.88.137"
 // 本地
-// var theUrl ="localhost"
+var theUrl ="localhost"
 // 临时
 // var theUrl ="192.168.0.110"
 //本地
@@ -59,4 +59,41 @@ function BrowserFullScreen(){
     }
 
 }
+function fullScreen() {
+    if (isScreen){
+        isScreen = false;
+        var docElm = document.documentElement;
+        //W3C
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        //FireFox
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        //Chrome等
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        }
+    }else{
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+        else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+
+}
+
 

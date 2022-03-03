@@ -1,0 +1,29 @@
+body{background-color: black}
+.quan{width: 100%}
+#a0{height: 5%;}
+#backImg{width: auto;height: auto;max-width: 100%;max-height: 100%;}
+
+#a1{width: 100%;height: 85%;overflow-x: auto;overflow-y: hidden;display: -webkit-box;float: none;align-items: center}
+#a1Div{width: 100%;height: 100%;display: flex;justify-content: center;align-items:center;}
+
+.a1Span{height: 100%;width: 300px;float: left;margin-left: 10px;}
+.a1Img{width: 100%;height: 80%;display: flex;justify-content: center;align-items:center;}
+.img{width: auto;height: auto;max-width: 100%;max-height: 100%}
+.a1Content{width: 100%;height: 18%;margin-top: 2%;font-size: 15px}
+.a1ContentSpan1{float: left;width: 80%;height: 100%}
+.a1ContentSpan1 input{margin-top: 5%;height: 50px;}
+.a1ContentSpan2{float: left;width: 20%;height: 100%}
+.a1ContentSpan2 input{height: 100%;background-color: #edd40d;border: 1px solid #edd40d}
+.a1Content input{width: 100%;font-size: 20px}
+
+#a2{width: 100%;height: 10%;text-align: center;display: none}
+#a2 input{width: 80%;height: 80%;border: 1px solid #edaa09;color: #ffffff;background-color: #edaa09;margin-top: 10px;}
+#upload{font-size: 20px;}
+#progress{width: 80%;border-radius: 15px;margin-left: 10%;background-color: #ffffff;height: 30%;display: none}
+#progress div{
+    border-radius: 15px;
+    width: 0px;
+    height: 100%;
+    background-color: #67d1ed;
+    transition: all .3s ease;
+}

@@ -65,7 +65,6 @@ function upImg() {
             $("#button").val("上传")
             $("#button").css("background-color","#e38d13")
             $("#button").removeAttr("disabled")
-        }).fail(function(res) {
         });
     }
 }//图片上传方法
