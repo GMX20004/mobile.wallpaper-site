@@ -46,10 +46,8 @@ $("#changePage").click(function (){
                 $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
             }
         }
+        JudgmentEndPage();
     })
-    if (page>=zopage){
-        $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
-    }
 })//下一页
 $("#searchContent").keyup(function (event){
     if (event.keyCode==13)search();
@@ -67,12 +65,8 @@ function pictureType(val){
                 $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
             }
         }
+        JudgmentEndPage();
     })
-    if (page>=zopage){
-        $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
-    }else {
-        $("#changePage").attr("disabled",false);
-    }
 }//标签搜索
 function search(){
     let val = $("#searchContent").val();
@@ -91,12 +85,8 @@ function search(){
                     $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
                 }
             }
+            JudgmentEndPage();
         })
-        if (page>=zopage){
-            $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
-        }else {
-            $("#changePage").attr("disabled",false);
-        }
     }else{
         $("#a1Div1DivSpan1").css("border","2px solid red");
     }
@@ -104,7 +94,13 @@ function search(){
 function JumpUser(){
     if ($.cookie("userId")==null) window.location.href="login.html"
     else window.location.href="user.html"
-}
-
+}//用户跳转
+function JudgmentEndPage(){
+    if (page>=zopage){
+        $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
+    }else {
+        $("#changePage").attr("disabled",false).val("下一页");
+    }
+}//末页判断
 
 
