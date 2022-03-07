@@ -4,121 +4,107 @@ var url;//访问接口
 $(function (){
     $("#body").css("background-image","url('http://"+theUrl+"/image/background/1.jpg')")
     url=openUrl+"/Wallpaper/daily?page=";
-    $.get(url+page,
-        function(data){
-            zopage=Math.ceil(data[data.length-1]/10);
-            var c = true;
-            for (var i=0;i<data.length-1;i++){
-                if (c){
-                    $("#a4SpanDiv1").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=false;
-                }else {
-                    $("#a4SpanDiv2").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=true;
-                }
+    $.get(url+page,function (data){
+        zopage=Math.ceil(data[data.length-1]/10);
+        for (var i=0;i<data.length-1;i++){
+            if (i % 2 === 0){
+                $("#a2Span1").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
+            }else {
+                $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
             }
-        })
-})//初始化页面
-$("#a5Input").click(function (){
-    if (page<zopage){
-        page=page+1;
-    $.get(url+page,
-        function(data){
-            var c = true;
-            for (var i=0;i<data.length-1;i++){
-                if (c){
-                    $("#a4SpanDiv1").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=false;
-                }else {
-                    $("#a4SpanDiv2").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=true;
-                }
+        }
+    })
+})//页面初始化
+$("#a1Div2Svg1").click(function (){
+    $("#a1Div2Svg1").hide();
+    $("#a1Div2Svg2").show();
+    $("#a1Div3").slideDown("slow");
+})//展开下拉列表
+$("#a1Div2Svg2").click(function (){
+    $("#a1Div2Svg2").hide();
+    $("#a1Div2Svg1").show();
+    $("#a1Div3").slideUp("slow");
+})//收缩下拉列表
+function openSearch(){
+    $(".a1Div1Span").hide();
+    $("#a1Div1Div").show();
+    $("#searchContent").focus();
+}//开启搜索功能
+function closeSearch(){
+    $("#a1Div1Div").hide();
+    $("#searchContent").val("");
+    $("#a1Div1DivSpan1").css("border","2px solid silver");
+    $(".a1Div1Span").show();
+}//关闭搜索功能
+$("#changePage").click(function (){
+    page++;
+    $.get(url+page,function (data){
+        for (var i=0;i<data.length-1;i++){
+            if (i % 2 === 0){
+                $("#a2Span1").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
+            }else {
+                $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
             }
-        })
-        if (page>=zopage) $("#a5Input").val("不好意思啊，已经到底啦")
+        }
+    })
+    if (page>=zopage){
+        $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
     }
 })//下一页
-$("#a1SpanSvg5").click(function (){
-    if ($.cookie("userId")==null)window.location.href="login.html"
-    else window.location.href="user.html?type=0"
-})//跳转个人用户界面
-$("#a1SpanSvg4").click(function (){
-    $("#a1input").val('');
-    $(".a1span").hide();
-    $("#a1div").show();
-    $("#a1input").focus();
-})//打开搜索页面
-$("#a1divspan2a").click(function (){
-    $("#a1div").hide();
-    $(".a1span").show();
-    $("#a1divspan").css("border","3px solid #e38d13")
-})//关闭搜索页面
-$("#a2svg1").click(function (){
-    $("#hr1").hide();
-    $("#a2svg1").hide();
-    $("#a3").show();
-    $("#hr2").show();
-    $("#a2svg2").show();
-})//下拉选择类型
-$("#a2svg2").click(function (){
-    $("#a3").hide();
-    $("#hr2").hide();
-    $("#a2svg2").hide();
-    $("#hr1").show();
-    $("#a2svg1").show();
-})//收缩类型
-$("#a1divsvg").click(function (){
-    var content = $("#a1input").val();
-    content = $.trim(content);
-    if (content == null || content == '') $("#a1divspan").css("border","3px solid red")
-    else {
-        $("#a1divspan").css("border","3px solid #e38d13")
-        $("#a4SpanDiv1").html('');
-        $("#a4SpanDiv2").html('');
-        $("#a5Input").val("下一页");
-        page=1;
-        url=openUrl+"/Wallpaper/search?value="+content+"&page=";
-        $.get(url+page,
-            function(data){
-                zopage=Math.ceil(data[data.length-1]/10);
-                if (zopage<=page) $("#a5Input").val("不好意思啊，已经到底啦");
-                var c = true;
-                for (var i=0;i<data.length-1;i++){
-                    if (c){
-                        $("#a4SpanDiv1").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                        c=false;
-                    }else {
-                        $("#a4SpanDiv2").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                        c=true;
-                    }
-                }
-            })
-    }
-})//搜索结果
-$("#a1input").keyup(function (event) {
-    if (event.keyCode==13) $("#a1divsvg").click()
-})//搜索框回车
-function pictureType(name){
-    $("#a4SpanDiv1").html('');
-    $("#a4SpanDiv2").html('');
-    $("#a5Input").val("下一页");
+$("#searchContent").keyup(function (event){
+    if (event.keyCode==13)search();
+})//回车搜索
+function pictureType(val){
     page=1;
-    url="/Wallpaper/label?value="+name+"&page=";
-    $.get(url+page,
-        function(data){
+    url="/Wallpaper/label?value="+val+"&page=";
+    $("#a2 span div").remove();
+    $.get(url+page,function (data){
+        zopage=Math.ceil(data[data.length-1]/10);
+        for (var i=0;i<data.length-1;i++){
+            if (i % 2 === 0){
+                $("#a2Span1").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
+            }else {
+                $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
+            }
+        }
+    })
+    if (page>=zopage){
+        $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
+    }else {
+        $("#changePage").attr("disabled",false);
+    }
+}//标签搜索
+function search(){
+    let val = $("#searchContent").val();
+    val = $.trim(val);
+    if (val !== ""){
+        $("#a1Div1DivSpan1").css("border","2px solid silver");
+        page=1;
+        url="/Wallpaper/search?value="+val+"&page=";
+        $("#a2 span div").remove();
+        $.get(url+page,function (data){
             zopage=Math.ceil(data[data.length-1]/10);
-            if (zopage<=page) $("#a5Input").val("不好意思啊，已经到底啦");
-            var c = true;
             for (var i=0;i<data.length-1;i++){
-                if (c){
-                    $("#a4SpanDiv1").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=false;
+                if (i % 2 === 0){
+                    $("#a2Span1").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
                 }else {
-                    $("#a4SpanDiv2").append("<a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"' class='img'></a>")
-                    c=true;
+                    $("#a2Span2").append("<div><a href='details.html?img="+data[i].id+"'><img src='http://"+theUrl+"/image/"+data[i].storageLocation+"/"+data[i].id+"."+data[i].type+"'></a></div>")
                 }
             }
         })
-    if (zopage<=page) $("#a5Input").val("不好意思啊，已经到底啦");
-}//标签搜索方法
+        if (page>=zopage){
+            $("#changePage").attr("disabled",true).val("已经是最后一页啦!");
+        }else {
+            $("#changePage").attr("disabled",false);
+        }
+    }else{
+        $("#a1Div1DivSpan1").css("border","2px solid red");
+    }
+}//搜索
+function JumpUser(){
+    if ($.cookie("userId")==null) window.location.href="login.html"
+    else window.location.href="user.html"
+}
+
+
 
