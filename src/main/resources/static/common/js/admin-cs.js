@@ -52,7 +52,6 @@ $("#input4").click(function (){
         uuid:$.cookie("adminUuid")
     },function (data) {
         if (data){
-            alert("修改成功")
             $("#a1Span2B1").text($("#a1input1").val())
             $("#a1Span2B2").text($("#a1input2").val())
         }
@@ -84,7 +83,6 @@ $("#a3Div1Input1").click(function (){
         uuid:$.cookie("adminUuid")
     },function (data){
         if (data){
-            alert("成功")
             $("#a3Div1").hide()
             $(".a3Span").show()
             window.location.href="admin-mobile.html?type=3"

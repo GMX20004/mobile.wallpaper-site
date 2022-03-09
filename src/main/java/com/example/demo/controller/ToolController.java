@@ -125,7 +125,7 @@ public class ToolController {
             ){
         Map<String,Object> params = new HashMap<>();
         String uuid = toolMod.uuid();
-        String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
+        String path = ymlConfig.getWallpaperDisk();//存放路径
         String fileName = file.getOriginalFilename();//获取文件名称
         String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
         params.put("userId",userId);
@@ -136,7 +136,7 @@ public class ToolController {
         params.put("size",size);
         wallpaperSortingDao.uploadWallpaperCode(params);
         fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
-        File targetFile = new File(path);
+        File targetFile = new File(path+"cs");
         if (!targetFile.exists()) {
             // 判断文件夹是否未空，空则创建
             targetFile.mkdirs();
@@ -148,6 +148,21 @@ public class ToolController {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+        if (size>1048576){
+            targetFile = new File(path+"csm");
+            if (!targetFile.exists()) {
+                // 判断文件夹是否未空，空则创建
+                targetFile.mkdirs();
+            }
+            saveFile = new File(targetFile, fileName);
+            try {
+                //指定本地存入路径
+                file.transferTo(saveFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         }
         return true;
     }

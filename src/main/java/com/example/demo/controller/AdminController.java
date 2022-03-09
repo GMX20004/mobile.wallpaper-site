@@ -400,7 +400,7 @@ public class AdminController {
              params.clear();
              if (file[i]!=null){
                  String uuid = toolMod.uuid();
-                 String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
+                 String path = ymlConfig.getWallpaperDisk();//存放路径
                  String fileName = file[i].getOriginalFilename();//获取文件名称
                  String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
                  params.put("userId",userId);
@@ -413,7 +413,7 @@ public class AdminController {
                  params.put("size",size[i]);
                  wallpaperSortingDao.uploadWallpaperCode(params);
                  fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
-                 File targetFile = new File(path);
+                 File targetFile = new File(path+"cs");
                  if (!targetFile.exists()) {
                      // 判断文件夹是否未空，空则创建
                      targetFile.mkdirs();
@@ -426,8 +426,69 @@ public class AdminController {
                      e.printStackTrace();
                      return false;
                  }
+                 if (size[i]>1048576){
+                     targetFile = new File(path+"csm");
+                     if (!targetFile.exists()) {
+                         // 判断文件夹是否未空，空则创建
+                         targetFile.mkdirs();
+                     }
+                      saveFile = new File(targetFile, fileName);
+                     try {
+                         //指定本地存入路径
+                         file[i].transferTo(saveFile);
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                         return false;
+                     }
+                 }
              }
         }
         return true;
     }
+
+    /**
+     *本地批量上传
+     */
+    @GetMapping("uploadLocally")
+    public Boolean uploadLocally(@RequestParam String uuid){
+        try {
+            Map<String,Object> params = new HashMap<>();
+            params.put("email",0);
+            params.put("uuid",uuid);
+            if(userDao.userUuidCode(params)==1) {
+                String path = ymlConfig.getWallpaperDisk();
+                String coding = toolMod.uuid();
+                String sql = "";
+                int num = 0;
+                File file = new File(path + "uploadLocally");
+                File[] files = file.listFiles();
+                String[] name = file.list();
+                if (name != null) {
+                    for (int i = 0; i < name.length; i++) {
+                        if (i == 0) {
+                            params.put("userId", 1);
+                            params.put("type", name[i].split("\\.")[1]);
+                            params.put("coding", coding);
+                            params.put("size", files[i].length());
+                            wallpaperSortingDao.uploadWallpaperCode(params);
+                            num = wallpaperSortingDao.detailsWallpaperLinUuidCode(coding);
+                            file = new File(path + "cs" + "\\" + num++ + "." + name[i].split("\\.")[1]);
+                        } else {
+                            sql += "(" + 1 + ",'" + name[i].split("\\.")[1] + "'," + files[i].length() + "),";
+                            file = new File(path + "cs" + "\\" + num++ + "." + name[i].split("\\.")[1]);
+                        }
+                        files[i].renameTo(file);
+                    }
+                    wallpaperSortingDao.batchAddCode(sql.substring(0, sql.length() - 1));
+                }
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }

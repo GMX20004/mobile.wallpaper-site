@@ -80,7 +80,7 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //壁纸审核详情查看--管理员权限
     @Select("SELECT t1.id,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.creation_time,t1.size,t2.`name`,t2.head_portrait FROM wallpaper_lins t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
     List<WallpaperDetailsDTO> detailsWallpaperLinCode(Map<String,Object> param);
-    //
+    //查询测试壁纸id
     @Select("SELECT id FROM wallpaper_lins WHERE coding=#{uuid}")
     int detailsWallpaperLinUuidCode(String uuid);
     //删除审核壁纸--管理员权限
@@ -92,4 +92,7 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //修改审核壁纸
     @Update("UPDATE `wallpaper_lins` SET the_title=#{theTitle},the_label=#{theLabel} WHERE id = #{id}")
     int modifyAuditCode(Map<String,Object> param);
+    //批量上传壁纸
+    @Insert("INSERT INTO wallpaper_lins (user_id,type,size) VALUES ${sql}")
+    int batchAddCode(String sql);
 }
