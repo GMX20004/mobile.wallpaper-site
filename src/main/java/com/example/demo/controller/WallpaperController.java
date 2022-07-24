@@ -21,6 +21,7 @@ import java.util.Map;
  * 壁纸相关接口
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/Wallpaper")
 public class WallpaperController {
 
@@ -35,14 +36,17 @@ public class WallpaperController {
     @GetMapping("search")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "value", value = "搜索内容", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public List search(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=10;
         params.put("value","%"+params.get("value")+"%");
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.searchCode(params);
         arr.add(wallpaperSortingDao.searchCountCode(params));
         return arr;
@@ -54,14 +58,17 @@ public class WallpaperController {
     @GetMapping("label")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "value", value = "标签内容", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public List  label(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("value","%"+params.get("value")+"%");
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.labelCode(params);
         arr.add(wallpaperSortingDao.labelCountCode(params));
         return arr;
@@ -70,12 +77,17 @@ public class WallpaperController {
      *每日默认显示
      */
     @GetMapping("daily")
-    @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
     public List daily(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.dailyCode(params);
         arr.add(wallpaperSortingDao.countCode());
         return arr;
@@ -84,12 +96,17 @@ public class WallpaperController {
      *每日热门显示
      */
     @GetMapping("hot")
-    @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
     public List hot(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.hotCode(params);
         arr.add(wallpaperSortingDao.countCode());
         return arr;
@@ -99,12 +116,17 @@ public class WallpaperController {
      * 最新上架显示
      */
     @GetMapping("latest")
-    @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
     public List latest(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.latestCode(params);
         arr.add(wallpaperSortingDao.countCode());
         return arr;
@@ -114,12 +136,17 @@ public class WallpaperController {
      *点赞最多显示
      */
     @GetMapping("praise")
-    @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
     public List praise(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.praiseCode(params);
         arr.add(wallpaperSortingDao.countCode());
         return arr;
@@ -128,12 +155,17 @@ public class WallpaperController {
      * 收藏最多显示
      */
     @GetMapping("collection")
-    @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
     public List collection(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
-        for (int i=1;i<num;i++) start+=10;
+        for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
+        params.put("limit",limit);
         List arr = wallpaperSortingDao.collectionCode(params);
         arr.add(wallpaperSortingDao.countCode());
         return arr;

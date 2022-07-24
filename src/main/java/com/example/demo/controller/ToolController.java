@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import cn.hutool.core.codec.Base64;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.WallpaperSortingDao;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import java.util.List;
  * 工具接口
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/L")
 public class ToolController {
     @Autowired
@@ -47,7 +50,7 @@ public class ToolController {
      * 验证码图片
      */
     @GetMapping("yzm")
-    public void verificationCode(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public Map<String, String> verificationCode(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //服务器通知浏览器不要缓存
         resp.setHeader("pragma","no-cache");
         resp.setHeader("cache-control","no-cache");
@@ -76,7 +79,16 @@ public class ToolController {
         //参数一：图片对象
         //参数二：图片的格式，如PNG,JPG,GIF
         //参数三：图片输出到哪里去
-        ImageIO.write(image,"PNG",resp.getOutputStream());
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ImageIO.write(image,"PNG",stream);
+        String base64 = null;
+        base64 = Base64.encode(stream.toByteArray());
+        stream.flush();
+        stream.close();
+        Map<String,String> map = new HashMap<>();
+        map.put("img",base64);
+        map.put("text",checkCode);
+        return map;
     }
 
     /**

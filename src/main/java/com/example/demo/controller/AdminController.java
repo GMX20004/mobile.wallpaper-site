@@ -23,6 +23,7 @@ import java.util.*;
  */
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/admin")
 public class AdminController {
 

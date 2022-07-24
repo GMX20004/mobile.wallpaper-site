@@ -26,28 +26,28 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Update("UPDATE wallpaper SET ${type} =(${sql} ELSE 999999 END)${endSql};")
     int theDefaultCode(Map<String,Object> param);
     //每日默认显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY the_default_daily LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY the_default_daily LIMIT #{start},#{limit}")
     List<WallpaperDTO>dailyCode(Map<String,Object> param);
     //热门显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY hot LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY hot LIMIT #{start},#{limit}")
     List<WallpaperDTO>hotCode(Map<String,Object> param);
     //最新上架
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY id DESC LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY id DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>latestCode(Map<String,Object> param);
     //点赞最多显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY praise DESC LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY praise DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>praiseCode(Map<String,Object> param);
     //收藏最多显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY collection DESC LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY collection DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>collectionCode(Map<String,Object> param);
     //搜索查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value} LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value} LIMIT #{start},#{limit}")
     List<WallpaperDTO>searchCode(Map<String,Object> param);
     //搜索查询结果数
     @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_title LIKE concat(#{value},'%') OR the_label LIKE CONCAT(#{value},'%')")
     int searchCountCode(Map<String,Object> param);
     //标签查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} LIMIT #{start},10")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} LIMIT #{start},#{limit}")
     List<WallpaperDTO>labelCode(Map<String,Object> param);
     //指定壁纸显示
     @Select("SELECT id FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value}")

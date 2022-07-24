@@ -23,6 +23,7 @@ import java.util.Map;
  * 用户相关查询
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/User")
 public class UserController {
     @Autowired

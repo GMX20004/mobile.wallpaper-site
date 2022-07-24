@@ -10,6 +10,7 @@ import java.util.List;
  * 视频接口
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/video")
 public class VideoController {
     @Autowired

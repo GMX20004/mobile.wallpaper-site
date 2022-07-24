@@ -1,10 +1,6 @@
 
 $("#a99a1").click(function (){
-    $("#window").show();
-})
-
-$("#windowInput").click(function (){
-    $("#window").hide();
+    alert("QQ:1478588530");
 })
 
 $("#backImg").click(function (){
