@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dao.WallpaperSortingDao;
 import com.example.demo.dto.WallpaperDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,8 @@ public class WallpaperController {
     private WallpaperSortingDao wallpaperSortingDao;
     @Autowired
     private UserDao userDao;
-    ToolMod toolMod = new ToolMod();
+    @Autowired
+    private YmlConfig ymlConfig;
     /**
      * 搜索
      */
@@ -39,7 +42,7 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List search(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> search(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
@@ -47,9 +50,10 @@ public class WallpaperController {
         params.put("value","%"+params.get("value")+"%");
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.searchCode(params);
-        arr.add(wallpaperSortingDao.searchCountCode(params));
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.searchCode(params));
+        map.put("total",wallpaperSortingDao.searchCountCode(params));
+        return map;
     }
 
     /**
@@ -61,7 +65,7 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List  label(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object>  label(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
@@ -69,9 +73,10 @@ public class WallpaperController {
         params.put("value","%"+params.get("value")+"%");
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.labelCode(params);
-        arr.add(wallpaperSortingDao.labelCountCode(params));
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.labelCode(params));
+        map.put("total",wallpaperSortingDao.labelCountCode(params));
+        return map;
     }
     /**
      *每日默认显示
@@ -81,16 +86,17 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List daily(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> daily(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.dailyCode(params);
-        arr.add(wallpaperSortingDao.countCode());
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.dailyCode(params));
+        map.put("total",wallpaperSortingDao.countCode());
+        return map;
     }
     /**
      *每日热门显示
@@ -100,16 +106,17 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List hot(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> hot(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.hotCode(params);
-        arr.add(wallpaperSortingDao.countCode());
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.hotCode(params));
+        map.put("total",wallpaperSortingDao.countCode());
+        return map;
     }
 
     /**
@@ -120,16 +127,17 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List latest(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> latest(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.latestCode(params);
-        arr.add(wallpaperSortingDao.countCode());
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.latestCode(params));
+        map.put("total",wallpaperSortingDao.countCode());
+        return map;
     }
 
     /**
@@ -140,16 +148,17 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List praise(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> praise(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.praiseCode(params);
-        arr.add(wallpaperSortingDao.countCode());
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.praiseCode(params));
+        map.put("total",wallpaperSortingDao.countCode());
+        return map;
     }
     /**
      * 收藏最多显示
@@ -159,16 +168,17 @@ public class WallpaperController {
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
-    public List collection(@ApiIgnore @RequestParam Map<String, Object> params){
+    public Map<String,Object> collection(@ApiIgnore @RequestParam Map<String, Object> params){
         int num = Integer.valueOf(params.get("page").toString());
         int limit = Integer.valueOf(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
         params.put("limit",limit);
-        List arr = wallpaperSortingDao.collectionCode(params);
-        arr.add(wallpaperSortingDao.countCode());
-        return arr;
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",wallpaperSortingDao.collectionCode(params));
+        map.put("total",wallpaperSortingDao.countCode());
+        return map;
     }
     /**
      * 用户收藏投稿点赞壁纸查看

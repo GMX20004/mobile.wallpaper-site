@@ -12,8 +12,8 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     //总数查询
     @Select("SELECT \n" +
             "COUNT(*) AS user_number,\n" +
-            "(SELECT COUNT(*) FROM wallpaper) AS wallpaper_number,\n" +
-            "(SELECT COUNT(*) FROM wallpaper_lins) AS testWallpaper_number,\n" +
+            "(SELECT COUNT(*) FROM wallpaper WHERE state=2) AS wallpaper_number,\n" +
+            "(SELECT COUNT(*) FROM wallpaper WHERE state=0 OR state=1) AS testWallpaper_number,\n" +
             "(SELECT COUNT(*) FROM feedback) AS feedback_number\n" +
             "FROM\n" +
             "`user`")

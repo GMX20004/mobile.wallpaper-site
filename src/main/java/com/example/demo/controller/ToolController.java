@@ -136,7 +136,7 @@ public class ToolController {
             @RequestParam long size
             ){
         Map<String,Object> params = new HashMap<>();
-        String uuid = toolMod.uuid();
+        int num = wallpaperSortingDao.countCode()+1;
         String path = ymlConfig.getWallpaperDisk();//存放路径
         String fileName = file.getOriginalFilename();//获取文件名称
         String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
@@ -144,10 +144,10 @@ public class ToolController {
         params.put("theTitle",theTitle);
         params.put("theLabel",theLabel);
         params.put("type",suffixName.substring(1));
-        params.put("coding",uuid);
+        params.put("id",num);
         params.put("size",size);
         wallpaperSortingDao.uploadWallpaperCode(params);
-        fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
+        fileName= num+suffixName;//重新生成文件名
         File targetFile = new File(path+"cs");
         if (!targetFile.exists()) {
             // 判断文件夹是否未空，空则创建

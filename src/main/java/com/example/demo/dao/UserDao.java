@@ -14,7 +14,7 @@ import java.util.Map;
 public interface UserDao extends BaseMapper<UserDTO> {
     //登录判断
     //mysql8.0及以上不支持PASSWORD函数,需要用SHA1函数代替
-    @Select(" SELECT *  FROM `user` WHERE email = #{email} and `password`=SHA1(#{password})")
+    @Select(" SELECT *  FROM `user` WHERE email = #{email} and `password`=SHA1(#{password}) and identity=0")
     List<UserDTO> getLogInToCode(Map<String,Object> param);
     //判断是否已存在用户
     @Select(" SELECT COUNT(*) AS num FROM `user` WHERE email = #{email}")
@@ -51,6 +51,6 @@ public interface UserDao extends BaseMapper<UserDTO> {
     @Update("UPDATE `user` SET user_id=#{uuid} WHERE id=#{id}")
     int userUpdateUuidCode(Map<String,Object> param);
     //查看用户唯一编码
-    @Select("SELECT COUNT(*) FROM `user` WHERE email=#{email} AND user_id=#{uuid}")
+    @Select("SELECT COUNT(*) FROM `user` WHERE user_id=#{uuid} AND identity=0")
     int userUuidCode(Map<String,Object> param);
 }

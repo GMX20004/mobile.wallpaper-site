@@ -158,18 +158,9 @@ public class AdminController {
 
     public boolean reviewThrough(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
-            params.put("email",0);
             if(userDao.userUuidCode(params)==1){
-                int num = wallpaperSortingDao.countCode();
-                Object id = params.get("id");
                 List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperLinCode(params);
-                params.put("id",num+1);
-                params.put("theTitle",arr.get(0).getTheTitle());
-                params.put("userId",arr.get(0).getUserId());
-                params.put("theLabel",arr.get(0).getTheLabel());
-                params.put("type",arr.get(0).getType());
-                params.put("size",arr.get(0).getSize());
-                String target = ymlConfig.getWallpaperDisk()+"cs"+slash+id+"."+arr.get(0).getType();
+                String target = ymlConfig.getWallpaperDisk()+"cs"+slash+params.get("id")+"."+arr.get(0).getType();
                 String destination = ymlConfig.getWallpaperDisk()+params.get("storageLocation")+slash+params.get("id")+"."+arr.get(0).getType();
                 File targetFile = new File(ymlConfig.getWallpaperDisk()+params.get("storageLocation"));
                 if (!targetFile.exists()) {
@@ -178,7 +169,7 @@ public class AdminController {
                 }
                 toolMod.imgTransfer(target,destination);
                 wallpaperSortingDao.reviewThroughCode(params);
-                params.put("id",id);
+                params.put("id",params.get("id"));
                 wallpaperSortingDao.deleteAuditCode(params);
                 toolMod.deleteFile(target);
                 userDao.userContributeCode(arr.get(0).getUserId());
@@ -282,29 +273,29 @@ public class AdminController {
      *  管理员登录
      */
     @PostMapping("e4c984df9f364376992066fd393d89fe")
-    public List login(@RequestParam String password){
+    public Map<String ,Object> login(@RequestParam String account,@RequestParam String password){
         Map<String,Object> params = new HashMap<>();
-        List pan = new ArrayList();
+        Map<String,Object> map = new HashMap<>();
         try {
-            params.put("email",0);
+            params.put("email",account);
             params.put("password",password);
             List<UserDTO> arr = userDao.getLogInToCode(params);
             if (arr!=null&&arr.size()!=0){
-                pan.add(true);
-                params.put("id",0);
+                params.put("id",arr.get(0).getId());
                 params.put("uuid",toolMod.uuid());
                 userDao.userUpdateUuidCode(params);
                 arr = userDao.getLogInToCode(params);
-                pan.add(arr.get(0).getUserId());
+                map.put("exists",true);
+                map.put("uuid",arr.get(0).getUserId());
             }else {
-                pan.add(false);
+                map.put("exists",false);
             }
             userDao.userUuidCode(params);
         }catch (Exception e){
             e.printStackTrace();
-            pan.add(false);
+            map.put("exists",false);
         }
-        return pan;
+        return map;
     }
     /**
      * 判断用户唯一编码
@@ -392,28 +383,22 @@ public class AdminController {
     public Boolean img(
             @RequestParam(value = "file") MultipartFile[] file,                                  //上传壁纸
             @RequestParam(value = "userId") int userId,                                          //用户id
-            @RequestParam(value = "theTitle",required = false) String[] theTitle,     //标题
-            @RequestParam(value = "theLabel") String[] theLabel,                      //标签
             @RequestParam Integer[] size
     ){
         Map<String,Object> params = new HashMap<>();
+        int num = wallpaperSortingDao.countCode()+1;
         for (int i=0;i<file.length;i++){
              params.clear();
              if (file[i]!=null){
-                 String uuid = toolMod.uuid();
                  String path = ymlConfig.getWallpaperDisk();//存放路径
                  String fileName = file[i].getOriginalFilename();//获取文件名称
                  String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+                 params.put("id",num++);
                  params.put("userId",userId);
-                 if ("undefined".equals(theTitle[i]))
-                    params.put("theTitle",theTitle[i]);
-                 if ("undefined".equals(theLabel[i]))
-                    params.put("theLabel",theLabel[i]);
                  params.put("type",suffixName.substring(1));
-                 params.put("coding",uuid);
                  params.put("size",size[i]);
                  wallpaperSortingDao.uploadWallpaperCode(params);
-                 fileName= wallpaperSortingDao.detailsWallpaperLinUuidCode(uuid)+suffixName;//重新生成文件名
+                 fileName= (num++)+suffixName;//重新生成文件名
                  File targetFile = new File(path+"cs");
                  if (!targetFile.exists()) {
                      // 判断文件夹是否未空，空则创建

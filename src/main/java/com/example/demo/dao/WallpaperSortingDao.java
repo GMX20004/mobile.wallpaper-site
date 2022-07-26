@@ -20,46 +20,46 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Select("SELECT COUNT(*) FROM wallpaper_lins")
     int auditCountCode();
     //条件计数总数
-    @Select("SELECT COUNT(*) FROM wallpaper WHERE user_id = #{userId}")
+    @Select("SELECT COUNT(*) FROM wallpaper WHERE user_id = #{userId} and state=2")
     int countUserCode(Map<String,Object> param);
     //壁纸首页显示每日变动
     @Update("UPDATE wallpaper SET ${type} =(${sql} ELSE 999999 END)${endSql};")
     int theDefaultCode(Map<String,Object> param);
     //每日默认显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY the_default_daily LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=2 ORDER BY the_default_daily LIMIT #{start},#{limit}")
     List<WallpaperDTO>dailyCode(Map<String,Object> param);
     //热门显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY hot LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=2 ORDER BY hot LIMIT #{start},#{limit}")
     List<WallpaperDTO>hotCode(Map<String,Object> param);
     //最新上架
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY id DESC LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=2 ORDER BY id DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>latestCode(Map<String,Object> param);
     //点赞最多显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY praise DESC LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=2 ORDER BY praise DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>praiseCode(Map<String,Object> param);
     //收藏最多显示
-    @Select("SELECT id,`type`,storage_location FROM wallpaper ORDER BY collection DESC LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=2 ORDER BY collection DESC LIMIT #{start},#{limit}")
     List<WallpaperDTO>collectionCode(Map<String,Object> param);
     //搜索查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value} LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value} and state=2 LIMIT #{start},#{limit}")
     List<WallpaperDTO>searchCode(Map<String,Object> param);
     //搜索查询结果数
-    @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_title LIKE concat(#{value},'%') OR the_label LIKE CONCAT(#{value},'%')")
+    @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_title LIKE concat(#{value},'%') OR the_label LIKE CONCAT(#{value},'%') and state=2")
     int searchCountCode(Map<String,Object> param);
     //标签查询
-    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} LIMIT #{start},#{limit}")
+    @Select("SELECT id,`type`,storage_location FROM `wallpaper` WHERE the_label LIKE #{value} and state=2 LIMIT #{start},#{limit}")
     List<WallpaperDTO>labelCode(Map<String,Object> param);
     //指定壁纸显示
-    @Select("SELECT id FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label LIKE #{value}")
+    @Select("SELECT id FROM `wallpaper` WHERE the_title LIKE #{value} OR the_label and state=2 LIKE #{value}")
     List<WallpaperDTO>wallpaperTop(String value);
     //标签查询结果数
-    @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_label LIKE CONCAT(#{value},'%')")
+    @Select("SELECT COUNT(*) FROM `wallpaper` WHERE the_label LIKE CONCAT(#{value},'%') and state=2")
     int labelCountCode(Map<String,Object> param);
     //查询壁纸是否点赞收藏
     @Select("SELECT count(*) FROM wallpaper_type WHERE id = #{id} AND user_id = #{userId} AND type = #{type}")
     int isWallpaperTypeCode(Map<String,Object> param);
     //获取用户点赞收藏壁纸
-    @Select("SELECT t1.id,t2.type,t2.storage_location FROM wallpaper_type t1 LEFT JOIN wallpaper t2 ON t1.id=t2.id WHERE t1.user_id=#{userId} and t1.type=#{type}")
+    @Select("SELECT t1.id,t2.type,t2.storage_location FROM wallpaper_type t1 LEFT JOIN wallpaper t2 ON t1.id=t2.id WHERE t1.user_id=#{userId} and t1.type=#{type} and t2.state=2")
     List<WallpaperDTO> collectionGiveALikeCode(Map<String,Object> param);
     //获取用户投稿壁纸
     @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE user_id=#{userId}")
@@ -72,7 +72,7 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Select("SELECT * FROM wallpaper_lins")
     List<WallpaperDTO> reviewWallpaperCode();
     //壁纸审核通过--管理员权限
-    @Insert("INSERT INTO wallpaper(id,the_title,user_id,the_label,type,storage_location,size)VALUES(#{id},#{theTitle},#{userId},#{theLabel},#{type},#{storageLocation},#{size})")
+    @Update("UPDATE wallpaper SET state=2,storage_location = #{storageLocation} WHERE id = #{id}")
     int reviewThroughCode(Map<String,Object> param);
     //壁纸详情查看
     @Select("SELECT t1.id,t1.praise,t1.collection,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.storage_location,t1.creation_time,t2.`name`,t2.head_portrait FROM wallpaper t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
@@ -87,7 +87,7 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Delete("DELETE FROM `wallpaper_lins` WHERE id=#{id}")
     int deleteAuditCode(Map<String,Object> param);
     //壁纸上传
-    @Insert("INSERT INTO wallpaper_lins(the_title,user_id,the_label,type,coding,size)VALUES(#{theTitle},#{userId},#{theLabel},#{type},#{coding},#{size})")
+    @Insert("INSERT INTO wallpaper (id,the_title,user_id,the_label,type,size)VALUES(#{theTitle},#{userId},#{theLabel},#{type},#{size})")
     int uploadWallpaperCode(Map<String,Object> param);
     //修改审核壁纸
     @Update("UPDATE `wallpaper_lins` SET the_title=#{theTitle},the_label=#{theLabel} WHERE id = #{id}")
@@ -95,4 +95,7 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //批量上传壁纸
     @Insert("INSERT INTO wallpaper_lins (user_id,type,size) VALUES ${sql}")
     int batchAddCode(String sql);
+
+    @Insert("INSERT INTO wallpaper (id,user_id,type,storage_location,size) VALUES ${sql}")
+    int temporaryCode(String sql);
 }

@@ -77,7 +77,6 @@ public class ToolMod {
     public boolean imgTransfer(String target,String destination){
         boolean is = true;
         try {
-            long b1 = System.currentTimeMillis();
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(target));//输入缓冲区
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destination));//缓冲区输出
             byte[] bytes = new byte[1024];
@@ -87,9 +86,7 @@ public class ToolMod {
             }
             bis.close();
             bos.close();
-            long b2 = System.currentTimeMillis();
             deleteFile(target);
-            System.out.println("总耗时:"+(b2-b1)+"毫秒");
         }catch (Exception e){
             e.printStackTrace();
             is=false;

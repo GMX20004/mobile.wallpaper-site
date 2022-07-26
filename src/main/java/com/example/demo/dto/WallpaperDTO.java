@@ -13,6 +13,6 @@ public class WallpaperDTO implements Serializable {
     private int id;
     //图片类型
     private String type;
-    //存储位置
-    private String storageLocation;
+    //文件大小
+    private int size;
 }
