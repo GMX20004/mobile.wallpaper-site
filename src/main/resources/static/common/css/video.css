@@ -1,8 +1,0 @@
-#body{background-size: 100% 100%;background-attachment: fixed;background-repeat: no-repeat;}
-#a1{width: 100%;height: 8%;background-color: black}
-.a1span{width: 25%;height: 80%;float: left;margin-top: 1%}
-#a2{width: 100%;height: 92%;overflow-y :auto;}
-#a2Div1{width: 100%;text-align: center;}
-#a2Div1 p{font-size: 17px;margin-top: 5%;color: #ffffff}
-#a2Div1 video{width: 90%;height: 200px;}
-#a2Input{width: 80%;height: 50px;margin-left: 10%;margin-top: 5%;font-size: 20px;text-align: center}

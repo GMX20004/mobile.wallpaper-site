@@ -64,4 +64,13 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     //定时任务删除
     @Delete("DELETE FROM `cron_task` WHERE id = #{id}")
     int cronDelete(Map<String,Object> param);
+    // 新增访问数
+    @Insert("INSERT INTO access (date_time) VALUES (#{date})")
+    int accessCode(String date);
+    // 当日访问数+1
+    @Update("UPDATE access SET access_number=access_number+1 WHERE date_time = #{date}")
+    int accessNumberCode(String date);
+    // 获取访问数
+    @Select("SELECT * FROM access ORDER BY id DESC LIMIT 0,#{limit}")
+    List<AccessDTO> obtainAccessCode(int limit);
 }

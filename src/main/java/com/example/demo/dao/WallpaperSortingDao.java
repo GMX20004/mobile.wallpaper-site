@@ -69,13 +69,13 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     //点赞收藏总数修改
     void zoAddDeleteCGCode(Map<String,Object> param);
     //审核壁纸--管理员权限
-    @Select("SELECT * FROM wallpaper_lins")
-    List<WallpaperDTO> reviewWallpaperCode();
+    @Select("SELECT id,`type`,storage_location FROM wallpaper WHERE state=0 or state=1 ORDER BY the_default_daily LIMIT #{start},#{limit}")
+    List<WallpaperDTO> reviewWallpaperCode(Map<String,Object> param);
     //壁纸审核通过--管理员权限
     @Update("UPDATE wallpaper SET state=2,storage_location = #{storageLocation} WHERE id = #{id}")
     int reviewThroughCode(Map<String,Object> param);
     //壁纸详情查看
-    @Select("SELECT t1.id,t1.praise,t1.collection,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.storage_location,t1.creation_time,t2.`name`,t2.head_portrait FROM wallpaper t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
+    @Select("SELECT t1.id,t1.praise,t1.collection,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.storage_location,t1.creation_time,t1.state,t2.`name`,t2.head_portrait FROM wallpaper t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
     List<WallpaperDetailsDTO> detailsWallpaperCode(Map<String,Object> param);
     //壁纸审核详情查看--管理员权限
     @Select("SELECT t1.id,t1.the_title,t1.user_id,t1.the_label,t1.type,t1.creation_time,t1.size,t2.`name`,t2.head_portrait FROM wallpaper_lins t1 LEFT JOIN `user` t2 ON t1.user_id=t2.id WHERE t1.id=#{id}")
@@ -87,15 +87,9 @@ public interface WallpaperSortingDao extends BaseMapper<WallpaperDTO> {
     @Delete("DELETE FROM `wallpaper_lins` WHERE id=#{id}")
     int deleteAuditCode(Map<String,Object> param);
     //壁纸上传
-    @Insert("INSERT INTO wallpaper (id,the_title,user_id,the_label,type,size)VALUES(#{theTitle},#{userId},#{theLabel},#{type},#{size})")
+    @Insert("INSERT INTO wallpaper (id,the_title,user_id,the_label,type,size)VALUES(#{id},#{theTitle},#{userId},#{theLabel},#{type},#{size})")
     int uploadWallpaperCode(Map<String,Object> param);
     //修改审核壁纸
-    @Update("UPDATE `wallpaper_lins` SET the_title=#{theTitle},the_label=#{theLabel} WHERE id = #{id}")
+    @Update("UPDATE `wallpaper` SET the_title=#{theTitle},the_label=#{theLabel},storage_location=#{storageLocation},state=#{state} WHERE id = #{id}")
     int modifyAuditCode(Map<String,Object> param);
-    //批量上传壁纸
-    @Insert("INSERT INTO wallpaper_lins (user_id,type,size) VALUES ${sql}")
-    int batchAddCode(String sql);
-
-    @Insert("INSERT INTO wallpaper (id,user_id,type,storage_location,size) VALUES ${sql}")
-    int temporaryCode(String sql);
 }

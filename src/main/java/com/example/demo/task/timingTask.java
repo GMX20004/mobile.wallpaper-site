@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class timingTask {
     @Autowired
     private ToolDao toolDao;
     ToolMod toolMod = new ToolMod();
+
     @Scheduled(cron = "0 0 0 * * ?")
     public void executeFileDow(){
         Map<String,Object> params = new HashMap<>();
@@ -37,5 +40,12 @@ public class timingTask {
             toolDao.taskInformation(params);
         }
 
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void access(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        toolDao.accessCode(sdf.format(date));
     }
 }

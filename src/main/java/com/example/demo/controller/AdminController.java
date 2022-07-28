@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.body.ModifyAuditBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
@@ -11,7 +12,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
@@ -24,7 +24,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/admin")
+@RequestMapping(value = "admin", produces = "application/json;charset=UTF-8")
 public class AdminController {
 
     @Autowired
@@ -72,7 +72,6 @@ public class AdminController {
     @GetMapping("c896d9988afd44939906b45e8703df3a")
     @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
     public List<UserDTO> userView(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
         if(userDao.userUuidCode(params)==1)
             return userDao.userViewCode();
         else
@@ -88,7 +87,6 @@ public class AdminController {
     })
     public Boolean deleteUser(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
-            params.put("email",0);
             if(userDao.userUuidCode(params)==1) {
                 userDao.deleteUserCode(params);
                 return true;
@@ -109,7 +107,6 @@ public class AdminController {
     })
     public Boolean stateUser(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
-            params.put("email",0);
             if(userDao.userUuidCode(params)==1) {
                 userDao.stateUserCode(params);
                 return true;
@@ -123,11 +120,24 @@ public class AdminController {
      * 审查壁纸全部
      */
     @GetMapping("0529588ecb8d4246bc0dc5302643b62d")
-    @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
-    public List<WallpaperDTO> reviewWallpaper(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
-        if(userDao.userUuidCode(params)==1)
-            return wallpaperSortingDao.reviewWallpaperCode();
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
+    })
+    public Map<String,Object> reviewWallpaper(@ApiIgnore @RequestParam Map<String, Object> params){
+        if(userDao.userUuidCode(params)==1 || "000000".equals(params.get("uuid").toString())){
+            int num = Integer.valueOf(params.get("page").toString());
+            int limit = Integer.valueOf(params.get("limit").toString());
+            int start = 0;
+            for (int i=1;i<num;i++) start+=limit;
+            params.put("start",start);
+            params.put("limit",limit);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",wallpaperSortingDao.reviewWallpaperCode(params));
+            map.put("total",wallpaperSortingDao.countCode());
+            return map;
+        }
         else
             return null;
     }
@@ -190,7 +200,6 @@ public class AdminController {
     })
     public boolean reviewNotThrough(@ApiIgnore @RequestParam Map<String, Object> params){
         try {
-            params.put("email",0);
             if(userDao.userUuidCode(params)==1){
                 List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperLinCode(params);
                 System.out.println(arr);
@@ -216,7 +225,6 @@ public class AdminController {
     @GetMapping("f91bcfccb27d4f02ac249733e495d518")
     @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
     public List<FeedbackDTO> feedback(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
         if(userDao.userUuidCode(params)==1)
             return toolDao.feedbackCode();
         else
@@ -231,7 +239,6 @@ public class AdminController {
             @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
     })
     public boolean deleteFeedback(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
         if(userDao.userUuidCode(params)==1){
             int i = toolDao.deleteFeedbackCode(params);
             if (i==1)return true;
@@ -241,24 +248,39 @@ public class AdminController {
     }
 
     /**
-     * 修改审核壁纸
+     * 修改壁纸信息
      */
     @PostMapping("ccef83e1d2ff455fae16680c906f2239")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "id", paramType = "query",required = true, dataType="int"),
-            @ApiImplicitParam(name = "theTitle", value = "标题", paramType = "query",required = true, dataType="String"),
-            @ApiImplicitParam(name = "theLabel", value = "标签", paramType = "query",required = true, dataType="String"),
-            @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
-    })
-    public boolean modifyAudit(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
-        if(userDao.userUuidCode(params)==1){
+    public boolean modifyAudit( @RequestBody ModifyAuditBody modifyAuditBody){
+        Map<String,Object> params = new HashMap<>();
+        params.put("id", modifyAuditBody.getId());
+        params.put("theTitle", modifyAuditBody.getTheTitle());
+        params.put("theLabel", modifyAuditBody.getTheLabel());
+        params.put("storageLocation", modifyAuditBody.getStorageLocation());
+        params.put("state", modifyAuditBody.getState());
+        params.put("uuid", modifyAuditBody.getUuid());
+        if(userDao.userUuidCode(params)==1 || "000000".equals(modifyAuditBody.getUuid())){
+            List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(params);
+            if ("000000".equals(modifyAuditBody.getUuid())){
+                params.put("state",arr.get(0).getState());
+            }
+            if (modifyAuditBody.getTheTitle()==null || "".equals(modifyAuditBody.getTheTitle())){
+                params.put("theTitle",arr.get(0).getTheTitle());
+            }
+            if (modifyAuditBody.getTheLabel()==null || "".equals(modifyAuditBody.getTheLabel())){
+                params.put("theLabel",arr.get(0).getTheLabel());
+            }
+            if (!arr.get(0).getStorageLocation().equals(modifyAuditBody.getStorageLocation())){
+                String target = ymlConfig.getWallpaperDisk()+arr.get(0).getStorageLocation()+slash+modifyAuditBody.getId()+"."+arr.get(0).getType();
+                String destination = ymlConfig.getWallpaperDisk()+modifyAuditBody.getStorageLocation()+slash+modifyAuditBody.getId()+"."+arr.get(0).getType();
+                toolMod.imgTransfer(target,destination);
+                toolMod.deleteFile(target);
+            }
             int i = wallpaperSortingDao.modifyAuditCode(params);
             if (i==1)return true;
             else return false;
         }else
             return false;
-
     }
     /**
      * 获取管理员消息
@@ -315,14 +337,7 @@ public class AdminController {
      * 查看壁纸文件夹
      */
     @GetMapping("586c0e7bda874d5fa1749c56963077dc")
-    @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
-    public List<wallpaperFolderDTO> wallpaperFolder(@ApiIgnore @RequestParam Map<String, Object> params){
-        params.put("email",0);
-        if(userDao.userUuidCode(params)==1)
-            return toolDao.wallpaperFolderCode();
-        else
-            return null;
-    }
+    public List<wallpaperFolderDTO> wallpaperFolder(){return toolDao.wallpaperFolderCode();}
     /**
      * 新增壁纸文件夹
      */
@@ -375,106 +390,6 @@ public class AdminController {
             e.printStackTrace();
         }
         return false;
-    }
-    /**
-     * 批量上传壁纸
-     */
-    @PostMapping("img")
-    public Boolean img(
-            @RequestParam(value = "file") MultipartFile[] file,                                  //上传壁纸
-            @RequestParam(value = "userId") int userId,                                          //用户id
-            @RequestParam Integer[] size
-    ){
-        Map<String,Object> params = new HashMap<>();
-        int num = wallpaperSortingDao.countCode()+1;
-        for (int i=0;i<file.length;i++){
-             params.clear();
-             if (file[i]!=null){
-                 String path = ymlConfig.getWallpaperDisk();//存放路径
-                 String fileName = file[i].getOriginalFilename();//获取文件名称
-                 String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
-                 params.put("id",num++);
-                 params.put("userId",userId);
-                 params.put("type",suffixName.substring(1));
-                 params.put("size",size[i]);
-                 wallpaperSortingDao.uploadWallpaperCode(params);
-                 fileName= (num++)+suffixName;//重新生成文件名
-                 File targetFile = new File(path+"cs");
-                 if (!targetFile.exists()) {
-                     // 判断文件夹是否未空，空则创建
-                     targetFile.mkdirs();
-                 }
-                 File saveFile = new File(targetFile, fileName);
-                 try {
-                     //指定本地存入路径
-                     file[i].transferTo(saveFile);
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                     return false;
-                 }
-                 if (size[i]>1048576){
-                     targetFile = new File(path+"csm");
-                     if (!targetFile.exists()) {
-                         // 判断文件夹是否未空，空则创建
-                         targetFile.mkdirs();
-                     }
-                      saveFile = new File(targetFile, fileName);
-                     try {
-                         //指定本地存入路径
-                         file[i].transferTo(saveFile);
-                     } catch (Exception e) {
-                         e.printStackTrace();
-                         return false;
-                     }
-                 }
-             }
-        }
-        return true;
-    }
-
-    /**
-     *本地批量上传
-     */
-    @GetMapping("uploadLocally")
-    public Boolean uploadLocally(@RequestParam String uuid){
-        try {
-            Map<String,Object> params = new HashMap<>();
-            params.put("email",0);
-            params.put("uuid",uuid);
-            if(userDao.userUuidCode(params)==1) {
-                String path = ymlConfig.getWallpaperDisk();
-                String coding = toolMod.uuid();
-                String sql = "";
-                int num = 0;
-                File file = new File(path + "uploadLocally");
-                File[] files = file.listFiles();
-                String[] name = file.list();
-                if (name != null) {
-                    for (int i = 0; i < name.length; i++) {
-                        if (i == 0) {
-                            params.put("userId", 1);
-                            params.put("type", name[i].split("\\.")[1]);
-                            params.put("coding", coding);
-                            params.put("size", files[i].length());
-                            wallpaperSortingDao.uploadWallpaperCode(params);
-                            num = wallpaperSortingDao.detailsWallpaperLinUuidCode(coding);
-                            file = new File(path + "cs" + "\\" + num++ + "." + name[i].split("\\.")[1]);
-                        } else {
-                            sql += "(" + 1 + ",'" + name[i].split("\\.")[1] + "'," + files[i].length() + "),";
-                            file = new File(path + "cs" + "\\" + num++ + "." + name[i].split("\\.")[1]);
-                        }
-                        files[i].renameTo(file);
-                    }
-                    wallpaperSortingDao.batchAddCode(sql.substring(0, sql.length() - 1));
-                }
-            }else{
-                return false;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
 }

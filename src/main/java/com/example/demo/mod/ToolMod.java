@@ -112,6 +112,9 @@ public class ToolMod {
         return dates;
     }
     public static void main(String[] args) {
-      ToolMod toolMod = new ToolMod();
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dates = sdf.format(date);
+        System.out.println(dates);
     }
 }

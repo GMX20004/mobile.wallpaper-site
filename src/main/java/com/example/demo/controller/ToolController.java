@@ -5,6 +5,7 @@ import cn.hutool.core.codec.Base64;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.WallpaperSortingDao;
+import com.example.demo.dto.AccessDTO;
 import com.example.demo.dto.MessagesDTO;
 import com.example.demo.dto.NumDTO;
 import com.example.demo.mod.ToolMod;
@@ -26,6 +27,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -236,6 +239,22 @@ public class ToolController {
     public String toolCs(){
         System.out.println(ymlConfig.getWallpaperDisk());
         return ymlConfig.getWallpaperDisk();
+    }
+    /**
+     *当日访问数+1
+     */
+    @GetMapping("accessNumber")
+    public void accessNumber(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        toolDao.accessNumberCode(sdf.format(date));
+    }
+    /**
+     * 获取访问数
+     */
+    @GetMapping("obtainAccess")
+    public List<AccessDTO> obtainAccess(@RequestParam int limit){
+        return toolDao.obtainAccessCode(limit);
     }
 }
 
