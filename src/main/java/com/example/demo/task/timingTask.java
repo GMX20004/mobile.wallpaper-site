@@ -47,5 +47,9 @@ public class timingTask {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         toolDao.accessCode(sdf.format(date));
+        Map<String,Object> map = new HashMap<>();
+        map.put("date",sdf.format(date));
+        map.put("access",toolMod.randomNumber(500));
+        toolDao.accessUpdateCode(map);
     }
 }

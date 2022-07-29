@@ -1,16 +1,10 @@
 package com.example.demo.mod;
 
-import cn.hutool.http.HttpUtil;
-import com.example.demo.config.YmlConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Random;
 
 /**
  * 工具类
@@ -111,10 +105,12 @@ public class ToolMod {
         String dates = sdf.format(date);
         return dates;
     }
+    public int randomNumber(int scope){
+        Random r = new Random();
+        return r.nextInt(scope);
+    }
     public static void main(String[] args) {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dates = sdf.format(date);
-        System.out.println(dates);
+        ToolMod toolMod = new ToolMod();
+        System.out.println(toolMod.uuid());
     }
 }

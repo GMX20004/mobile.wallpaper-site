@@ -67,13 +67,28 @@ public class AdminController {
         return true;
     }
     /**
-     * 所有用户查看
+     * 查看所有普通用户
      */
     @GetMapping("c896d9988afd44939906b45e8703df3a")
-    @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String")
-    public List<UserDTO> userView(@ApiIgnore @RequestParam Map<String, Object> params){
-        if(userDao.userUuidCode(params)==1)
-            return userDao.userViewCode();
+    @ApiImplicitParams({
+            @ApiImplicitParam (name = "identity", value = "用户身份", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String"),
+            @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
+    })
+    public Map<String,Object> userView(@ApiIgnore @RequestParam Map<String, Object> params){
+        int num = Integer.valueOf(params.get("page").toString());
+        int limit = Integer.valueOf(params.get("limit").toString());
+        int start = 0;
+        for (int i=1;i<num;i++) start+=limit;
+        params.put("start",start);
+        params.put("limit",limit);
+        if(userDao.userUuidCode(params)==1){
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",userDao.userViewCode(params));
+            map.put("total",userDao.userNumCode(params));
+            return map;
+        }
         else
             return null;
     }

@@ -70,7 +70,40 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     // 当日访问数+1
     @Update("UPDATE access SET access_number=access_number+1 WHERE date_time = #{date}")
     int accessNumberCode(String date);
+    // 修改访问量
+    @Update("UPDATE access SET access_number=#{access} WHERE date_time = #{date}")
+    int accessUpdateCode(Map<String,Object> param);
     // 获取访问数
     @Select("SELECT * FROM access ORDER BY id DESC LIMIT 0,#{limit}")
     List<AccessDTO> obtainAccessCode(int limit);
+    //修改用户语言
+    @Update("UPDATE `user` SET `language` = #{language} WHERE user_id = #{uuid}")
+    int languageCode (Map<String,Object> param);
+    // 操作日志新增
+    @Insert("INSERT INTO operation_log (user_id,action) VALUES (#{userId},#{action})")
+    int operationLogAddCode(Map<String,Object> param);
+    // 操作日志分页查看
+    @Select("SELECT * FROM `operation_log` ORDER BY id LIMIT #{start},#{limit}")
+    List<OperationLogDTO> operationLogPageCode(Map<String,Object> param);
+    // 查询所有操作日志
+    @Select("SELECT * FROM `operation_log`")
+    List<OperationLogDTO> operationLogAllCode();
+    // 修改权限--管理员
+    @Update("UPDATE permissions \n" +
+            "SET change_permissions = #{changePermissions},\n" +
+            "wallpaper = #{wallpaper},\n" +
+            "wallpaper_state = #{wallpaperState},\n" +
+            "user_information = #{userInformation},\n" +
+            "batch_upload = #{batchUpload},\n" +
+            "Batch_download = #{BatchDownload},\n" +
+            "system_announcement = #{systemAnnouncement},\n" +
+            "Important_notice = #{ImportantNotice},\n" +
+            "Important_notice_custom = #{ImportantNoticeCustom},\n" +
+            "log_export = #{logExport}\n" +
+            "WHERE\n" +
+            "\tid = #{id}")
+    int permissionsModifyCode(Map<String,Object> param);
+    // 查看权限
+    @Select("SELECT t2.* FROM `user` t1 LEFT JOIN permissions t2 ON t1.id=t2.id WHERE t1.user_id = #{uuid}")
+    List<PermissionsDTO> permissionsViewCode(String uuid);
 }

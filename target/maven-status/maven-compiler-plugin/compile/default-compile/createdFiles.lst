@@ -1,3 +1,5 @@
+com\example\demo\body\ModifyAuditBody.class
+com\example\demo\body\UserModifyBody.class
 com\example\demo\dto\WallpaperDetailsDTO.class
 com\example\demo\entity\User.class
 com\example\demo\dao\WallpaperSortingDao.class
@@ -10,7 +12,6 @@ com\example\demo\mod\DailyChange.class
 com\example\demo\controller\ToolController.class
 com\example\demo\controller\UserController.class
 com\example\demo\dto\AccessDTO.class
-com\example\demo\dto\ModifyAuditDTO.class
 com\example\demo\controller\AdminController.class
 com\example\demo\dto\WallpaperDTO.class
 com\example\test\TestApplication.class

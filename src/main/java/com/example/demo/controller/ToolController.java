@@ -256,5 +256,15 @@ public class ToolController {
     public List<AccessDTO> obtainAccess(@RequestParam int limit){
         return toolDao.obtainAccessCode(limit);
     }
+
+    @GetMapping("language")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "language", value = "语言", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam(name = "uuid", value = "唯一编码", paramType = "query",required = true,dataType="String")
+    })
+    public boolean language(@ApiIgnore @RequestParam Map<String, Object> params){
+        if (toolDao.languageCode(params)==1) return true;
+        else return false;
+    }
 }
 

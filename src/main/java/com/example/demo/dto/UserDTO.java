@@ -38,4 +38,8 @@ public class UserDTO implements Serializable {
     private int start;
     //头像
     private String headPortrait;
+    //身份0管理员1普通用户
+    private int identity;
+    //语言1英语2中文
+    private int language;
 }

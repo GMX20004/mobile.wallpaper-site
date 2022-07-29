@@ -22,6 +22,8 @@ public interface UserDao extends BaseMapper<UserDTO> {
     //查询用户信息
     @Select("SELECT * FROM `user` WHERE id=#{id}")
     List<UserDTO> getUserCode(Map<String,Object> param);
+    @Select("SELECT * FROM `user` WHERE user_id=#{uuid}")
+    List<UserDTO> getUserUUIDCode(String uuid);
     //新建用户
     @Insert("INSERT INTO `user`(email,`password`,user_id,creation_time,width,height)VALUES(#{email},SHA1(#{password}),#{uuid},#{time},#{width},#{height})")
     int getRegisteredCode(Map<String,Object> param);
@@ -29,8 +31,11 @@ public interface UserDao extends BaseMapper<UserDTO> {
     @Update("UPDATE `user` SET `password` = SHA1(#{password}) WHERE email = #{email}")
     int getModifyCode(Map<String,Object> param);
     //查询所有用户信息--管理员权限
-    @Select("SELECT * FROM `user`")
-    List<UserDTO> userViewCode();
+    @Select("SELECT * FROM `user` WHERE identity=#{identity} ORDER BY id LIMIT #{start},#{limit}")
+    List<UserDTO> userViewCode(Map<String,Object> param);
+    //查询所有用户数量--管理员权限
+    @Select("SELECT COUNT(*) FROM `user` WHERE identity=#{identity} ORDER BY id LIMIT #{start},#{limit}")
+    int userNumCode(Map<String,Object> param);
     //删除用户--管理员权限
     @Delete("DELETE FROM `user` WHERE id=#{id}")
     int deleteUserCode(Map<String,Object> param);

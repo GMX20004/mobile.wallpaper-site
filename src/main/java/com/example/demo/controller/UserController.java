@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.body.UserModifyBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
@@ -129,46 +130,49 @@ public class UserController {
         List<UserDTO> arr = userDao.getUserCode(params);
         return arr;
     }
-
+    //查看用户信息
+    @PostMapping("userUUID")
+    public List<UserDTO> userUUID(@RequestParam String uuid){
+        List<UserDTO> arr = userDao.getUserUUIDCode(uuid);
+        return arr;
+    }
     /**
      * 用户个人信息修改
      */
     @PostMapping("userModify")
-    public Boolean userModify(
-            @RequestParam(value = "file",required = false) MultipartFile file,                   //上传头像
-            @RequestParam(value = "userId") int userId,                                          //用户id
-            @RequestParam(value = "name",required = false) String name,                          //昵称
-            @RequestParam(value = "instructions",required = false) String instructions,          //个人说明
-            @RequestParam(value = "sex") String sex                                              //性别
-    ){
+    public Boolean userModify( UserModifyBody userModifyBody){
         try {
-                 Map<String,Object> param = new HashMap<>();
-                 param.put("id",userId);
-                 System.out.println(file);
-                if (file!=null){
-                    String path = ymlConfig.getWallpaperDisk()+"headPortrait";//存放路径
-                    String fileName = file.getOriginalFilename();//获取文件名称
-                    String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
-                    int num = userId;
-                    fileName= num+suffixName;//重新生成文件名
-                    File targetFile = new File(path);
-                    if (!targetFile.exists()) {
-                        // 判断文件夹是否未空，空则创建
-                        targetFile.mkdirs();
+            List<UserDTO> arr = userDao.getUserUUIDCode(userModifyBody.getUuid());
+            if (arr.size() != 0){
+                if (arr.get(0).getId()==userModifyBody.getUserId() || arr.get(0).getStart()==0){
+                    Map<String,Object> param = new HashMap<>();
+                    param.put("id",userModifyBody.getUserId());
+                    if (userModifyBody.getFile()!=null){
+                        String path = ymlConfig.getWallpaperDisk()+"headPortrait";//存放路径
+                        String fileName = userModifyBody.getFile().getOriginalFilename();//获取文件名称
+                        String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+                        fileName= userModifyBody.getUserId()+suffixName;//重新生成文件名
+                        File targetFile = new File(path);
+                        if (!targetFile.exists()) {
+                            // 判断文件夹是否未空，空则创建
+                            targetFile.mkdirs();
+                        }
+                        File saveFile = new File(targetFile, fileName);
+                        //指定本地存入路径
+                        userModifyBody.getFile().transferTo(saveFile);
+                        param.put("img",fileName);
                     }
-                    File saveFile = new File(targetFile, fileName);
-                    //指定本地存入路径
-                    file.transferTo(saveFile);
-                    param.put("img",fileName);
+                    param.put("name",userModifyBody.getName());
+                    param.put("instructions",userModifyBody.getInstructions());
+                    param.put("sex",userModifyBody.getSex());
+                    userDao.userModifyCode(param);
+                    return true;
                 }
-                param.put("name",name);
-                param.put("instructions",instructions);
-                param.put("sex",sex);
-                userDao.userModifyCode(param);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return false;
     }
 }

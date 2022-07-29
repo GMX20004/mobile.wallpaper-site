@@ -13,7 +13,7 @@ public class AccessDTO implements Serializable {
     //id
     private int id;
     //访问数
-    private String accessNumber;
+    private int accessNumber;
     //日期
     private String dateTime;
 }

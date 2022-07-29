@@ -1,6 +1,5 @@
 package com.example.demo.body;
 
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
