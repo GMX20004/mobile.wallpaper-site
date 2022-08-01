@@ -6,6 +6,7 @@ import com.example.demo.body.UserModifyBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
+import com.example.demo.dto.PermissionsDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
@@ -145,8 +146,9 @@ public class UserController {
     public Boolean userModify(UserModifyBody userModifyBody, HttpServletRequest httpRequest){
         try {
             List<UserDTO> arr = userDao.getUserUUIDCode(userModifyBody.getUuid());
+            List<PermissionsDTO> permissions = toolDao.permissionsViewCode(userModifyBody.getUuid());
             if (arr.size() != 0){
-                if (arr.get(0).getId()==userModifyBody.getUserId() || arr.get(0).getStart()==0){
+                if (arr.get(0).getId()==userModifyBody.getUserId() || permissions.get(0).getModifyingUserInformation()==1){
                     Map<String,Object> param = new HashMap<>();
                     param.put("id",userModifyBody.getUserId());
                     if (userModifyBody.getFile()!=null){
@@ -167,6 +169,7 @@ public class UserController {
                     param.put("name",userModifyBody.getName());
                     param.put("instructions",userModifyBody.getInstructions());
                     param.put("sex",userModifyBody.getSex());
+                    System.out.println(param);
                     userDao.userModifyCode(param);
                     String ipAddress = httpRequest.getHeader("X-Real-Ip");
                     if (StringUtils.isEmpty(ipAddress)) {
