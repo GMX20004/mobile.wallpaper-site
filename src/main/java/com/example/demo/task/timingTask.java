@@ -50,6 +50,12 @@ public class timingTask {
         Map<String,Object> map = new HashMap<>();
         map.put("date",sdf.format(date));
         map.put("access",toolMod.randomNumber(500));
+        map.put("sql","message_number=9999");
+        map.put("id",0);
+        toolDao.permissionsExtension(map);
+        map.put("sql","message_number=10");
+        map.put("id",1);
+        toolDao.permissionsExtension(map);
         toolDao.accessUpdateCode(map);
     }
 }

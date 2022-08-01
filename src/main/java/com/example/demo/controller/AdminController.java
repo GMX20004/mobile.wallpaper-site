@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.example.demo.body.ModifyAuditBody;
+import com.example.demo.body.PermissionsBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
 import com.example.demo.dao.UserDao;
@@ -8,12 +10,16 @@ import com.example.demo.dao.WallpaperSortingDao;
 import com.example.demo.dto.*;
 import com.example.demo.mod.DailyChange;
 import com.example.demo.mod.ToolMod;
+import com.example.demo.utils.excel.ExcelUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.*;
 
@@ -41,6 +47,7 @@ public class AdminController {
     //String slash = "\\";
     //Linux
     String slash = "/";
+
     /**
      * 每日首页壁纸显示改动
      */
@@ -71,7 +78,7 @@ public class AdminController {
      */
     @GetMapping("c896d9988afd44939906b45e8703df3a")
     @ApiImplicitParams({
-            @ApiImplicitParam (name = "identity", value = "用户身份", paramType = "query",required = true, dataType="int"),
+            @ApiImplicitParam (name = "identity", value = "用户身份", paramType = "query",required = false, dataType="int"),
             @ApiImplicitParam(name = "uuid", value = "管理员授权码", paramType = "query",required = true, dataType="String"),
             @ApiImplicitParam(name = "limit", value = "限制", paramType = "query",required = true, dataType="int"),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
@@ -85,6 +92,11 @@ public class AdminController {
         params.put("limit",limit);
         if(userDao.userUuidCode(params)==1){
             Map<String,Object> map = new HashMap<>();
+            if (params.get("identity") != null){
+                params.put("sql","identity="+params.get("identity"));
+            }else{
+                params.put("sql","1=1");
+            }
             map.put("data",userDao.userViewCode(params));
             map.put("total",userDao.userNumCode(params));
             return map;
@@ -266,7 +278,7 @@ public class AdminController {
      * 修改壁纸信息
      */
     @PostMapping("ccef83e1d2ff455fae16680c906f2239")
-    public boolean modifyAudit( @RequestBody ModifyAuditBody modifyAuditBody){
+    public boolean modifyAudit(@RequestBody @NotNull ModifyAuditBody modifyAuditBody, HttpServletRequest httpRequest){
         Map<String,Object> params = new HashMap<>();
         params.put("id", modifyAuditBody.getId());
         params.put("theTitle", modifyAuditBody.getTheTitle());
@@ -274,11 +286,8 @@ public class AdminController {
         params.put("storageLocation", modifyAuditBody.getStorageLocation());
         params.put("state", modifyAuditBody.getState());
         params.put("uuid", modifyAuditBody.getUuid());
-        if(userDao.userUuidCode(params)==1 || "000000".equals(modifyAuditBody.getUuid())){
+        if( userDao.userUuidCode(params)==1 ){
             List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(params);
-            if ("000000".equals(modifyAuditBody.getUuid())){
-                params.put("state",arr.get(0).getState());
-            }
             if (modifyAuditBody.getTheTitle()==null || "".equals(modifyAuditBody.getTheTitle())){
                 params.put("theTitle",arr.get(0).getTheTitle());
             }
@@ -291,6 +300,11 @@ public class AdminController {
                 toolMod.imgTransfer(target,destination);
                 toolMod.deleteFile(target);
             }
+            String ipAddress = httpRequest.getHeader("X-Real-Ip");
+            if (StringUtils.isEmpty(ipAddress)) {
+                ipAddress = httpRequest.getRemoteAddr();
+            }
+            toolDao.operationLogAddCode(userDao.getUserUUIDCode(modifyAuditBody.getUuid()).get(0).getId(),"修改编号为:"+modifyAuditBody.getId()+"的壁纸信息",ipAddress);
             int i = wallpaperSortingDao.modifyAuditCode(params);
             if (i==1)return true;
             else return false;
@@ -407,4 +421,104 @@ public class AdminController {
         return false;
     }
 
+    /**
+     * 分页查询日志
+     */
+    @GetMapping("OperationLog")
+    public List<OperationLogDTO> operationLog(@RequestParam int page,@RequestParam int limit){
+        int start = 0;
+        for (int i=1;i<page;i++) start+=limit;
+        Map<String ,Object> map = new HashMap<>();
+        map.put("start",start);
+        map.put("limit",limit);
+        return toolDao.operationLogPageCode(map);
+    }
+
+    /**
+     * 权限查看
+     */
+    @GetMapping("PermissionsView")
+    public List<PermissionsDTO> permissionsView(@RequestParam String uuid){
+        return toolDao.permissionsViewCode(uuid);
+    }
+
+    /**
+     * 权限修改
+     */
+    @PostMapping("PermissionsModify")
+    public Boolean permissionsModify(@RequestBody PermissionsBody permissionsBody,HttpServletRequest httpRequest){
+        try {
+            List<PermissionsDTO> arr = toolDao.permissionsViewCode(permissionsBody.getUuid());
+            if (arr.get(0).getChangePermissions() == 1){
+                Map<String,Object> map = new HashMap<>();
+                map.put("id",permissionsBody.getId());
+                String sql = "";
+                sql+=("modifying_user_information="+permissionsBody.getModifyingUserInformation()+",");
+                sql+=("system_announcement="+permissionsBody.getSystemAnnouncement()+",");
+                sql+=("important_notice="+permissionsBody.getImportantNotice()+",");
+                sql+=("important_system_users="+permissionsBody.getImportantSystemUsers()+",");
+                sql+=("important_notice_custom="+permissionsBody.getImportantNoticeCustom()+",");
+                sql+=("online_wallpaper="+permissionsBody.getOnlineWallpaper()+",");
+                sql+=("not_online_wallpaper="+permissionsBody.getNotOnlineWallpaper()+",");
+                sql+=("online_wallpaper_modify="+permissionsBody.getOnlineWallpaperModify()+",");
+                sql+=("online_wallpaper_modify_title="+permissionsBody.getOnlineWallpaperModifyTitle()+",");
+                sql+=("online_wallpaper_modify_label="+permissionsBody.getOnlineWallpaperModifyLabel()+",");
+                sql+=("online_wallpaper_modify_state="+permissionsBody.getOnlineWallpaperModifyState()+",");
+                sql+=("online_wallpaper_modify_location="+permissionsBody.getOnlineWallpaperModifyLocation()+",");
+                sql+=("not_online_wallpaper_modify="+permissionsBody.getNotOnlineWallpaperModify()+",");
+                sql+=("not_online_wallpaper_modify_title="+permissionsBody.getNotOnlineWallpaperModifyTitle()+",");
+                sql+=("not_online_wallpaper_modify_label="+permissionsBody.getNotOnlineWallpaperModifyLabel()+",");
+                sql+=("not_online_wallpaper_modify_state="+permissionsBody.getNotOnlineWallpaperModifyState()+",");
+                sql+=("not_online_wallpaper_modify_location="+permissionsBody.getNotOnlineWallpaperModifyLocation()+",");
+                sql+=("wallpaper_upload="+permissionsBody.getWallpaperUpload()+",");
+                sql+=("wallpaper_download="+permissionsBody.getWallpaperDownload()+",");
+                sql+=("log_export="+permissionsBody.getLogExport()+",");
+                sql+=("log_view="+permissionsBody.getLogView());
+                map.put("sql",sql);
+                toolDao.permissionsModifyCode(map);
+                String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                if (StringUtils.isEmpty(ipAddress)) {
+                    ipAddress = httpRequest.getRemoteAddr();
+                }
+                toolDao.operationLogAddCode(arr.get(0).getId(),"修改权限",ipAddress);
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 日志导出
+     */
+    @GetMapping("OperationLogExport")
+    public void operationLogExport(@RequestParam String uuid, HttpServletResponse response,HttpServletRequest httpRequest){
+        try {
+            List<PermissionsDTO> arr = toolDao.permissionsViewCode(uuid);
+            if (arr.get(0).getChangePermissions() == 1){
+                List<Object> head = Arrays.asList("操作人ID","行为","操作地址","操作时间");
+                List<OperationLogDTO> list = toolDao.operationLogAllCode();
+                List<List<Object>> sheetDataList = new ArrayList<>();
+                sheetDataList.add(head);
+                for (OperationLogDTO str : list) {
+                    List<Object> body = new ArrayList<>();
+                    body.add(str.getUserId());
+                    body.add(str.getAction());
+                    body.add(str.getIpAddress());
+                    body.add(str.getOperatingTime());
+                    sheetDataList.add(body);
+                }
+                String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                if (StringUtils.isEmpty(ipAddress)) {
+                    ipAddress = httpRequest.getRemoteAddr();
+                }
+                toolDao.operationLogAddCode(arr.get(0).getId(),"导出日志",ipAddress);
+                ExcelUtils.export(response,"操作日志", sheetDataList);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

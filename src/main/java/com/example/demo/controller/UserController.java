@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.example.demo.body.UserModifyBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,7 +142,7 @@ public class UserController {
      * 用户个人信息修改
      */
     @PostMapping("userModify")
-    public Boolean userModify( UserModifyBody userModifyBody){
+    public Boolean userModify(UserModifyBody userModifyBody, HttpServletRequest httpRequest){
         try {
             List<UserDTO> arr = userDao.getUserUUIDCode(userModifyBody.getUuid());
             if (arr.size() != 0){
@@ -166,6 +168,11 @@ public class UserController {
                     param.put("instructions",userModifyBody.getInstructions());
                     param.put("sex",userModifyBody.getSex());
                     userDao.userModifyCode(param);
+                    String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                    if (StringUtils.isEmpty(ipAddress)) {
+                        ipAddress = httpRequest.getRemoteAddr();
+                    }
+                    toolDao.operationLogAddCode(arr.get(0).getId(),"用户"+userModifyBody.getUserId()+"的信息修改",ipAddress);
                     return true;
                 }
             }

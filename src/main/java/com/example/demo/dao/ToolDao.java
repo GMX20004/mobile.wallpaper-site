@@ -80,30 +80,21 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     @Update("UPDATE `user` SET `language` = #{language} WHERE user_id = #{uuid}")
     int languageCode (Map<String,Object> param);
     // 操作日志新增
-    @Insert("INSERT INTO operation_log (user_id,action) VALUES (#{userId},#{action})")
-    int operationLogAddCode(Map<String,Object> param);
+    @Insert("INSERT INTO operation_log (user_id,action,ip_address) VALUES (#{userId},#{action},#{ip})")
+    int operationLogAddCode(int userId,String action,String ip);
     // 操作日志分页查看
     @Select("SELECT * FROM `operation_log` ORDER BY id LIMIT #{start},#{limit}")
-    List<OperationLogDTO> operationLogPageCode(Map<String,Object> param);
+    List<OperationLogDTO> operationLogPageCode(Map<String, Object> param);
     // 查询所有操作日志
     @Select("SELECT * FROM `operation_log`")
     List<OperationLogDTO> operationLogAllCode();
     // 修改权限--管理员
-    @Update("UPDATE permissions \n" +
-            "SET change_permissions = #{changePermissions},\n" +
-            "wallpaper = #{wallpaper},\n" +
-            "wallpaper_state = #{wallpaperState},\n" +
-            "user_information = #{userInformation},\n" +
-            "batch_upload = #{batchUpload},\n" +
-            "Batch_download = #{BatchDownload},\n" +
-            "system_announcement = #{systemAnnouncement},\n" +
-            "Important_notice = #{ImportantNotice},\n" +
-            "Important_notice_custom = #{ImportantNoticeCustom},\n" +
-            "log_export = #{logExport}\n" +
-            "WHERE\n" +
-            "\tid = #{id}")
+    @Update("UPDATE permissions SET ${sql} WHERE id = #{id}")
     int permissionsModifyCode(Map<String,Object> param);
+    // 定时修改权限扩展表
+    @Update("UPDATE permissions_extension SET ${sql} WHERE id = #{id}")
+    int permissionsExtension(Map<String,Object> param);
     // 查看权限
-    @Select("SELECT t2.* FROM `user` t1 LEFT JOIN permissions t2 ON t1.id=t2.id WHERE t1.user_id = #{uuid}")
+    @Select("SELECT t2.*,t3.message_number FROM `user` t1 LEFT JOIN permissions t2 ON t1.id=t2.id LEFT JOIN permissions_extension t3 ON t2.id=t3.id WHERE t1.user_id = #{uuid}")
     List<PermissionsDTO> permissionsViewCode(String uuid);
 }

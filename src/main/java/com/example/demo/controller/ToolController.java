@@ -2,12 +2,14 @@ package com.example.demo.controller;
 
 
 import cn.hutool.core.codec.Base64;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.example.demo.body.EmailBody;
+import com.example.demo.body.UploadWallpaperBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
+import com.example.demo.dao.UserDao;
 import com.example.demo.dao.WallpaperSortingDao;
-import com.example.demo.dto.AccessDTO;
-import com.example.demo.dto.MessagesDTO;
-import com.example.demo.dto.NumDTO;
+import com.example.demo.dto.*;
 import com.example.demo.mod.ToolMod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -46,6 +48,8 @@ public class ToolController {
     private WallpaperSortingDao wallpaperSortingDao;
     @Autowired
     private ToolDao toolDao;
+    @Autowired
+    private UserDao userDao;
     @Autowired
     private YmlConfig ymlConfig;
     ToolMod toolMod = new ToolMod();
@@ -106,22 +110,35 @@ public class ToolController {
      * 发送邮件
      */
     @PostMapping("mail")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Email", value = "邮箱", paramType = "query",required = true, dataType="String"),
-            @ApiImplicitParam(name = "Type", value = "类型", paramType = "query",required = true, dataType="int"),
-            @ApiImplicitParam(name = "yzm", value = "验证码", paramType = "query",required = true,dataType="String")
-    })
-    public boolean mail(@ApiIgnore @RequestParam Map<String, Object> params){
-        String text = toolMod.mail(params.get("Email").toString(),params.get("yzm").toString(),Integer.parseInt(params.get("Type").toString()));
-        MimeMessage message = mailSender.createMimeMessage();
+    public boolean mail(@RequestBody EmailBody emailBody,HttpServletRequest httpRequest){
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("1478588530@qq.com");
-            helper.setTo(params.get("Email").toString());
-            helper.setSubject("GXM");
-            helper.setText(text, true);
-            mailSender.send(message);
-            return true;
+            List<PermissionsDTO> arr = toolDao.permissionsViewCode(emailBody.getUuid());
+            int num = arr.get(0).getMessageNumber();
+            if(arr.get(0).getImportantNotice()==1 && num > 0){
+                for(String i:emailBody.getRecipient()){
+                    if(num > 0){
+                        MimeMessage message = mailSender.createMimeMessage();
+                        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+                        helper.setFrom("xiaoming2000mail@qq.com");
+                        helper.setTo(i);
+                        helper.setSubject("GXM");
+                        helper.setText(emailBody.getContent(), true);
+                        mailSender.send(message);
+                        String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                        if (StringUtils.isEmpty(ipAddress)) {
+                            ipAddress = httpRequest.getRemoteAddr();
+                        }
+                        toolDao.operationLogAddCode(arr.get(0).getId(),"发送邮件,接收人:"+i+"内容:"+emailBody.getContent(),ipAddress);
+                    }
+                    num--;
+                }
+                List<UserDTO> list = userDao.getUserUUIDCode(emailBody.getUuid());
+                Map<String,Object> map = new HashMap<>();
+                map.put("sql","message_number="+num);
+                map.put("id",list.get(0).getId());
+                toolDao.permissionsExtension(map);
+                return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,54 +147,37 @@ public class ToolController {
     /**
      * 上传壁纸
      */
-    @PostMapping("img")
-    public Boolean img(
-        @RequestParam("file") MultipartFile file,                                        //上传壁纸
-            @RequestParam(value = "userId") int userId,                                  //用户id
-            @RequestParam(value = "theTitle",required = false) String theTitle,          //标题
-            @RequestParam(value = "theLabel") String theLabel,                           //标签
-            @RequestParam long size
-            ){
-        Map<String,Object> params = new HashMap<>();
-        int num = wallpaperSortingDao.countCode()+1;
-        String path = ymlConfig.getWallpaperDisk();//存放路径
-        String fileName = file.getOriginalFilename();//获取文件名称
-        String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
-        params.put("userId",userId);
-        params.put("theTitle",theTitle);
-        params.put("theLabel",theLabel);
-        params.put("type",suffixName.substring(1));
-        params.put("id",num);
-        params.put("size",size);
-        wallpaperSortingDao.uploadWallpaperCode(params);
-        fileName= num+suffixName;//重新生成文件名
-        File targetFile = new File(path+"cs");
-        if (!targetFile.exists()) {
-            // 判断文件夹是否未空，空则创建
-            targetFile.mkdirs();
-        }
-        File saveFile = new File(targetFile, fileName);
+    @PostMapping("UploadWallpaper")
+    public Boolean uploadWallpaper(UploadWallpaperBody uploadWallpaperBody,HttpServletRequest httpRequest){
         try {
-            //指定本地存入路径
-            file.transferTo(saveFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        if (size>1048576){
-            targetFile = new File(path+"csm");
+            int num = wallpaperSortingDao.countCode()+1;
+            String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
+            String fileName = uploadWallpaperBody.getFile().getOriginalFilename();//获取文件名称
+            String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+            fileName = num+suffixName;//重新生成文件名
+            File targetFile = new File(path);
             if (!targetFile.exists()) {
                 // 判断文件夹是否未空，空则创建
                 targetFile.mkdirs();
             }
-            saveFile = new File(targetFile, fileName);
-            try {
-                //指定本地存入路径
-                file.transferTo(saveFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+            File saveFile = new File(targetFile, fileName);
+            uploadWallpaperBody.getFile().transferTo(saveFile);
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",num);
+            map.put("theTitle",uploadWallpaperBody.getTheTitle());
+            map.put("userId",uploadWallpaperBody.getUserId());
+            map.put("theLabel",uploadWallpaperBody.getTheLabel());
+            map.put("type",suffixName.substring(1));
+            map.put("size",uploadWallpaperBody.getSize());
+            wallpaperSortingDao.uploadWallpaperCode(map);
+            String ipAddress = httpRequest.getHeader("X-Real-Ip");
+            if (StringUtils.isEmpty(ipAddress)) {
+                ipAddress = httpRequest.getRemoteAddr();
             }
+            toolDao.operationLogAddCode(uploadWallpaperBody.getUserId(),"上传壁纸，壁纸编号为:"+num,ipAddress);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
         return true;
     }
@@ -256,7 +256,9 @@ public class ToolController {
     public List<AccessDTO> obtainAccess(@RequestParam int limit){
         return toolDao.obtainAccessCode(limit);
     }
-
+    /**
+     * 修改语言
+     */
     @GetMapping("language")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "language", value = "语言", paramType = "query",required = true, dataType="int"),

@@ -18,4 +18,6 @@ public class OperationLogDTO implements Serializable {
     private String action;
     //操作时间
     private String operatingTime;
+    //操作地址
+    private String ipAddress;
 }

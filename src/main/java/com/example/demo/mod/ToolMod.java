@@ -110,7 +110,8 @@ public class ToolMod {
         return r.nextInt(scope);
     }
     public static void main(String[] args) {
-        ToolMod toolMod = new ToolMod();
-        System.out.println(toolMod.uuid());
+       String a = "123456.jpgggggg";
+        String suffixName=a.substring(a.lastIndexOf("."));
+       System.out.println(suffixName.substring(1));
     }
 }
