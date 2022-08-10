@@ -29,7 +29,6 @@ import java.util.*;
  */
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(value = "admin", produces = "application/json;charset=UTF-8")
 public class AdminController {
 
@@ -84,8 +83,8 @@ public class AdminController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> userView(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -154,8 +153,8 @@ public class AdminController {
     })
     public Map<String,Object> reviewWallpaper(@ApiIgnore @RequestParam Map<String, Object> params){
         if(userDao.userUuidCode(params)==1 || "000000".equals(params.get("uuid").toString())){
-            int num = Integer.valueOf(params.get("page").toString());
-            int limit = Integer.valueOf(params.get("limit").toString());
+            int num = Integer.parseInt(params.get("page").toString());
+            int limit = Integer.parseInt(params.get("limit").toString());
             int start = 0;
             for (int i=1;i<num;i++) start+=limit;
             params.put("start",start);
@@ -287,7 +286,7 @@ public class AdminController {
         params.put("state", modifyAuditBody.getState());
         params.put("uuid", modifyAuditBody.getUuid());
         if( userDao.userUuidCode(params)==1 ){
-            List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(params);
+            List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(Integer.parseInt(params.get("id").toString()));
             if (modifyAuditBody.getTheTitle()==null || "".equals(modifyAuditBody.getTheTitle())){
                 params.put("theTitle",arr.get(0).getTheTitle());
             }
@@ -425,13 +424,16 @@ public class AdminController {
      * 分页查询日志
      */
     @GetMapping("OperationLog")
-    public List<OperationLogDTO> operationLog(@RequestParam int page,@RequestParam int limit){
+    public Map<String,Object> operationLog(@RequestParam int page,@RequestParam int limit){
         int start = 0;
         for (int i=1;i<page;i++) start+=limit;
         Map<String ,Object> map = new HashMap<>();
         map.put("start",start);
         map.put("limit",limit);
-        return toolDao.operationLogPageCode(map);
+        Map<String,Object> data = new HashMap<>();
+        data.put("total",toolDao.operationLogTotalCode());
+        data.put("data",toolDao.operationLogPageCode(map));
+        return data;
     }
 
     /**
@@ -497,8 +499,8 @@ public class AdminController {
     public void operationLogExport(@RequestParam String uuid, HttpServletResponse response,HttpServletRequest httpRequest){
         try {
             List<PermissionsDTO> arr = toolDao.permissionsViewCode(uuid);
-            if (arr.get(0).getChangePermissions() == 1){
-                List<Object> head = Arrays.asList("操作人ID","行为","操作地址","操作时间");
+            if (arr.get(0).getLogExport() == 1){
+                List<Object> head = Arrays.asList("操作人","操作","地址","时间");
                 List<OperationLogDTO> list = toolDao.operationLogAllCode();
                 List<List<Object>> sheetDataList = new ArrayList<>();
                 sheetDataList.add(head);
@@ -514,8 +516,8 @@ public class AdminController {
                 if (StringUtils.isEmpty(ipAddress)) {
                     ipAddress = httpRequest.getRemoteAddr();
                 }
-                toolDao.operationLogAddCode(arr.get(0).getId(),"导出日志",ipAddress);
                 ExcelUtils.export(response,"操作日志", sheetDataList);
+                toolDao.operationLogAddCode(arr.get(0).getId(),"导出日志",ipAddress);
             }
         }catch (Exception e){
             e.printStackTrace();

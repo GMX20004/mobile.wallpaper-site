@@ -12,21 +12,24 @@
         WHERE id=#{id}
     </select>
 <!--    用户信息修改-->
-    <select id="userModify" resultType="com.example.demo.dto.UserDTO">
-        UPDATE `user` SET
-        <if test="name != null or name.trim() !=''">
-            `name` = #{name},
-        </if>
-        <if test="instructions != null or instructions.trim() !=''">
-            `instructions` = #{instructions},
-        </if>
-        <if test="sex != null or sex.trim() != ''">
-            `sex` = #{sex},
-        </if>
-        <if test="img != null">
-            head_portrait = #{img},
-        </if>
-        `state` = 0
-        WHERE id=#{id}
-    </select>
+    <update id="userModifyCode">
+        UPDATE `user`
+            <set>
+                <if test="name != null ">
+                    `name` = #{name},
+                </if>
+                <if test="instructions != null">
+                    `instructions` = #{instructions},
+                </if>
+                <if test="sex != null ">
+                    `sex` = #{sex},
+                </if>
+                <if test="img != null">
+                    head_portrait = #{img},
+                </if>
+            </set>
+            <where>
+                id = #{id};
+            </where>
+    </update>
 </mapper>

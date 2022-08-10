@@ -39,7 +39,6 @@ import java.util.List;
  * 工具接口
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/L")
 public class ToolController {
     @Autowired
@@ -148,7 +147,8 @@ public class ToolController {
      * 上传壁纸
      */
     @PostMapping("UploadWallpaper")
-    public Boolean uploadWallpaper(UploadWallpaperBody uploadWallpaperBody,HttpServletRequest httpRequest){
+    public Map<String,Object> uploadWallpaper(UploadWallpaperBody uploadWallpaperBody,HttpServletRequest httpRequest){
+        Map<String,Object> back = new HashMap<>();
         try {
             int num = wallpaperSortingDao.countCode()+1;
             String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
@@ -167,6 +167,7 @@ public class ToolController {
             map.put("theTitle",uploadWallpaperBody.getTheTitle());
             map.put("userId",uploadWallpaperBody.getUserId());
             map.put("theLabel",uploadWallpaperBody.getTheLabel());
+            map.put("storageLocation","cs");
             map.put("type",suffixName.substring(1));
             map.put("size",uploadWallpaperBody.getSize());
             wallpaperSortingDao.uploadWallpaperCode(map);
@@ -174,12 +175,16 @@ public class ToolController {
             if (StringUtils.isEmpty(ipAddress)) {
                 ipAddress = httpRequest.getRemoteAddr();
             }
+            List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(num);
+            back.put("data",arr.get(0));
             toolDao.operationLogAddCode(uploadWallpaperBody.getUserId(),"上传壁纸，壁纸编号为:"+num,ipAddress);
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            back.put("state",false);
+            return back;
         }
-        return true;
+        back.put("state",true);
+        return back;
     }
     /**
      * 总数查询

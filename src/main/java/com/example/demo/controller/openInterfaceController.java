@@ -24,23 +24,12 @@ public class openInterfaceController {
      */
     @GetMapping("getHttp")
     public String getHttp(@RequestParam String url){
-        String results = null;
         try{
-            Map<String,Object> param = new HashMap<>();
-            param.put("url",url);
-            param.put("type","GET");
-            param.put("time",toolMod.time());
-            results = HttpUtil.get(url);
-            if (results.length()>1000){
-                param.put("results",results.substring(0,999));
-            }else {
-                param.put("results",results);
-            }
-            toolDao.domainUrlCode(param);
+            return HttpUtil.get(url);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return results;
+        return null;
     }
     /**
      *POST跨域请求
@@ -53,24 +42,12 @@ public class openInterfaceController {
                 String value = "";
                 if (postHttpBody.getValue() != null)
                     for (Map.Entry<String, Object> entry : postHttpBody.getValue().entrySet()) {
-                        System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                         value +=(entry.getKey()+"="+entry.getValue()+"&");
                     }
                 if ("".equals(value)) {
                     value = value.substring(0,value.length()-1);
                 }
-                Map<String,Object> param = new HashMap<>();
-                param.put("url",postHttpBody.getUrl());
-                param.put("value",value);
-                param.put("type","POST");
-                param.put("time",toolMod.time());
                 results = HttpUtil.post(postHttpBody.getUrl(),value);
-                if (results.length()>1000){
-                    param.put("results",results.substring(0,999));
-                }else {
-                    param.put("results",results);
-                }
-                toolDao.domainUrlCode(param);
             }
         }catch (Exception e){
             e.printStackTrace();

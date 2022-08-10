@@ -23,7 +23,6 @@ import java.util.Map;
  * 壁纸相关接口
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/Wallpaper")
 public class WallpaperController {
 
@@ -43,8 +42,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> search(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=10;
         params.put("value","%"+params.get("value")+"%");
@@ -66,8 +65,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object>  label(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("value","%"+params.get("value")+"%");
@@ -87,8 +86,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> daily(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -107,8 +106,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> hot(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -128,8 +127,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> latest(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -149,8 +148,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> praise(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -169,8 +168,8 @@ public class WallpaperController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "query",required = true, dataType="int")
     })
     public Map<String,Object> collection(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("page").toString());
-        int limit = Integer.valueOf(params.get("limit").toString());
+        int num = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
         int start = 0;
         for (int i=1;i<num;i++) start+=limit;
         params.put("start",start);
@@ -189,7 +188,7 @@ public class WallpaperController {
         @ApiImplicitParam(name = "type", value = "0收藏1点赞2投稿", paramType = "query",required = true, dataType="int")
     })
     public List<WallpaperDTO> collectionContribute(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = Integer.valueOf(params.get("type").toString());
+        int num = Integer.parseInt(params.get("type").toString());
         if (num==2) return wallpaperSortingDao.uploadCode(params);
         else return wallpaperSortingDao.collectionGiveALikeCode(params);
     }
@@ -202,7 +201,7 @@ public class WallpaperController {
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query",dataType="int")
     })
     public List<WallpaperDetailsDTO> wallpaper(@ApiIgnore @RequestParam Map<String, Object> params){
-        List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(params);
+        List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(Integer.parseInt(params.get("id").toString()));
         if(params.get("userId")!=null || params.get("userId")!=""){
             params.put("type",0);
             int num = wallpaperSortingDao.isWallpaperTypeCode(params);
@@ -233,9 +232,9 @@ public class WallpaperController {
             if (params.get("userId")!=null && params.get("userId")!=""){
                 wallpaperSortingDao.obtainCancelCGCode(params);
             }
-            int num = Integer.valueOf(params.get("type").toString());
+            int num = Integer.parseInt(params.get("type").toString());
             if (num==1){
-                List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(params);
+                List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(Integer.parseInt(params.get("id").toString()));
                 params.put("id",arr.get(0).getUserId());
                 userDao.userAddDeleteCGCode(params);
             }

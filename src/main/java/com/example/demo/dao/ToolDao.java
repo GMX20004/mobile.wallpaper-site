@@ -46,9 +46,6 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     //新增壁纸文件夹
     @Insert("INSERT INTO wallpaper_folder(folder,note)VALUES(#{folder},#{note})")
     int wallpaperFolderInsertCode(Map<String,Object> param);
-    //跨域链接存储
-    @Insert("INSERT INTO domain (url,value,type,results,time)VALUES(#{url},#{value},#{type},#{results},#{time})")
-    int domainUrlCode(Map<String,Object> param);
     //任务信息表
     @Insert("INSERT INTO task_information (task_name,task_information,create_time)VALUES(#{name},#{information},#{time})")
     int taskInformation(Map<String,Object> param);
@@ -83,8 +80,11 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     @Insert("INSERT INTO operation_log (user_id,action,ip_address) VALUES (#{userId},#{action},#{ip})")
     int operationLogAddCode(int userId,String action,String ip);
     // 操作日志分页查看
-    @Select("SELECT * FROM `operation_log` ORDER BY id LIMIT #{start},#{limit}")
+    @Select("SELECT * FROM `operation_log` ORDER BY id DESC LIMIT #{start},#{limit}")
     List<OperationLogDTO> operationLogPageCode(Map<String, Object> param);
+    // 日志总数查询
+    @Select("SELECT COUNT(*) FROM `operation_log`")
+    int operationLogTotalCode();
     // 查询所有操作日志
     @Select("SELECT * FROM `operation_log`")
     List<OperationLogDTO> operationLogAllCode();

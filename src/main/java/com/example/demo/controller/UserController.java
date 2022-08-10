@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.example.demo.body.EmailBody;
 import com.example.demo.body.UserModifyBody;
 import com.example.demo.config.YmlConfig;
 import com.example.demo.dao.ToolDao;
@@ -27,7 +28,6 @@ import java.util.Map;
  * 用户相关查询
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/User")
 public class UserController {
     @Autowired
@@ -135,8 +135,13 @@ public class UserController {
     }
     //查看用户信息
     @PostMapping("userUUID")
-    public List<UserDTO> userUUID(@RequestParam String uuid){
-        List<UserDTO> arr = userDao.getUserUUIDCode(uuid);
+    public List<UserDTO> userUUID(@RequestBody EmailBody emailBody,HttpServletRequest httpRequest){
+        List<UserDTO> arr = userDao.getUserUUIDCode(emailBody.getUuid());
+        String ipAddress = httpRequest.getHeader("X-Real-Ip");
+        if (StringUtils.isEmpty(ipAddress)) {
+            ipAddress = httpRequest.getRemoteAddr();
+        }
+        toolDao.operationLogAddCode(arr.get(0).getId(),"用户登录",ipAddress);
         return arr;
     }
     /**
@@ -169,7 +174,6 @@ public class UserController {
                     param.put("name",userModifyBody.getName());
                     param.put("instructions",userModifyBody.getInstructions());
                     param.put("sex",userModifyBody.getSex());
-                    System.out.println(param);
                     userDao.userModifyCode(param);
                     String ipAddress = httpRequest.getHeader("X-Real-Ip");
                     if (StringUtils.isEmpty(ipAddress)) {

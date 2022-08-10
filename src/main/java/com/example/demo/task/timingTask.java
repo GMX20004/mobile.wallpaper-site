@@ -24,7 +24,7 @@ public class timingTask {
     public void executeFileDow(){
         Map<String,Object> params = new HashMap<>();
         try{
-            HttpUtil.get("http://localhost/admin/576f7da7bc264e63a923bfa16d0f133d?type=1");
+            HttpUtil.get("http://101.43.88.137:9081/admin/576f7da7bc264e63a923bfa16d0f133d?type=1");
             params.put("name","每日首页壁纸显示改动");
             params.put("information","自动执行更新");
             params.put("time",toolMod.time());
