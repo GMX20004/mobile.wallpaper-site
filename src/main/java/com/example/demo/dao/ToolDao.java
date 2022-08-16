@@ -97,4 +97,22 @@ public interface ToolDao extends BaseMapper<UserDTO> {
     // 查看权限
     @Select("SELECT t2.*,t3.message_number FROM `user` t1 LEFT JOIN permissions t2 ON t1.id=t2.id LEFT JOIN permissions_extension t3 ON t2.id=t3.id WHERE t1.user_id = #{uuid}")
     List<PermissionsDTO> permissionsViewCode(String uuid);
+    // 获取系统公告
+    @Select("SELECT * FROM `content_announcement`")
+    List<AnnouncementDTO> obtainAnnouncementCode();
+    // 新增系统公告
+    @Insert("INSERT INTO `content_announcement` (type,content) VALUES ${sql}")
+    int addAnnouncementCode(String sql);
+    // 删除系统公告
+    @Delete("truncate table `content_announcement`")
+    boolean deleteAnnouncementCode();
+    // 关闭系统公告
+    @Insert("INSERT INTO `content_announcement` (type,content) VALUES (-1,0)")
+    int shutAnnouncementCode();
+    // 开启系统公告
+    @Delete("DELETE FROM `content_announcement` WHERE type=-1")
+    int openAnnouncementCode();
+    // 查询系统公告状态
+    @Select("SELECT COUNT(*) FROM `content_announcement` WHERE type = -1")
+    int announcementStateCode();
 }

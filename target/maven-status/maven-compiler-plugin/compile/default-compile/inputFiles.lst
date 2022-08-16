@@ -6,6 +6,7 @@ E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\test\TestApplication.jav
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\body\ModifyAuditBody.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dao\WallpaperSortingDao.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\NumDTO.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\AnnouncementDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\CronDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\body\UploadWallpaperBody.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\WallpaperDTO.java
@@ -15,6 +16,7 @@ E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\WallpaperDetail
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\OperationLogDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\utils\excel\ExcelImport.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\PermissionsDTO.java
+E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\body\AnnouncementBody.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\dto\UserDTO.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\utils\excel\ExcelUtils.java
 E:\JAVA\Mobile.wallpaper-site\src\main\java\com\example\demo\mod\ToolMod.java

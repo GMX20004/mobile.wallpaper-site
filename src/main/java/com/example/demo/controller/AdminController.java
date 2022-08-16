@@ -29,6 +29,7 @@ import java.util.*;
  */
 
 @RestController
+@CrossOrigin(value = {"http://101.43.88.137:9080","http://39.187.88.250:9080","http://192.168.1.19:9080"},allowCredentials = "true")
 @RequestMapping(value = "admin", produces = "application/json;charset=UTF-8")
 public class AdminController {
 

@@ -1,6 +1,10 @@
 package com.example.demo.mod;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dao.ToolDao;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -10,7 +14,8 @@ import java.util.Random;
  * 工具类
  */
 public class ToolMod {
-
+    @Autowired
+    private ToolDao toolDao;
     //生成四位字母数字组合的验证码
     public String verificationCode(){
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -110,8 +115,6 @@ public class ToolMod {
         return r.nextInt(scope);
     }
     public static void main(String[] args) {
-       String a = "123456.jpgggggg";
-        String suffixName=a.substring(a.lastIndexOf("."));
-       System.out.println(suffixName.substring(1));
+
     }
 }

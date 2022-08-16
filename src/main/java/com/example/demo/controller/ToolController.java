@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import cn.hutool.core.codec.Base64;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.example.demo.body.AnnouncementBody;
 import com.example.demo.body.EmailBody;
 import com.example.demo.body.UploadWallpaperBody;
 import com.example.demo.config.YmlConfig;
@@ -19,7 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
-
+import com.alibaba.fastjson.JSONObject;
 import javax.imageio.ImageIO;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ import java.util.List;
  * 工具接口
  */
 @RestController
+@CrossOrigin(value = {"http://101.43.88.137:9080","http://39.187.88.250:9080","http://192.168.1.19:9080"},allowCredentials = "true")
 @RequestMapping("/L")
 public class ToolController {
     @Autowired
@@ -272,6 +274,93 @@ public class ToolController {
     public boolean language(@ApiIgnore @RequestParam Map<String, Object> params){
         if (toolDao.languageCode(params)==1) return true;
         else return false;
+    }
+
+    /**
+     * 存储系统公告
+     */
+    @PostMapping("addAnnouncement")
+    public boolean addAnnouncement(AnnouncementBody announcementBody){
+        try {
+            List<PermissionsDTO> arr = toolDao.permissionsViewCode(announcementBody.getUuid());
+            if (arr.get(0).getSystemAnnouncement() == 1){
+                String sql = "(0,'"+announcementBody.getTitle()+"'),(1,'"+announcementBody.getStartTime()+"'),(2,'"+announcementBody.getEndTime()+"')";
+                int num = 0;
+                for(String i:announcementBody.getContent()){
+                    JSONObject json = JSONObject.parseObject(i);
+                    if (Integer.parseInt(json.get("type").toString())==1 && Integer.parseInt(json.get("pictureType").toString())==0){
+                        String fileName = announcementBody.getFileList()[num].getOriginalFilename();//获取文件名称
+                        String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+                        fileName = num+suffixName;//重新生成文件名
+                        File targetFile = new File(ymlConfig.getWallpaperDisk()+"announcement");
+                        File saveFile = new File(targetFile, fileName);
+                        announcementBody.getFileList()[num].transferTo(saveFile);
+                        json.put("pictureUrl","http://101.43.88.137:9081/image/announcement/"+fileName);
+                        json.put("pictureType",1);
+                        num++;
+                    }
+                    sql += ",(3,'"+json.toJSONString()+"')";
+                }
+                toolDao.deleteAnnouncementCode();
+                toolDao.addAnnouncementCode(sql);
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     *获取系统公告
+     */
+    @GetMapping("obtainAnnouncement")
+    public Map<String,Object> obtainAnnouncement(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("is",false);
+        try {
+            if (toolDao.announcementStateCode()==1){
+                return map;
+            }
+            List<AnnouncementDTO> list = toolDao.obtainAnnouncementCode();
+            int length = list.size();
+            if (length != 0){
+                if (toolMod.time().compareTo(list.get(1).getContent())>0){
+                    if (list.get(2).getContent().compareTo(toolMod.time()) > 0){
+                        map.put("is",true);
+                        map.put("title",list.get(0).getContent());
+                        String []time = new String[]{list.get(1).getContent(),list.get(2).getContent()};
+                        map.put("time",time);
+                        String []content = new String[length-3];
+                        int num = 0;
+                        for (int i=3;i<length;i++){
+                            content[num++] = list.get(i).getContent();
+                        }
+                        map.put("content",content);
+                    }
+                }
+            }
+        }catch (Exception e){
+            return map;
+        }
+        return map;
+    }
+
+    /**
+     *开启关闭公告
+     */
+    @GetMapping("isAnnouncement")
+    public boolean isAnnouncement(@RequestParam boolean is){
+        try {
+            if (is){
+                toolDao.openAnnouncementCode();
+            }else{
+                toolDao.shutAnnouncementCode();
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }
 

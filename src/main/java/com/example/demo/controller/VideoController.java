@@ -10,6 +10,7 @@ import java.util.List;
  * 视频接口
  */
 @RestController
+@CrossOrigin(value = {"http://101.43.88.137:9080","http://39.187.88.250:9080","http://192.168.1.19:9080"},allowCredentials = "true")
 @RequestMapping("/video")
 public class VideoController {
     @Autowired

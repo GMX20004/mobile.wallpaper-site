@@ -28,6 +28,7 @@ import java.util.Map;
  * 用户相关查询
  */
 @RestController
+@CrossOrigin(value = {"http://101.43.88.137:9080","http://39.187.88.250:9080","http://192.168.1.19:9080"},allowCredentials = "true")
 @RequestMapping("/User")
 public class UserController {
     @Autowired
