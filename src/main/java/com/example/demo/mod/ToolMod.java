@@ -1,9 +1,11 @@
 package com.example.demo.mod;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.ToolDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -37,7 +39,14 @@ public class ToolMod {
     public String uuid(){
         return UUID.randomUUID().toString().replace("-","");
     }
-    //邮件发送内容
+
+    /**
+     * 邮件发送内容
+     * @param email 邮箱
+     * @param yzm 验证码
+     * @param a 类型
+     * @return
+     */
     public String mail(String email,String yzm,int a){
         String b = null;
         switch (a){
@@ -110,11 +119,33 @@ public class ToolMod {
         String dates = sdf.format(date);
         return dates;
     }
+    /**
+     * 随机数
+     * @param scope 范围
+     */
     public int randomNumber(int scope){
         Random r = new Random();
         return r.nextInt(scope);
     }
-    public static void main(String[] args) {
+    public Map<String,Object> objectParse(String json){
+        Map<String,Object> map = new ModelMap();
+        System.out.println(json);
+        if (json.startsWith("{",0)){
+            json = json.substring(1,json.length()-1);
+            if (json.startsWith("}",json.length()-1)){
+                json = json.substring(0,json.length()-2);
+            }
+        }else if(json.startsWith("}",json.length()-1)){
+            System.out.println(2);
+        }else{
 
+        }
+        System.out.println(json);
+        return map;
+    }
+    public static void main(String[] args) {
+        ToolMod toolMod = new ToolMod();
+        JSONObject jsonObj = JSON.parseObject("{\"errcode\":40029,\"errmsg\":\"invalid {code}, rid: 633ff241-34978369-427fe867\"}");
+        System.out.println(jsonObj.get("errmsg"));
     }
 }

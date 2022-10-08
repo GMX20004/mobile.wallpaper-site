@@ -17,8 +17,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 import com.alibaba.fastjson.JSONObject;
 import javax.imageio.ImageIO;
@@ -29,6 +29,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -152,40 +153,45 @@ public class ToolController {
     public Map<String,Object> uploadWallpaper(UploadWallpaperBody uploadWallpaperBody,HttpServletRequest httpRequest){
         Map<String,Object> back = new HashMap<>();
         try {
-            int num = wallpaperSortingDao.countCode()+1;
-            String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
-            String fileName = uploadWallpaperBody.getFile().getOriginalFilename();//获取文件名称
-            String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
-            fileName = num+suffixName;//重新生成文件名
-            File targetFile = new File(path);
-            if (!targetFile.exists()) {
-                // 判断文件夹是否未空，空则创建
-                targetFile.mkdirs();
+            List<UserDTO> userList = userDao.getUserCode(uploadWallpaperBody.getUserId());
+            if(userList.size() != 0 && uploadWallpaperBody.getUuid().equals(userList.get(0).getUserId())){
+                int num = wallpaperSortingDao.countCode()+1;
+                String path = ymlConfig.getWallpaperDisk()+"cs";//存放路径
+                String fileName = uploadWallpaperBody.getFile().getOriginalFilename();//获取文件名称
+                String suffixName=fileName.substring(fileName.lastIndexOf("."));//获取文件后缀
+                fileName = num+suffixName;//重新生成文件名
+                File targetFile = new File(path);
+                if (!targetFile.exists()) {
+                    // 判断文件夹是否未空，空则创建
+                    targetFile.mkdirs();
+                }
+                File saveFile = new File(targetFile, fileName);
+                uploadWallpaperBody.getFile().transferTo(saveFile);
+                Map<String,Object> map = new HashMap<>();
+                map.put("id",num);
+                map.put("theTitle",uploadWallpaperBody.getTheTitle());
+                map.put("userId",uploadWallpaperBody.getUserId());
+                map.put("theLabel",uploadWallpaperBody.getTheLabel());
+                map.put("storageLocation","cs");
+                map.put("type",suffixName.substring(1));
+                map.put("size",uploadWallpaperBody.getSize());
+                wallpaperSortingDao.uploadWallpaperCode(map);
+                String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                if (StringUtils.isEmpty(ipAddress)) {
+                    ipAddress = httpRequest.getRemoteAddr();
+                }
+                List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(num);
+                back.put("data",arr.get(0));
+                toolDao.operationLogAddCode(uploadWallpaperBody.getUserId(),"上传壁纸，壁纸编号为:"+num,ipAddress);
+                back.put("state",true);
+                return back;
             }
-            File saveFile = new File(targetFile, fileName);
-            uploadWallpaperBody.getFile().transferTo(saveFile);
-            Map<String,Object> map = new HashMap<>();
-            map.put("id",num);
-            map.put("theTitle",uploadWallpaperBody.getTheTitle());
-            map.put("userId",uploadWallpaperBody.getUserId());
-            map.put("theLabel",uploadWallpaperBody.getTheLabel());
-            map.put("storageLocation","cs");
-            map.put("type",suffixName.substring(1));
-            map.put("size",uploadWallpaperBody.getSize());
-            wallpaperSortingDao.uploadWallpaperCode(map);
-            String ipAddress = httpRequest.getHeader("X-Real-Ip");
-            if (StringUtils.isEmpty(ipAddress)) {
-                ipAddress = httpRequest.getRemoteAddr();
-            }
-            List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(num);
-            back.put("data",arr.get(0));
-            toolDao.operationLogAddCode(uploadWallpaperBody.getUserId(),"上传壁纸，壁纸编号为:"+num,ipAddress);
         }catch (Exception e){
             e.printStackTrace();
             back.put("state",false);
             return back;
         }
-        back.put("state",true);
+        back.put("state",false);
         return back;
     }
     /**
@@ -280,7 +286,7 @@ public class ToolController {
      * 存储系统公告
      */
     @PostMapping("addAnnouncement")
-    public boolean addAnnouncement(AnnouncementBody announcementBody){
+    public boolean addAnnouncement(AnnouncementBody announcementBody,HttpServletRequest httpRequest){
         try {
             List<PermissionsDTO> arr = toolDao.permissionsViewCode(announcementBody.getUuid());
             if (arr.get(0).getSystemAnnouncement() == 1){
@@ -303,6 +309,12 @@ public class ToolController {
                 }
                 toolDao.deleteAnnouncementCode();
                 toolDao.addAnnouncementCode(sql);
+                String ipAddress = httpRequest.getHeader("X-Real-Ip");
+                if (StringUtils.isEmpty(ipAddress)) {
+                    ipAddress = httpRequest.getRemoteAddr();
+                }
+                List<UserDTO> user = userDao.getUserUUIDCode(announcementBody.getUuid());
+                toolDao.operationLogAddCode(arr.get(0).getId(),"修改公告",ipAddress);
                 return true;
             }
         }catch (Exception e){
@@ -319,23 +331,29 @@ public class ToolController {
         Map<String,Object> map = new HashMap<>();
         map.put("is",false);
         try {
-            if (toolDao.announcementStateCode()==1){
-                return map;
-            }
             List<AnnouncementDTO> list = toolDao.obtainAnnouncementCode();
             int length = list.size();
-            if (length != 0){
+            if (length != 0 || list.get(0).getType() != -1){
                 if (toolMod.time().compareTo(list.get(1).getContent())>0){
                     if (list.get(2).getContent().compareTo(toolMod.time()) > 0){
+                        int k = 3;
+                        if (toolDao.announcementStateCode()==0){
+                            map.put("open",true);
+                        }else{
+                            map.put("open",false);
+                            k = 4;
+                        }
                         map.put("is",true);
                         map.put("title",list.get(0).getContent());
                         String []time = new String[]{list.get(1).getContent(),list.get(2).getContent()};
                         map.put("time",time);
-                        String []content = new String[length-3];
+                        String []content = new String[length-k];
                         int num = 0;
                         for (int i=3;i<length;i++){
+                            if (list.get(i).getType()==3)
                             content[num++] = list.get(i).getContent();
                         }
+                        System.out.println(content);
                         map.put("content",content);
                     }
                 }
@@ -350,17 +368,37 @@ public class ToolController {
      *开启关闭公告
      */
     @GetMapping("isAnnouncement")
-    public boolean isAnnouncement(@RequestParam boolean is){
+    public boolean isAnnouncement(@RequestParam boolean is,@RequestParam int userId,HttpServletRequest httpRequest){
         try {
             if (is){
                 toolDao.openAnnouncementCode();
             }else{
                 toolDao.shutAnnouncementCode();
             }
+            String ipAddress = httpRequest.getHeader("X-Real-Ip");
+            if (StringUtils.isEmpty(ipAddress)) {
+                ipAddress = httpRequest.getRemoteAddr();
+            }
+            toolDao.operationLogAddCode(userId,is?"开启公告":"关闭公告",ipAddress);
         }catch (Exception e){
             return false;
         }
         return true;
+    }
+    /**
+     * 图片下载
+     */
+    @GetMapping("downloadWallpaper")
+    public void downloadWallpaper(@RequestParam int id,HttpServletResponse response){
+        List<WallpaperDetailsDTO> arr = wallpaperSortingDao.detailsWallpaperCode(id);
+        String filePath = ymlConfig.getWallpaperDisk()+arr.get(0).getStorageLocation()+"/"+arr.get(0).getId()+"."+arr.get(0).getType();
+        response.setContentType("image/"+arr.get(0).getType());
+        try {
+            FileCopyUtils.copy(new FileInputStream(filePath), response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

@@ -13,6 +13,9 @@ public class UploadWallpaperBody {
     @ApiModelProperty("用户ID")
     private int userId;
 
+    @ApiModelProperty("用户唯一编码")
+    private String uuid;
+
     @ApiModelProperty("标题")
     private String theTitle;
 

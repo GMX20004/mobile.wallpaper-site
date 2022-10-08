@@ -17,11 +17,11 @@ public interface UserDao extends BaseMapper<UserDTO> {
     @Select(" SELECT *  FROM `user` WHERE email = #{email} and `password`=SHA1(#{password}) and identity=0")
     List<UserDTO> getLogInToCode(Map<String,Object> param);
     //判断是否已存在用户
-    @Select(" SELECT COUNT(*) AS num FROM `user` WHERE email = #{email}")
-    int getEmailCode(Map<String,Object> param);
+    @Select("SELECT COUNT(*) AS num FROM `user` WHERE ${sql}")
+    int getIsExistCode(String sql);
     //查询用户信息
     @Select("SELECT * FROM `user` WHERE id=#{id}")
-    List<UserDTO> getUserCode(Map<String,Object> param);
+    List<UserDTO> getUserCode(int id);
     @Select("SELECT * FROM `user` WHERE user_id=#{uuid}")
     List<UserDTO> getUserUUIDCode(String uuid);
     //新建用户
@@ -58,4 +58,7 @@ public interface UserDao extends BaseMapper<UserDTO> {
     //查看用户唯一编码
     @Select("SELECT COUNT(*) FROM `user` WHERE user_id=#{uuid} AND identity=0")
     int userUuidCode(Map<String,Object> param);
+    //小程序查询用户
+    @Select("SELECT * FROM `user` WHERE user_id = #{openid}")
+    List<UserDTO> getWxUser(String openid);
 }

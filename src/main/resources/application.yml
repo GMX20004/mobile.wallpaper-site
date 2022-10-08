@@ -46,5 +46,8 @@ information:
 #  wallpaperDisk: E:\JAVA\img\
 #腾讯云
   wallpaperDisk: /JAVA/img/
+  #微信小程序相关数据
+  appid: wxb970dab43f46ebdc
+  secret: 66e19dfbdf32ffad8c03a57519f27f1b
 
 

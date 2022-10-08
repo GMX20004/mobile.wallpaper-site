@@ -3,14 +3,14 @@
 <mapper namespace="com.example.demo.dao.UserDao">
 
 <!--    用户获赞数更新-->
-    <select id="userAddDeleteCGCode" resultType="com.example.demo.dto.UserDTO">
+    <update id="userAddDeleteCGCode">
         UPDATE `user` SET
         <if test="type==1">
             <if test="is==0">praise=praise-1</if>
             <if test="is==1">praise=praise+1</if>
         </if>
         WHERE id=#{id}
-    </select>
+    </update>
 <!--    用户信息修改-->
     <update id="userModifyCode">
         UPDATE `user`

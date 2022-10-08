@@ -425,15 +425,20 @@ public class AdminController {
      * 分页查询日志
      */
     @GetMapping("OperationLog")
-    public Map<String,Object> operationLog(@RequestParam int page,@RequestParam int limit){
+    public Map<String,Object> operationLog(@RequestParam int page,@RequestParam int limit,@RequestParam String uuid){
+        List<UserDTO> user = userDao.getUserUUIDCode(uuid);
         int start = 0;
         for (int i=1;i<page;i++) start+=limit;
         Map<String ,Object> map = new HashMap<>();
         map.put("start",start);
         map.put("limit",limit);
         Map<String,Object> data = new HashMap<>();
-        data.put("total",toolDao.operationLogTotalCode());
-        data.put("data",toolDao.operationLogPageCode(map));
+        data.put("code",400);
+        if (user.size() != 0 && user.get(0).getIdentity() == 0){
+            data.put("code",0);
+            data.put("total",toolDao.operationLogTotalCode());
+            data.put("data",toolDao.operationLogPageCode(map));
+        }
         return data;
     }
 

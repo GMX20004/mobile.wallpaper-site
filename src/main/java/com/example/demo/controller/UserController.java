@@ -69,7 +69,7 @@ public class UserController {
             @ApiImplicitParam(name = "height", value = "分辨率高度", paramType = "query", dataType="int")
     })
     public List registered(@ApiIgnore @RequestParam Map<String, Object> params)  {
-        int num = userDao.getEmailCode(params);
+        int num = userDao.getIsExistCode("email = '"+params.get("email")+"'");
         List arr = new ArrayList();
         if (num==1){
             arr.add(false);
@@ -98,7 +98,7 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "密码", paramType = "query",required = true, dataType="String")
     })
     public List forgetPassword(@ApiIgnore @RequestParam Map<String, Object> params)  {
-        int num = userDao.getEmailCode(params);
+        int num = userDao.getIsExistCode("email = '"+params.get("email")+"'");
         List arr = new ArrayList();
         if (num==1){
             num = userDao.getModifyCode(params);
@@ -122,16 +122,15 @@ public class UserController {
     @PostMapping("whether")
     @ApiImplicitParam(name = "email", value = "邮箱", paramType = "query",required = true, dataType="String")
     public boolean whether(@ApiIgnore @RequestParam Map<String, Object> params){
-        int num = userDao.getEmailCode(params);
+        int num = userDao.getIsExistCode("email = '"+params.get("email")+"'");
         if (num==1) return true;
         else return false;
     }
 
     //查看用户信息
     @PostMapping("user")
-    @ApiImplicitParam(name = "用户唯一id", value = "id", paramType = "query",required = true, dataType="int")
-    public List<UserDTO> user(@ApiIgnore @RequestParam Map<String, Object> params){
-        List<UserDTO> arr = userDao.getUserCode(params);
+    public List<UserDTO> user(@RequestParam int id){
+        List<UserDTO> arr = userDao.getUserCode(id);
         return arr;
     }
     //查看用户信息
